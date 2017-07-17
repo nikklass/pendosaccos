@@ -1,18 +1,18 @@
 webpackJsonp([4],{
 
-/***/ 153:
+/***/ 154:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(466)
+  __webpack_require__(473)
 }
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(398),
+  __webpack_require__(405),
   /* template */
-  __webpack_require__(444),
+  __webpack_require__(451),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -45,12 +45,12 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 326:
+/***/ 333:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -408,15 +408,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 327:
+/***/ 334:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(326),
+  __webpack_require__(333),
   /* template */
-  __webpack_require__(329),
+  __webpack_require__(336),
   /* styles */
   null,
   /* scopeId */
@@ -449,15 +449,15 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 328:
+/***/ 335:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
   null,
   /* template */
-  __webpack_require__(330),
+  __webpack_require__(337),
   /* styles */
   null,
   /* scopeId */
@@ -490,7 +490,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 329:
+/***/ 336:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1172,7 +1172,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 330:
+/***/ 337:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1992,19 +1992,19 @@ if (false) {
 
 /***/ }),
 
-/***/ 386:
+/***/ 393:
 /***/ (function(module, exports) {
 
 module.exports = "/images/nikk.jpg?a90fca9e865988552c7ca5409b3b2be7";
 
 /***/ }),
 
-/***/ 389:
+/***/ 396:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -2110,12 +2110,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 390:
+/***/ 397:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -2172,19 +2172,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 391:
+/***/ 398:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatHeader_vue__ = __webpack_require__(428);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatHeader_vue__ = __webpack_require__(435);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ChatHeader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ChatHeader_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ChatWidget_vue__ = __webpack_require__(431);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ChatWidget_vue__ = __webpack_require__(438);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ChatWidget_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ChatWidget_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ChatUserList_vue__ = __webpack_require__(430);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ChatUserList_vue__ = __webpack_require__(437);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ChatUserList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__ChatUserList_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ChatAddWidget_vue__ = __webpack_require__(427);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ChatAddWidget_vue__ = __webpack_require__(434);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ChatAddWidget_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ChatAddWidget_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -2300,12 +2300,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 392:
+/***/ 399:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -2372,12 +2372,12 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 393:
+/***/ 400:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 //
@@ -2445,17 +2445,17 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 398:
+/***/ 405:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__chat_ChatPage_vue__ = __webpack_require__(429);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__chat_ChatPage_vue__ = __webpack_require__(436);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__chat_ChatPage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__chat_ChatPage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__includes_SidebarLeft_vue__ = __webpack_require__(327);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__includes_SidebarLeft_vue__ = __webpack_require__(334);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__includes_SidebarLeft_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__includes_SidebarLeft_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__includes_SidebarRight_vue__ = __webpack_require__(328);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__includes_SidebarRight_vue__ = __webpack_require__(335);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__includes_SidebarRight_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__includes_SidebarRight_vue__);
 //
 //
@@ -2512,51 +2512,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 413:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 415:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n.grey_bg[data-v-42f96838]{ background: #dedede;\n}\n.white_bg[data-v-42f96838]{ background: #fbf9fa;\n}\n.chat_time[data-v-42f96838]{ padding: 10px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 418:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "\n#chat-page-wrapper{\n\t  position: absolute;\n\t  top: 10px;\n\t  bottom: 10px;\n\t  width: 97%;\n\t  height: 100%; \n\t  overflow: hidden;\n}\n/*.row [class*=\"col-\"] {\n     padding: 0; \n}*/\n#custom-search-input {\n    background: #e8e6e7 none repeat scroll 0 0;\n    margin: 0;\n    padding: 10px;\n}\n#custom-search-input .search-query {\n    background: #fff none repeat scroll 0 0 !important;\n    border-radius: 4px;\n    height: 33px;\n    margin-bottom: 0;\n    padding-left: 7px;\n    padding-right: 7px;\n}\n#custom-search-input button {\n    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\n    border: 0 none;\n    border-radius: 3px;\n    color: #666666;\n    left: auto;\n    margin-bottom: 0;\n    margin-top: 7px;\n    padding: 2px 5px;\n    position: absolute;\n    right: 10px;\n    z-index: 9999;\n}\n.search-query:focus + button {\n    z-index: 3;\n}\n.all_conversation button {\n    background: #f5f3f3 none repeat scroll 0 0;\n    border: 1px solid #dddddd;\n    height: 38px;\n    text-align: left;\n    width: 100%;\n}\n.all_conversation i {\n    background: #e9e7e8 none repeat scroll 0 0;\n    border-radius: 100px;\n    color: #636363;\n    font-size: 17px;\n    height: 30px;\n    line-height: 30px;\n    text-align: center;\n    width: 30px;\n}\n.all_conversation .caret {\n    bottom: 0;\n    margin: auto;\n    position: absolute;\n    right: 15px;\n    top: 0;\n}\n.all_conversation .dropdown-menu {\n    background: #f5f3f3 none repeat scroll 0 0;\n    border-radius: 0;\n    margin-top: 0;\n    padding: 0;\n    width: 100%;\n}\n.all_conversation ul li {\n    border-bottom: 1px solid #dddddd;\n    line-height: normal;\n    width: 100%;\n}\n.all_conversation ul li a:hover {\n    background: #dddddd none repeat scroll 0 0;\n    color: #333;\n}\n.all_conversation ul li a {\n    color: #333;\n    line-height: 30px;\n    padding: 3px 20px;\n}\n.member_list .chat-body {\n    margin-left: 47px;\n    margin-top: 0;\n}\n.top_nav {\n    overflow: visible;\n}\n.member_list .contact_sec {\n    margin-top: 3px;\n}\n.member_list li {\n    padding: 6px;\n}\n.member_list ul {\n    border: 1px solid #dddddd;\n}\n.chat-img img {\n    height: 34px;\n    width: 34px;\n}\n.member_list li {\n    border-bottom: 1px solid #dddddd;\n    padding: 6px;\n}\n.member_list li:last-child {\n    border-bottom: none;\n}\n.member_list {\n    height: 380px;\n    overflow-x: hidden;\n    overflow-y: auto;\n}\n.sub_menu_ {\n    background: #e8e6e7 none repeat scroll 0 0;\n    left: 100%;\n    max-width: 233px;\n    position: absolute;\n    width: 100%;\n}\n.sub_menu_ {\n    background: #f5f3f3 none repeat scroll 0 0;\n    border: 1px solid rgba(0, 0, 0, 0.15);\n    display: none;\n    left: 100%;\n    margin-left: 0;\n    max-width: 233px;\n    position: absolute;\n    top: 0;\n    width: 100%;\n}\n.all_conversation ul li:hover .sub_menu_ {\n    display: block;\n}\n.new_message_head button {\n    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\n    border: medium none;\n}\n.new_message_head {\n    background: #f5f3f3 none repeat scroll 0 0;\n    float: left;\n    font-size: 13px;\n    font-weight: 600;\n    padding: 18px 10px;\n    width: 100%;\n}\n.message_section {\n    border: 1px solid #dddddd;\n}\n.chat_area {\n    float: left;\n    height: 300px;\n    overflow-x: hidden;\n    overflow-y: auto;\n    width: 100%;\n}\n.chat_area li {\n    padding: 14px 14px 0;\n}\n.chat_area li .chat-img1 img {\n    height: 40px;\n    width: 40px;\n}\n.chat_area .chat-body1 {\n    margin-left: 50px;\n}\n.chat-body1 p {\n    background: #fbf9fa none repeat scroll 0 0;\n    padding: 10px;\n}\n.chat-body1 p.grey_bg {\n    background: #dedede none repeat scroll 0 0;\n}\n.chat_area .admin_chat .chat-body1 {\n    margin-left: 0;\n    margin-right: 50px;\n}\n.chat_area li:last-child {\n    padding-bottom: 10px;\n}\n.message_write {\n    background: #f5f3f3 none repeat scroll 0 0;\n    float: left;\n    padding: 15px;\n    width: 100%;\n}\n.message_write textarea.form-control {\n    height: 70px;\n    padding: 10px;\n}\n.chat_bottom {\n    float: left;\n    margin-top: 13px;\n    width: 100%;\n}\n.upload_btn {\n    color: #777777;\n}\n.sub_menu_ > li a,\n.sub_menu_ > li {\n    float: left;\n    width: 100%;\n}\n.member_list li:hover {\n    background: #428bca none repeat scroll 0 0;\n    color: #fff;\n    cursor: pointer;\n}\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ 420:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2580,6 +2535,51 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
+exports.push([module.i, "\n.grey_bg[data-v-42f96838]{ background: #dedede;\n}\n.white_bg[data-v-42f96838]{ background: #fbf9fa;\n}\n.chat_time[data-v-42f96838]{ padding: 10px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 425:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n#chat-page-wrapper{\n\t  position: absolute;\n\t  top: 10px;\n\t  bottom: 10px;\n\t  width: 97%;\n\t  height: 100%; \n\t  overflow: hidden;\n}\n/*.row [class*=\"col-\"] {\n     padding: 0; \n}*/\n#custom-search-input {\n    background: #e8e6e7 none repeat scroll 0 0;\n    margin: 0;\n    padding: 10px;\n}\n#custom-search-input .search-query {\n    background: #fff none repeat scroll 0 0 !important;\n    border-radius: 4px;\n    height: 33px;\n    margin-bottom: 0;\n    padding-left: 7px;\n    padding-right: 7px;\n}\n#custom-search-input button {\n    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\n    border: 0 none;\n    border-radius: 3px;\n    color: #666666;\n    left: auto;\n    margin-bottom: 0;\n    margin-top: 7px;\n    padding: 2px 5px;\n    position: absolute;\n    right: 10px;\n    z-index: 9999;\n}\n.search-query:focus + button {\n    z-index: 3;\n}\n.all_conversation button {\n    background: #f5f3f3 none repeat scroll 0 0;\n    border: 1px solid #dddddd;\n    height: 38px;\n    text-align: left;\n    width: 100%;\n}\n.all_conversation i {\n    background: #e9e7e8 none repeat scroll 0 0;\n    border-radius: 100px;\n    color: #636363;\n    font-size: 17px;\n    height: 30px;\n    line-height: 30px;\n    text-align: center;\n    width: 30px;\n}\n.all_conversation .caret {\n    bottom: 0;\n    margin: auto;\n    position: absolute;\n    right: 15px;\n    top: 0;\n}\n.all_conversation .dropdown-menu {\n    background: #f5f3f3 none repeat scroll 0 0;\n    border-radius: 0;\n    margin-top: 0;\n    padding: 0;\n    width: 100%;\n}\n.all_conversation ul li {\n    border-bottom: 1px solid #dddddd;\n    line-height: normal;\n    width: 100%;\n}\n.all_conversation ul li a:hover {\n    background: #dddddd none repeat scroll 0 0;\n    color: #333;\n}\n.all_conversation ul li a {\n    color: #333;\n    line-height: 30px;\n    padding: 3px 20px;\n}\n.member_list .chat-body {\n    margin-left: 47px;\n    margin-top: 0;\n}\n.top_nav {\n    overflow: visible;\n}\n.member_list .contact_sec {\n    margin-top: 3px;\n}\n.member_list li {\n    padding: 6px;\n}\n.member_list ul {\n    border: 1px solid #dddddd;\n}\n.chat-img img {\n    height: 34px;\n    width: 34px;\n}\n.member_list li {\n    border-bottom: 1px solid #dddddd;\n    padding: 6px;\n}\n.member_list li:last-child {\n    border-bottom: none;\n}\n.member_list {\n    height: 380px;\n    overflow-x: hidden;\n    overflow-y: auto;\n}\n.sub_menu_ {\n    background: #e8e6e7 none repeat scroll 0 0;\n    left: 100%;\n    max-width: 233px;\n    position: absolute;\n    width: 100%;\n}\n.sub_menu_ {\n    background: #f5f3f3 none repeat scroll 0 0;\n    border: 1px solid rgba(0, 0, 0, 0.15);\n    display: none;\n    left: 100%;\n    margin-left: 0;\n    max-width: 233px;\n    position: absolute;\n    top: 0;\n    width: 100%;\n}\n.all_conversation ul li:hover .sub_menu_ {\n    display: block;\n}\n.new_message_head button {\n    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;\n    border: medium none;\n}\n.new_message_head {\n    background: #f5f3f3 none repeat scroll 0 0;\n    float: left;\n    font-size: 13px;\n    font-weight: 600;\n    padding: 18px 10px;\n    width: 100%;\n}\n.message_section {\n    border: 1px solid #dddddd;\n}\n.chat_area {\n    float: left;\n    height: 300px;\n    overflow-x: hidden;\n    overflow-y: auto;\n    width: 100%;\n}\n.chat_area li {\n    padding: 14px 14px 0;\n}\n.chat_area li .chat-img1 img {\n    height: 40px;\n    width: 40px;\n}\n.chat_area .chat-body1 {\n    margin-left: 50px;\n}\n.chat-body1 p {\n    background: #fbf9fa none repeat scroll 0 0;\n    padding: 10px;\n}\n.chat-body1 p.grey_bg {\n    background: #dedede none repeat scroll 0 0;\n}\n.chat_area .admin_chat .chat-body1 {\n    margin-left: 0;\n    margin-right: 50px;\n}\n.chat_area li:last-child {\n    padding-bottom: 10px;\n}\n.message_write {\n    background: #f5f3f3 none repeat scroll 0 0;\n    float: left;\n    padding: 15px;\n    width: 100%;\n}\n.message_write textarea.form-control {\n    height: 70px;\n    padding: 10px;\n}\n.chat_bottom {\n    float: left;\n    margin-top: 13px;\n    width: 100%;\n}\n.upload_btn {\n    color: #777777;\n}\n.sub_menu_ > li a,\n.sub_menu_ > li {\n    float: left;\n    width: 100%;\n}\n.member_list li:hover {\n    background: #428bca none repeat scroll 0 0;\n    color: #fff;\n    cursor: pointer;\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 427:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 429:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(undefined);
+// imports
+
+
+// module
 exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
@@ -2587,7 +2587,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 /***/ }),
 
-/***/ 426:
+/***/ 433:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -2602,19 +2602,19 @@ exports.push([module.i, "\n#chat-user-list-wrapper li.active[data-v-ecb32106]{ b
 
 /***/ }),
 
-/***/ 427:
+/***/ 434:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(475)
+  __webpack_require__(482)
 }
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(389),
+  __webpack_require__(396),
   /* template */
-  __webpack_require__(456),
+  __webpack_require__(463),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -2647,19 +2647,19 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 428:
+/***/ 435:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(473)
+  __webpack_require__(480)
 }
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(390),
+  __webpack_require__(397),
   /* template */
-  __webpack_require__(453),
+  __webpack_require__(460),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -2692,19 +2692,19 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 429:
+/***/ 436:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(471)
+  __webpack_require__(478)
 }
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(391),
+  __webpack_require__(398),
   /* template */
-  __webpack_require__(450),
+  __webpack_require__(457),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -2737,19 +2737,19 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 430:
+/***/ 437:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(479)
+  __webpack_require__(486)
 }
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(392),
+  __webpack_require__(399),
   /* template */
-  __webpack_require__(462),
+  __webpack_require__(469),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -2782,19 +2782,19 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 431:
+/***/ 438:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(468)
+  __webpack_require__(475)
 }
-var Component = __webpack_require__(146)(
+var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(393),
+  __webpack_require__(400),
   /* template */
-  __webpack_require__(446),
+  __webpack_require__(453),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -2827,7 +2827,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 444:
+/***/ 451:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -2856,7 +2856,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 446:
+/***/ 453:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -2878,7 +2878,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('img', {
       staticClass: "img-circle",
       attrs: {
-        "src": __webpack_require__(386),
+        "src": __webpack_require__(393),
         "alt": chat.sender.first_name
       }
     })]), _vm._v(" "), _c('div', {
@@ -2911,7 +2911,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 450:
+/***/ 457:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -3023,7 +3023,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 453:
+/***/ 460:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -3097,7 +3097,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 456:
+/***/ 463:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -3164,7 +3164,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 462:
+/***/ 469:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -3190,7 +3190,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('img', {
       staticClass: "img-circle",
       attrs: {
-        "src": __webpack_require__(386),
+        "src": __webpack_require__(393),
         "alt": user.first_name
       }
     })]), _vm._v(" "), _c('div', {
@@ -3222,87 +3222,6 @@ if (false) {
 
 /***/ }),
 
-/***/ 466:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(413);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(148)("45b827b5", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3398d846\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3398d846\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 468:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(415);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(148)("4b794cd2", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-42f96838\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatWidget.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-42f96838\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatWidget.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 471:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(418);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(148)("10354d15", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-603a0bfa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-603a0bfa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
 /***/ 473:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3313,13 +3232,13 @@ var content = __webpack_require__(420);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(148)("2892dd47", content, false);
+var update = __webpack_require__(149)("45b827b5", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69b0b7fe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatHeader.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69b0b7fe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatHeader.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3398d846\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3398d846\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -3340,7 +3259,88 @@ var content = __webpack_require__(422);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(148)("a439be5a", content, false);
+var update = __webpack_require__(149)("4b794cd2", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-42f96838\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatWidget.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-42f96838\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatWidget.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 478:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(425);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(149)("10354d15", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-603a0bfa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-603a0bfa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatPage.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 480:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(427);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(149)("2892dd47", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69b0b7fe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatHeader.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-69b0b7fe\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ChatHeader.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 482:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(429);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(149)("a439be5a", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -3357,17 +3357,17 @@ if(false) {
 
 /***/ }),
 
-/***/ 479:
+/***/ 486:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(426);
+var content = __webpack_require__(433);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(148)("2c40dc31", content, false);
+var update = __webpack_require__(149)("2c40dc31", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
