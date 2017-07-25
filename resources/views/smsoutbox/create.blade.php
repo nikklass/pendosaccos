@@ -8,6 +8,13 @@
 @endsection
 
 
+@section('css_header')
+
+<link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css">
+
+@endsection
+
+
 @section('content')
     
     <div class="container-fluid">
@@ -72,7 +79,9 @@
                                                                     class="form-control" 
                                                                     id="sms_message" 
                                                                     name="sms_message"
+                                                                    v-model="message"
                                                                     rows="7" 
+                                                                    @keyup="onTextKeyPress"
                                                                     required autofocus>
                                                                 </textarea>
 
@@ -102,18 +111,58 @@
                                                           <div class="col-sm-12">
                                                              <div class="col-sm-6">
                                                                 <div class="radio">
-                                                                   <input type="radio" name="gender" id="gender" value="m" checked="">
+                                                                   <input 
+                                                                      type="radio" 
+                                                                      name="sendSmsCheckBox" 
+                                                                      id="sendSmsCheckBox" 
+                                                                      value="now" 
+                                                                      v-model="sendSmsCheck"
+                                                                      @change="sendSmsCheckToggle" 
+                                                                      >
                                                                    <label for="m">Send SMS NOW</label>
                                                                 </div>
                                                              </div>
                                                              <div class="col-sm-6">
                                                                 <div class="radio">
-                                                                   <input type="radio" name="gender" id="gender" value="f">
+                                                                   <input 
+                                                                      type="radio" 
+                                                                      name="sendSmsCheckBox" 
+                                                                      id="sendSmsCheckBox" 
+                                                                      value="schedule"
+                                                                      v-model="sendSmsCheck"
+                                                                      @change="sendSmsCheckToggle"
+                                                                      >
                                                                    <label for="f">Schedule SMS</label>
                                                                 </div>
                                                              </div>
                                                           </div>
+
+                                                          
+                                                            
                                                        </div>
+
+                                                       <transition name="fade" mode="out-in">
+
+                                                         <div class="form-group" v-show="showDateBox">
+                                                            <div class="col-sm-12">
+                                                               <label class="control-label mb-10 text-left">
+                                                                  Please select date and time
+                                                               </label>
+                                                               <div class='input-group date' id='smsdate'>
+                                                                  <input 
+                                                                      type='text' 
+                                                                      class="form-control"  
+                                                                      :value="smsScheduleDateTime"
+                                                                      v-model="smsScheduleDateTime"
+                                                                       />
+                                                                  <span class="input-group-addon">
+                                                                     <span class="fa fa-calendar"></span>
+                                                                  </span>
+                                                               </div>
+                                                            </div>
+                                                         </div>
+
+                                                       </transition>
 
                                                        <hr>
 
@@ -123,7 +172,11 @@
                                                               <button 
                                                                 type="submit" 
                                                                 class="btn btn-primary btn-lg btn-block mr-10"
-                                                                 id="submit-btn">
+                                                                 id="submit-btn"
+                                                                 :disabled="textLength < 1 ? true : false">
+                                                                 <span v-if="addLoading">
+                                                                    <i class='fa fa-spinner fa-spin'></i>
+                                                                 </span> &nbsp;
                                                                  Send SMS
                                                               </button>
                                                             </div>
@@ -159,7 +212,6 @@
                                                           Selected: 
                                                           <span 
                                                               class="text-info" 
-                                                              v-model="usersSelectedCount" 
                                                               v-text="usersSelectedCount">
                                                           </span>
                                                       </span>
@@ -210,7 +262,7 @@
 
                                                       <a 
                                                           @click="deselectAll()"
-                                                          class="btn btn-outline btn-warning pull-right">
+                                                          class="btn btn-outline btn-danger pull-right">
                                                           Deselect All
                                                       </a>
                                                     </div>
@@ -246,6 +298,8 @@
 
 @section('page_scripts')
 
+  <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+
   <script>
     $( document ).ready(function() {
         
@@ -261,24 +315,27 @@
           $remaining.text(remaining);
           $messages.text(messages);
         });
-        
-        var $remaining2 = $('#remaining2'),
-          $messages2 = $('#messages2');
-        //send single sms
-        $('#sms_message2').keyup(function(){
-          var chars = this.value.length,
-            messages2 = Math.ceil(chars / 160),
-            remaining2 = messages2 * 160 - (chars % (messages2 * 160) || messages2 * 160);
-          $remaining2.text(remaining2);
-          $messages2.text(messages2);
-        });
         //END HANDLE SMS MESSAGES
+
+        /* Datetimepicker Init*/
+        $('#smsdate').datetimepicker({
+            useCurrent: false,
+            icons: {
+                          time: "fa fa-clock-o",
+                          date: "fa fa-calendar",
+                          up: "fa fa-arrow-up",
+                          down: "fa fa-arrow-down"
+                      },
+          }).on('dp.show', function() {
+          if($(this).data("DateTimePicker").date() === null)
+            $(this).data("DateTimePicker").date(moment());
+        });
 
     });
 
   </script>
 
-  <script type="text/javascript">
+  <script type="text/javascript">      
 
       var app = new Vue({
         el: "#app",
@@ -286,7 +343,13 @@
         data() {
             return {
                 usersSelected: {!! $users->pluck('id') !!},
-                usersSelectedCount: {!! $users->pluck('id')->count() !!}
+                usersSelectedCount: {!! $users->pluck('id')->count() !!},
+                message: '',
+                sendSmsCheck: 'now',
+                smsScheduleDateTime: '',
+                textLength:'',
+                showDateBox: false,
+                addLoading: false
             }
         },
         
@@ -294,12 +357,61 @@
             
             /*handle  form submit*/
             handleSubmit(){
-                console.log("form submitted")
+                
+                this.addLoading = true;
+
+                if (this.message !== null) {
+          
+                  let postData = {
+                    'message': this.message,
+                    'usersSelected': this.usersSelected,
+                    'sendSmsCheck': this.sendSmsCheck,
+                    'smsScheduleDateTime': this.smsScheduleDateTime
+                  }
+
+                  console.log(postData)
+
+                  //post form data
+                  axios.post(sendMessageUrl, postData)
+                  .then(response => {
+
+                      this.addLoading = false;
+
+                      console.log(postData)
+                      console.log(response)
+                      
+                  })
+                  .catch(error => {
+                      console.log(error)
+                  })
+                  
+                }
+
+
+            },
+
+            onTextKeyPress(){
+                this.textLength = this.message.length
             },
 
             userSelectedToggle(){
                 //update selected items count on checkbox change
                 this.usersSelectedCount = this.usersSelected.length
+            },
+
+            sendSmsCheckToggle() {
+              
+              sendSmsCheck = this.sendSmsCheck
+              if (sendSmsCheck == 'schedule'){
+                  //show date box
+                  this.showDateBox = true
+                  //console.log('show date box')
+              } else {
+                  //show date box
+                  this.showDateBox = false
+                  //console.log('hide date box')
+              }
+              
             },
 
             selectAll: function() {

@@ -13,7 +13,7 @@ class SmsOutbox extends Model
      * The attributes that are mass assignable
      */
     protected $fillable = [
-        'message', 'phone_number', 'user_id', 'user_agent', 'src_ip', 'src_host', 'sms_type_id', 'created_by', 'created_at'
+        'message', 'phone_number', 'user_id', 'user_agent', 'src_ip', 'src_host', 'sms_type_id', 'created_by', 'updated_by'
     ];
 
     /*one to many relationship*/
