@@ -13,7 +13,7 @@ class PermissionTableSeeder extends Seeder
     public function run()
     {
         
-        Permission::truncate();
+        /*Permission::truncate();
         
         $permissions = [
             [
@@ -61,7 +61,7 @@ class PermissionTableSeeder extends Seeder
         foreach($permissions as $key=>$value)
         {
             Permission::create($value);
-        }
+        }*/
 
     }
 }

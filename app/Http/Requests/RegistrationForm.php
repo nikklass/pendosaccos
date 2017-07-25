@@ -38,12 +38,12 @@ class RegistrationForm extends FormRequest
 
     public function persist(){
         
-        $user = User::create(
+        /*$user = User::create(
             $this->only(['first_name', 'last_name', 'email', 'password', 'gender'])
-        );
+        );*/
 
         //send user a notification email
-        Mail::to($user)->send(new Welcome($user));
+        //Mail::to($user)->send(new Welcome($user));
 
     }
 }

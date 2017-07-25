@@ -1,8 +1,9 @@
-<?php namespace App;
+<?php 
 
-use Zizaco\Entrust\EntrustRole;
+namespace App;
 
-class Role extends EntrustRole
+use Laratrust\LaratrustRole;
+
+class Role extends LaratrustRole
 {
-	
 }

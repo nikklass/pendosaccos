@@ -2,53 +2,51 @@
 import 'jquery';
 
 window.$ = window.jQuery = require('jquery');
-window.swal = require('sweetalert');
+//window.swal = require('sweetalert');
 
 require('./bootstrap');
 
-import App from './App.vue';
+//import App from './App.vue';
 
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+//import VueRouter from 'vue-router';
 import axios from 'axios';
-import { routes } from './routes/index.js';
-import store from './store/store';
+//import { routes } from './routes/index.js';
+//import store from './store/store';
 import moment from 'moment';
-//import ajax from './directives/ajax';
-import VeeValidate from 'vee-validate';
-import VueTimeago from 'vue-timeago';
-import { mixin as clickaway } from 'vue-clickaway';
-import _ from 'lodash';
+//import VeeValidate from 'vee-validate';
+//import VueTimeago from 'vue-timeago';
+//import { mixin as clickaway } from 'vue-clickaway';
+//import _ from 'lodash';
 import Form from './core/Form';
 import { HTTP } from './common/http-common';
 
 import { userUrl, getHeader } from './config';
-import { clientId, clientSecret } from './.env';
+import { clientId, clientSecret } from './.env'; 
 
 window.Vue = Vue;
 window.axios = axios; 
 window.Form = Form;
 window.HTTP = HTTP;
-window._ = _;
+//window._ = _;
 
-Vue.use(VueRouter); 
-Vue.use(VeeValidate); 
+//Vue.use(VueRouter); 
+//Vue.use(VeeValidate); 
 
 //timeago
-Vue.use(VueTimeago, {
+/*Vue.use(VueTimeago, {
     name: 'timeago', // component name, `timeago` by default
     locale: 'en-US',
     locales: {
-        // you will need json-loader in webpack 1
         'en-US': require('vue-timeago/locales/en-US.json')
     }
 });
 
 
-Vue.component('app', App); 
+Vue.component('app', App); */
 
 //start create date filters
-Vue.filter('createdDate', (value) => {
+/*Vue.filter('createdDate', (value) => {
     return moment(value).format('h:mm a');
 });
 
@@ -68,12 +66,12 @@ Vue.filter('createdDateWeeks', (value) => {
 //capitalize filter
 Vue.filter('capitalize', (value) => {
     return value.toUpperCase();
-});
+});*/
 //end capitalize filter
 
 
 //init vue router
-const router = new VueRouter({
+/*const router = new VueRouter({
     routes,
     mode: 'history',
     scrollBehavior(to, from, savedPosition){
@@ -85,28 +83,18 @@ const router = new VueRouter({
         }
         return {x: 0, y:0};
     }
-});
+});*/
 
 
 //check for auth guarded pages
-router.beforeEach((to, from, next) => {
-  
-    
-   /* if (to.fullPath !== "/login") {
-        axios.get('/api/profile').then(response => {
-            next();
-        }).catch(error => {
-            router.push('/login');
-        })
-    } else {
-        next();
-    }*/
+/*router.beforeEach((to, from, next) => {
+
 
     //add user auth token to each route that requires authorization
     if (to.meta.requiresAuth){
           const authUser = JSON.parse(window.localStorage.getItem('authUser'));
           if ((authUser !== null) && (authUser.access_token !== null)){
-                console.log('app js main user check');
+                //console.log('app js main user check');
                 //check if token still valid
                 //get user data 
                 axios.get(userUrl, { headers: getHeader() })
@@ -127,13 +115,13 @@ router.beforeEach((to, from, next) => {
    
     next();
 
-});
+});*/
 
 
-new Vue ({
+/*new Vue ({
 
     el: "#app",
     router,
     store
 
-});
+});*/

@@ -26,7 +26,8 @@ export const routes = [
     { path: '/forgot-password', component: ForgotPassword, name: 'forgotPassword' },
     { path: '/messages', component: Messages, name: 'messages', meta: { requiresAuth: true } },
     { path: '/matches', component: MyMatches, name: 'myMatches', meta: { requiresAuth: true } },
-    { path: '/profile/:id', component: ProfileHome, name: 'profileHome', meta: { requiresAuth: true } },
+    { path: '/profile', component: ProfileHome, name: 'profileHome', meta: { requiresAuth: true } },
+    { path: '/profile/:id', component: ProfileHome, name: 'profileHomeId', meta: { requiresAuth: true } },
     { path: '/profile/:id/about', component: ProfileAbout, name: 'profileAbout', meta: { requiresAuth: true } },
     { path: '/profile/:id/photos', component: ProfilePhotos, name: 'profilePhotos', meta: { requiresAuth: true } },
     //{ path: '/profile', component: ProfileHome, name: 'profileHome' , children: [

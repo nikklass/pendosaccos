@@ -15,10 +15,26 @@ class RegistrationController extends Controller
     /*create a new user*/
     public function addUser(RegistrationForm $form){
 
-        $form->persist();
+        //$form->persist();
+        /*$user = User::create(
+            $this->only(['first_name', 'last_name', 'email', 'password', 'gender'])
+        );*/
 
-        //return result as json
-        return response()->json($this->content, 200); 
+        $user = User::create([
+                    'first_name' => request()->first_name,
+                    'last_name' => request()->last_name,
+                    'email' => request()->email,
+                    'password' => bcrypt(request()->password),
+                    'gender' => request()->gender
+                  ]);
+
+        //$user->save();
+
+        $resultData = User::where('id', $user->id)->first();
+
+        //event(new ChatMessage($chat));
+
+        return response(['data' => $resultData], 201); 
         
     }
 

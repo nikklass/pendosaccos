@@ -14,11 +14,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 	
-	Route::get('userList', 'UserController@getUserList');
-	Route::get('user/{id}', 'UserController@getUser');
+	/*Route::get('userList', 'UserController@getUserList');
+	Route::get('user/{id}', 'UserController@getUser');*/
 
 	/*admin create user*/
-	Route::post('admin/user/create', 'RegistrationController@addUser');
+	Route::post('user/create', 'RegistrationController@addUser');
 
 	/* chat urls */
 	Route::post('getUserConversation', 'ChatController@getUserConversationById');
@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function() {
 });
 
 
-Route::post('forgotPassword', 'UserController@forgotPassword');
-Route::post('resetPassword', 'UserController@resetPassword');
+/*Route::post('forgotPassword', 'UserController@forgotPassword');
+Route::post('resetPassword', 'UserController@resetPassword');*/
 
 

@@ -6,9 +6,9 @@ webpackJsonp([10],{
 var disposed = false
 var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(406),
+  __webpack_require__(393),
   /* template */
-  __webpack_require__(459),
+  __webpack_require__(446),
   /* styles */
   null,
   /* scopeId */
@@ -41,7 +41,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 375:
+/***/ 362:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63,15 +63,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 383:
+/***/ 370:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(375),
+  __webpack_require__(362),
   /* template */
-  __webpack_require__(386),
+  __webpack_require__(373),
   /* styles */
   null,
   /* scopeId */
@@ -104,7 +104,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 386:
+/***/ 373:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -132,12 +132,12 @@ if (false) {
 
 /***/ }),
 
-/***/ 402:
+/***/ 389:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AuthHeaderShared_vue__ = __webpack_require__(383);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AuthHeaderShared_vue__ = __webpack_require__(370);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AuthHeaderShared_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__AuthHeaderShared_vue__);
 //
 //
@@ -177,7 +177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 406:
+/***/ 393:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -185,7 +185,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(148);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__config__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__env__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__includes_partials_AuthHeaderForgot_vue__ = __webpack_require__(440);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__includes_partials_AuthHeaderForgot_vue__ = __webpack_require__(427);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__includes_partials_AuthHeaderForgot_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__includes_partials_AuthHeaderForgot_vue__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -317,7 +317,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         loggedIn: function loggedIn() {
             return this.authUserStore.authUser !== null && this.authUserStore.authUser.access_token !== null;
         }
-    }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["b" /* mapState */])({
+    }, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* mapState */])({
         authUserStore: function authUserStore(state) {
             return state.authUser;
         }
@@ -332,7 +332,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var authUser = {};
 
             //post form data
-            this.form.post(__WEBPACK_IMPORTED_MODULE_1__config__["n" /* loginUrl */]).then(function (response) {
+            this.form.post(__WEBPACK_IMPORTED_MODULE_1__config__["d" /* loginUrl */]).then(function (response) {
 
                 _this.addLoading = false;
 
@@ -374,15 +374,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 /***/ }),
 
-/***/ 440:
+/***/ 427:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(147)(
   /* script */
-  __webpack_require__(402),
+  __webpack_require__(389),
   /* template */
-  __webpack_require__(450),
+  __webpack_require__(437),
   /* styles */
   null,
   /* scopeId */
@@ -415,7 +415,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 450:
+/***/ 437:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -447,7 +447,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 459:
+/***/ 446:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

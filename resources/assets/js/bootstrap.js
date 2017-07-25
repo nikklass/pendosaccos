@@ -12,37 +12,36 @@ window.axios = axios;
 
 import '../sass/app.scss';
 
-import './assets/css/mycss/bootstrap.min.css';
-import './assets/css/mycss/bootstrap-colorpicker.min.css';
-import './assets/css/mycss/jasny-bootstrap.min.css';
+import './../css/mycss/bootstrap.min.css';
+import './../css/mycss/bootstrap-colorpicker.min.css';
+import './../css/mycss/jasny-bootstrap.min.css';
 
-import './assets/css/mycss/morris.css';
-import './assets/css/mycss/jquery.dataTables.min.css';
-import './assets/css/icon/themify-icons/themify-icons.css';
-import './assets/css/mycss/animate.css';
-import './assets/css/icon/simple-line-icons/simple-line-icons.css';
-import './assets/css/icon/linea-icons/linea-icon.css';
-import './assets/css/icon/pe-icon-7-stroke/pe-icon-7-stroke.css';
-import './assets/css/icon/Material-Design-Iconic-Font/material-design-iconic-font.min.css';
-import './assets/css/icon/lightgallery/lightgallery.css';
-import './assets/css/mycss/pe-icon-7-styles.css';
-import './assets/css/mycss/filter.css';
-import './assets/css/mycss/owl.theme.default.min.css';
-import './assets/css/mycss/awesome-bootstrap-checkbox.css';
-import './assets/css/mycss/style.css'; 
+import './../css/mycss/jquery.toast.min.css';
+import './../css/mycss/morris.css';
+import './../css/mycss/jquery.dataTables.min.css';
+import './../css/icon/themify-icons/themify-icons.css';
+import './../css/mycss/animate.css';
+import './../css/icon/simple-line-icons/simple-line-icons.css';
+import './../css/icon/linea-icons/linea-icon.css';
+import './../css/icon/pe-icon-7-stroke/pe-icon-7-stroke.css';
+import './../css/icon/Material-Design-Iconic-Font/material-design-iconic-font.min.css';
+import './../css/icon/lightgallery/lightgallery.css';
+import './../css/mycss/pe-icon-7-styles.css';
+import './../css/mycss/filter.css';
+import './../css/mycss/owl.theme.default.min.css';
+import './../css/mycss/awesome-bootstrap-checkbox.css';
+import './../css/mycss/fancy-buttons.css';
+import './../css/mycss/style.css'; 
 
-require('./assets/myjs/bootstrap.min.js');
+/*require('./assets/myjs/bootstrap.min.js');
 require('jquery-toast-plugin');
 require('owl.carousel');
-require('jquery-slimscroll');
+require('jquery-slimscroll');*/
 
-//require('jasny-bootstrap');
+/*require('waypoints/lib/jquery.waypoints.js');
+require('./assets/myjs/jasny-bootstrap.js');*/
 
-require('waypoints/lib/jquery.waypoints.js');
-require('./assets/myjs/jasny-bootstrap.js');
-//require('switchery-npm');
-//require('./assets/myjs/switchery.min.js');
-require('simpleweather');
+/*require('simpleweather');
 require('jquery-sparkline'); 
 require('jquery.counterup');  
 require('gasparesganga-jquery-loading-overlay/src/loadingoverlay.js');
@@ -58,8 +57,8 @@ require('./assets/myjs/morris.min.js');
 
 require('./assets/myjs/simpleweather-data.js');
 require('./assets/myjs/dropdown-bootstrap-extended.js');
-//require('./assets/myjs/dashboard-data.js');
-//require('./assets/myjs/init.js');
+require('./assets/myjs/dashboard-data.js');
+require('./assets/myjs/init.js');*/
 
 
 /**

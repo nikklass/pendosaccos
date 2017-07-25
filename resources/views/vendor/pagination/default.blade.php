@@ -1,10 +1,12 @@
+
+
 @if ($paginator->hasPages())
-    <ul class="pagination">
+    <ul class="pagination pagination-lg mt-0 mb-0 mr-15">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
-            <li class="disabled"><span>&laquo;</span></li>
+            <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
         @else
-            <li><a href="{{ $paginator->previousPageUrl() }}" rel="prev">&laquo;</a></li>
+            <li><a href="{{ $paginator->previousPageUrl() }}" rel="prev"><i class="fa fa-angle-left"></i></a></li>
         @endif
 
         {{-- Pagination Elements --}}
@@ -28,9 +30,9 @@
 
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <li><a href="{{ $paginator->nextPageUrl() }}" rel="next">&raquo;</a></li>
+            <li><a href="{{ $paginator->nextPageUrl() }}" rel="next"><i class="fa fa-angle-right"></i></a></li>
         @else
-            <li class="disabled"><span>&raquo;</span></li>
+            <li class="disabled"><a href="#"><i class="fa fa-angle-right"></i></a></li>
         @endif
     </ul>
 @endif

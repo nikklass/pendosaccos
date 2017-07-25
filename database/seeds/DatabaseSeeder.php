@@ -1,9 +1,6 @@
 <?php
 
-use App\User;
-use App\Sacco;
 use Illuminate\Database\Seeder;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,9 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call(UsersTableSeeder::class);
-        $this->call(SaccosTableSeeder::class);
-        /*$this->call(PermissionTableSeeder::class);
-        */
+        $this->call(GroupsTableSeeder::class);
+        $this->call(CompaniesTableSeeder::class);
+        $this->call(LaratrustSeeder::class);
         
     }
 }

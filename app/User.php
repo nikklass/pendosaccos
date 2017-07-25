@@ -2,18 +2,20 @@
 
 namespace App;
 
+use App\Company;
 use App\Image;
 use App\Sacco;
+use App\SmsOutbox;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laratrust\Traits\LaratrustUserTrait;
 use Laravel\Passport\HasApiTokens;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
-    use EntrustUserTrait;
+    use LaratrustUserTrait; 
     
     //protected $appends = ['profile_image'];
 
@@ -21,7 +23,7 @@ class User extends Authenticatable
      * The attributes that are mass assignable
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'gender', 'created_by', 'updated_by'
+        'first_name', 'last_name', 'email', 'password', 'gender', 'phone_number', 'created_by', 'updated_by'
     ];
 
     /**
@@ -49,9 +51,20 @@ class User extends Authenticatable
     }
 
     /*many to many relationship*/
-    public function saccos()
+    public function groups()
     {
-        return $this->belongsToMany(Sacco::class)->withTimeStamps();
+        return $this->belongsToMany(Group::class)->withTimeStamps();
+    }
+
+    /*many to many relationship*/
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class)->withTimeStamps();
+    }
+
+    public function smsoutbox()
+    {
+        return $this->hasMany(SmsOutbox::class);
     }
 
 

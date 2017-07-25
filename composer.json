@@ -9,9 +9,7 @@
         "laravel/framework": "5.4.*",
         "laravel/passport": "^2.0",
         "laravel/tinker": "~1.0",
-        "pusher/pusher-php-server": "^2.6",
-        "torann/geoip": "^1.0",
-        "zizaco/entrust": "5.2.x-dev"
+        "santigarcor/laratrust": "4.0.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

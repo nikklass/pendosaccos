@@ -1,10 +1,12 @@
-<?php namespace App;
+<?php 
 
-use Zizaco\Entrust\EntrustPermission;
+namespace App;
 
-class Permission extends EntrustPermission
+use Laratrust\LaratrustPermission;
+
+class Permission extends LaratrustPermission
 {
 	protected $fillable = [
-        'name', 'display_name', 'description',
-    ];
+	   'name', 'display_name', 'description',
+	];
 }
