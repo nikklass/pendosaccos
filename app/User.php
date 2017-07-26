@@ -67,6 +67,14 @@ class User extends Authenticatable
         return $this->hasMany(SmsOutbox::class);
     }
 
+    public static function getUser()
+    {
+        $user_id = auth()->user();
+        return static::find($user_id);
+    }
+
+    
+
 
     /*public function getProfileImageAttribute()
     {

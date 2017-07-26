@@ -20,6 +20,7 @@
          </a>
       </li>
 
+      @if (Auth::user()->hasRole('superadministrator'))
       <li>
          <a href="javascript:void(0);" data-toggle="collapse" data-target="#companies_dr">
             <div class="pull-left">
@@ -48,6 +49,65 @@
 
          </ul>
       </li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#perms_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-lock-outline mr-20"></i>
+               <span class="right-nav-text">Permissions </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="perms_dr" class="collapse collapse-level-1">
+            
+            <li>
+               <a href="{{ route('permissions.create') }}">
+                  <i class="zmdi zmdi-accounts-add mr-10"></i>
+                  <span class="right-nav-text">Create Permission</span>
+               </a>
+            </li>
+            <li>
+               <a href="{{ route('permissions.index') }}">
+                  <i class="fa fa-users mr-10"></i>
+                  <span class="right-nav-text">View Permissions</span>
+               </a>
+            </li>
+
+         </ul>
+      </li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#roles_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-lock-outline mr-20"></i>
+               <span class="right-nav-text">Roles </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="roles_dr" class="collapse collapse-level-1">
+            
+            <li>
+               <a href="{{ route('roles.create') }}">
+                  <i class="zmdi zmdi-accounts-add mr-10"></i>
+                  <span class="right-nav-text">Create Role</span>
+               </a>
+            </li>
+            <li>
+               <a href="{{ route('roles.index') }}">
+                  <i class="fa fa-users mr-10"></i>
+                  <span class="right-nav-text">View Roles</span>
+               </a>
+            </li>
+
+         </ul>
+      </li>
+      @endif
 
       <li>
          <a href="javascript:void(0);" data-toggle="collapse" data-target="#groups_dr">
@@ -113,63 +173,7 @@
          </ul>
       </li>
 
-      <li>
-         <a href="javascript:void(0);" data-toggle="collapse" data-target="#perms_dr">
-            <div class="pull-left">
-               <i class="zmdi zmdi-lock-outline mr-20"></i>
-               <span class="right-nav-text">Permissions </span>
-            </div>
-            <div class="pull-right">
-               <i class="zmdi zmdi-caret-down"></i>
-            </div>
-            <div class="clearfix"></div>
-         </a>
-         <ul id="perms_dr" class="collapse collapse-level-1">
-            
-            <li>
-               <a href="{{ route('permissions.create') }}">
-                  <i class="zmdi zmdi-accounts-add mr-10"></i>
-                  <span class="right-nav-text">Create Permission</span>
-               </a>
-            </li>
-            <li>
-               <a href="{{ route('permissions.index') }}">
-                  <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">View Permissions</span>
-               </a>
-            </li>
-
-         </ul>
-      </li>
-
-      <li>
-         <a href="javascript:void(0);" data-toggle="collapse" data-target="#roles_dr">
-            <div class="pull-left">
-               <i class="zmdi zmdi-lock-outline mr-20"></i>
-               <span class="right-nav-text">Roles </span>
-            </div>
-            <div class="pull-right">
-               <i class="zmdi zmdi-caret-down"></i>
-            </div>
-            <div class="clearfix"></div>
-         </a>
-         <ul id="roles_dr" class="collapse collapse-level-1">
-            
-            <li>
-               <a href="{{ route('roles.create') }}">
-                  <i class="zmdi zmdi-accounts-add mr-10"></i>
-                  <span class="right-nav-text">Create Role</span>
-               </a>
-            </li>
-            <li>
-               <a href="{{ route('roles.index') }}">
-                  <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">View Roles</span>
-               </a>
-            </li>
-
-         </ul>
-      </li>
+      
 
       <li><hr class="light-grey-hr mb-10"/></li>
 

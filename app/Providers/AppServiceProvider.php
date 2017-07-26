@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'image' => 'App\Image'
         ]);
+
+        view()->composer('layouts.partials.sidebarLeft', function($view){
+            $view->with('user', \App\User::getUser());
+        });
     }
 
     /**
