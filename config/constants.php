@@ -4,6 +4,8 @@ $api_domain_url = "http://127.0.0.1:8000/";
 $api_version_url = "api/v1/";
 $api_path_url = $api_domain_url . $api_version_url;
 
+$remote_api_url = "http://mschools.co.ke/api/v1/";
+
 return [
     'options' => [
         'option_attachment' => '13',
@@ -25,5 +27,14 @@ return [
         'client_secret' => env('PASSPORT_CLIENT_SECRET'),
         'login_url' => $api_domain_url . 'oauth/token',
         'user_url' => $api_domain_url . 'api/user'
+    ],
+    'bulk_sms' => [
+        'send_sms_url' => $remote_api_url . "send_bulk_sms",
+        'get_sms_data' => $remote_api_url . "get_bulk_sms_data",
+        'get_sms_inbox' => $remote_api_url . "get_sms_inbox",
+        'get_sms_inbox' => $remote_api_url . "get_sms_inbox",
+        'src' => env('BULK_SMS_SRC'),
+        'usr' => env('BULK_SMS_USR'),
+        'pass' => env('BULK_SMS_PASS'),
     ]
 ];

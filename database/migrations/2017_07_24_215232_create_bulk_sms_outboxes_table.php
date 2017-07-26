@@ -49,7 +49,7 @@ class CreateBulkSmsOutboxesTable extends Migration
             $table->integer('group_id')->nullable();
             $table->string('phone_number', 13);
             $table->string('sms_schedule_date')->nullable();
-            $table->string('sms_schedule_status')->nullable();
+            $table->integer('sms_schedule_status')->default(99)->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();

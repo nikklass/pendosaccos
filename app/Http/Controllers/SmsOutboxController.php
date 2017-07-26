@@ -71,6 +71,13 @@ class SmsOutboxController extends Controller
             'sms_message' => 'required'
         ]);
 
+
+        /*$send_sms_link = SEND_BULK_SMS_URL;
+        $fields = "usr=" . $usr . "&pass=" . $pass . "&src=" . $src . "&dest=" . $phone_number . "&msg=" . $message; 
+        $result = $this->executeLink($send_sms_link, $fields, "post");*/
+
+        $send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
+
         $usersSelected = explode(',', $request->usersSelected);
 
         if (count($usersSelected) > 0) {
@@ -82,12 +89,19 @@ class SmsOutboxController extends Controller
                 if ($request->sendSmsCheckBox == 'now') {
             
                     //send sms
-                    /*$client = new GuzzleHttp\Client();
-                    $res = $client->request('GET', 'url_here', [
+                    $client = new GuzzleHttp\Client();
+                    $res = $client->request('POST', $send_bulk_sms_url, [
                         'headers' => [
-                            'api_token' => ['676b788yuhgjhkghfjhuy7yytfygi']
+                            
+                        ],
+                        'body' => [
+                            'usr' => $usr,
+                            'pass' => $pass,
+                            'src' => $src,
+                            'dest' => $user->phone_number,
+                            'msg' => $message
                         ]
-                    ]);*/
+                    ]);
 
                     //create new outbox
                     $smsoutbox = new SmsOutbox();
