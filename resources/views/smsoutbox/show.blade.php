@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Showing Company - {{ $company->name }}
+    Sms Outbox - {{ $smsoutbox->message }}
 
 @endsection
 
@@ -20,20 +20,15 @@
               <div class="panel-wrapper collapse in">
                 <div class="panel-body  pa-0">
                   <div class="profile-box">
-                    <div class="profile-cover-pic">
-                      <div class="fileupload btn btn-default">
-                        <span class="btn-text">edit</span>
-                        <input class="upload" type="file">
-                      </div>
-                      <div class="profile-image-overlay"></div>
-                    </div>
-                    <div class="profile-info text-center">
+
+                    <div class="profile-info ml-30">
                        
                       <h5 class="block mt-10 mb-5 weight-500 capitalize-font">
-                          Company name: <span class="txt-danger">{{ $company->name }}</span>
+                          Phone Number: <span class="txt-danger">{{ $smsoutbox->phone_number }}</span>
                       </h5>
                       <!-- <h6 class="block capitalize-font pb-20">Developer Geek</h6> -->
-                    </div>  
+                    </div> 
+
                     <div class="social-info">
                       <div class="row">
                         
@@ -45,9 +40,22 @@
 
                                     <div class="follo-data">
                                       <div class="user-data">
-                                        <span class="name block capitalize-font">
-                                            <strong>Company Name:</strong> 
-                                            {{ $company->name }}
+                                        <div class="name block capitalize-font mb-20">
+                                            <strong>Message:</strong> 
+                                            
+                                        </div>
+                                        <div>
+                                            {{ $smsoutbox->message }}
+                                        </div>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
+                                            <strong>Status:</strong>  
+                                            <span class="text-success">Sent</span>
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -56,38 +64,8 @@
                                     <div class="follo-data">
                                       <div class="user-data">
                                         <span class="name block">
-                                            <strong>Email:</strong>  
-                                            {{ $company->email }}
-                                        </span>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                    </div>
-
-                                    <div class="follo-data">
-                                      <div class="user-data">
-                                        <span class="name block">
-                                            <strong>Phone:</strong> 
-                                            {{ $company->phone_number }}
-                                        </span>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                    </div>
-
-                                    <div class="follo-data">
-                                      <div class="user-data">
-                                        <span class="name block">
-                                           <strong>Box Number:</strong> 
-                                           {{ $company->box }}
-                                        </span>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                    </div>
-
-                                    <div class="follo-data">
-                                      <div class="user-data">
-                                        <span class="name block">
-                                           <strong>Physical Address:</strong> 
-                                           {{ $company->physical_address }}
+                                            <strong>Sent at:</strong> 
+                                            {{ $smsoutbox->created_at }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -100,13 +78,6 @@
                           </div>
 
                       </div>
-
-                      <a  
-                          href="{{ route('companies.edit', $company->id) }}" 
-                          class="btn btn-success btn-block btn-outline btn-anim mt-30">
-                          <i class="fa fa-pencil"></i>
-                          <span class="btn-text">Edit Company</span>
-                      </a>
 
                     </div>
                   </div>
@@ -121,7 +92,7 @@
                 <div  class="panel-body pb-0 ml-20 mr-20">
                     
                     <p class="mb-20">
-                        <h5>Company Stats</h5>
+                        <h5>Sms Stats</h5>
                     </p>
 
                     <hr>
@@ -131,10 +102,10 @@
                           
                           <ul class="list-icons">
                               <li class="mb-10">
-                                  <strong>Groups: </strong> 42
+                                  <strong>Status: </strong> <span class="text-success">Sent</span>
                               </li>
                               <li class="mb-10">
-                                  <strong>Members: </strong> 265
+                                  <strong>Sent at: </strong> {{ $smsoutbox->created_at }}
                               </li>
                           </ul>
 

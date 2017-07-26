@@ -11,6 +11,12 @@
 @section('css_header')
 
 <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+  .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
+    overflow-x: hidden;}
+</style>
 
 @endsection
 
@@ -26,8 +32,9 @@
              <div class=" ml-auto mr-auto no-float">
                 
 
-                  <!-- <form class="form-horizontal" method="POST" action="{{ route('smsoutbox.store') }}"> -->
-                  <form class="form-horizontal" @submit.prevent="handleSubmit()"> 
+                  <form class="form-horizontal" method="POST" action="{{ route('smsoutboxes.store') }}">
+                  
+                  <!-- <form class="form-horizontal" @submit.prevent="handleSubmit()">  -->
 
                      {{ csrf_field() }}
 
@@ -220,53 +227,113 @@
                                                 <div class="clearfix"></div>
 
                                             </div>
-                                            <div  class="panel-wrapper collapse in">
-                                               <div  class="panel-body">
-                                                  <p>
-                                                      <ul>
-                                                          @foreach ($users as $user)
-                                                          <li>
-                                                             <div class="checkbox">
-                                                                <input 
-                                                                    id="{{ $user->id }}" 
-                                                                    type="checkbox" 
-                                                                    @change="userSelectedToggle" 
-                                                                    :value="{{ $user->id }}"
-                                                                    v-model="usersSelected">
-                                                                <label for="{{ $user->id }}"> 
-                                                                    <strong>
-                                                                        {{ $user->phone_number }}
-                                                                    </strong>
-                                                                    &nbsp; - &nbsp;
-                                                                    <em>
-                                                                    ({{ $user->first_name }} 
-                                                                    &nbsp;
-                                                                    {{ $user->last_name }})
-                                                                    </em>
-                                                                    &nbsp;&nbsp;
-                                                                    
-                                                                </label>
-                                                             </div>
-                                                          </li>
-                                                          @endforeach
-                                                      </ul>
-                                                  </p>
-                                                  <hr>
-                                                  <div class="row">
-                                                    <div class="col-sm-12">
-                                                      <a 
-                                                          @click="selectAll()"
-                                                          class="btn btn-outline btn-primary pull-left">
-                                                          Select All
-                                                      </a>
 
-                                                      <a 
-                                                          @click="deselectAll()"
-                                                          class="btn btn-outline btn-danger pull-right">
-                                                          Deselect All
-                                                      </a>
+                                            <div  class="form-group mt-10">
+                                              
+                                              <div class="col-sm-12">
+                                                
+                                                 <select 
+                                                    class="selectpicker form-control" 
+                                                    name="group_id" 
+                                                    data-style="form-control btn-default btn-outline"
+                                                    @change="getSelectedGroup()"
+                                                    v-model="selectedGroup">
+
+                                                    <li class="mb-10">
+                                                        <option value="">
+                                                          Filter By Group
+                                                        </option>
+                                                    </li>
+                                                    
+                                                    @foreach ($groups as $group)
+                                                    <li class="mb-10">
+                                                        <option value="{{ $group->id }}">
+                                                          {{ $group->name }}
+                                                        </option>
+                                                    </li>
+                                                    @endforeach
+                                                    
+                                                 </select>
+                                              
+                                              </div>
+
+                                           </div>
+
+                                            <!-- <hr> -->
+
+                                            <div  class="panel-wrapper collapse in">
+                                               <div  class="panel-body pt-0">
+                                                  
+
+                                                  <!-- Row -->
+                                                  <div class="row">
+                                                    <div class="col-lg-12 col-sm-12">                                                          
+                                                        <div  class="tab-struct custom-tab-1 mt-0">
+                                                        
+
+                                                            <div class="user_options slimScrollDiv">
+                                                              
+                                                              <p>
+                                                                  <ul>
+                                                                      @foreach ($users as $user)
+                                                                      <li>
+                                                                         <div class="checkbox">
+                                                                            <input 
+                                                                                id="{{ $user->id }}" 
+                                                                                type="checkbox" 
+                                                                                @change="userSelectedToggle" 
+                                                                                :value="{{ $user->id }}"
+                                                                                v-model="usersSelected">
+                                                                            <label for="{{ $user->id }}"> 
+                                                                                <strong>
+                                                                                    {{ $user->phone_number }}
+                                                                                </strong>
+                                                                                &nbsp; - &nbsp;
+                                                                                <em>
+                                                                                ({{ $user->first_name }} 
+                                                                                &nbsp;
+                                                                                {{ $user->last_name }})
+                                                                                </em>
+                                                                                &nbsp;&nbsp;
+                                                                                
+                                                                            </label>
+                                                                         </div>
+                                                                      </li>
+                                                                      @endforeach
+                                                                  </ul>
+                                                              </p>
+                                                              
+
+                                                            </div>
+
+                                                            <hr>
+                                                              <div class="row">
+                                                                <div class="col-sm-12">
+                                                                  <a 
+                                                                      @click="selectAll()"
+                                                                      class="btn btn-outline btn-primary pull-left">
+                                                                      Select All
+                                                                  </a>
+
+                                                                  <a 
+                                                                      @click="deselectAll()"
+                                                                      class="btn btn-outline btn-danger pull-right">
+                                                                      Deselect All
+                                                                  </a>
+                                                                </div>
+                                                              </div>
+  
+                                                          
+                                                        </div>
+
                                                     </div>
+                                                    
                                                   </div>
+                                                  <!-- /Row -->
+
+
+
+                                                  
                                                </div>
                                             </div>
 
@@ -299,6 +366,7 @@
 @section('page_scripts')
 
   <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 
   <script>
     $( document ).ready(function() {
@@ -348,8 +416,11 @@
                 sendSmsCheck: 'now',
                 smsScheduleDateTime: '',
                 textLength:'',
+                enteredContactsNumbers: '',
+                selectedGroup: '',
                 showDateBox: false,
-                addLoading: false
+                addLoading: false,
+                userListLoading: false
             }
         },
         
@@ -372,6 +443,7 @@
                   console.log(postData)
 
                   //post form data
+                  sendMessageUrl = "{{ $send_message_url }}"
                   axios.post(sendMessageUrl, postData)
                   .then(response => {
 
@@ -387,14 +459,52 @@
                   
                 }
 
+            },
+
+            getSelectedGroup(){
+                
+                this.userListLoading = true;
+                selectedGroup = this.selectedGroup
+                get_users_url = "{{ $get_users_url }}"
+                passport_client_id = "{{ $passport_client_id }}"
+                passport_client_secret = "{{ $passport_client_secret }}"
+                passport_login_url = "{{ $passport_login_url }}"
+                passport_user_url = "{{ $passport_user_url }}"
+                
+
+                //if (this.message !== null) {
+          
+                  let postData = {
+                    'group_id': this.selectedGroup
+                  }
+
+                  //post form data
+                  axios.get(get_users_url, postData)
+                  .then(response => {
+
+                      this.userListLoading = false;
+
+                      console.log(postData)
+                      console.log(response)
+                      
+                  })
+                  .catch(error => {
+                      console.log(error)
+                  })
+                  
+                //}
 
             },
 
-            onTextKeyPress(){
+            onTextKeyPress() {
                 this.textLength = this.message.length
             },
 
-            userSelectedToggle(){
+            onEnteredPhoneNumbersPress() {
+                //get users count
+            },
+
+            userSelectedToggle() {
                 //update selected items count on checkbox change
                 this.usersSelectedCount = this.usersSelected.length
             },

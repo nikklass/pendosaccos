@@ -18,6 +18,21 @@
 })
 ->where(['all' => '.*']);*/
 
+
+View::share('passport_client_id', \Config::get('constants.passport.client_id'));
+View::share('passport_client_secret', \Config::get('constants.passport.client_secret'));
+View::share('passport_login_url', \Config::get('constants.passport.login_url'));
+View::share('passport_user_url', \Config::get('constants.passport.user_url'));
+
+
+View::share('get_users_url', \Config::get('constants.routes.get_users_url'));
+View::share('send_message_url', \Config::get('constants.routes.send_message_url'));
+View::share('create_user_url', \Config::get('constants.routes.create_user_url'));
+View::share('create_message_url', \Config::get('constants.routes.create_message_url'));
+
+
+
+
 Route::group(['middleware' => 'role:superadministrator|administrator|editor|author|contributor'], function() {
 
 	Route::get('/', 'HomeController@index')->name('home');
@@ -47,7 +62,10 @@ Route::group(['middleware' => 'role:superadministrator|administrator|editor|auth
 	Route::resource('/companies', 'CompanyController');
 
 	//smsoutbox routes...
-	Route::resource('/smsoutbox', 'SmsOutboxController');
+	Route::resource('/smsoutbox', 'SmsOutboxController', ['except' => 'destroy']);
+
+	//schedule smsoutbox routes...
+	Route::resource('/schedule-smsoutbox', 'ScheduleSmsOutboxController', ['except' => 'destroy']);
 
 });
 

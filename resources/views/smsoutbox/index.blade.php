@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Manage Companies
+    Manage SMS Outbox
 
 @endsection
 
@@ -10,16 +10,16 @@
 @section('content')
     
     <div class="container-fluid">
-        
+
 		<!-- Title -->
        <div class="row heading-bg">
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h5 class="txt-dark">Manage Companies</h5>
+            <h5 class="txt-dark">Manage SMS Outbox</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-	            <a href="{{ route('companies.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
-	            	<span>Create New Company</span> 
+	            <a href="{{ route('smsoutbox.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
+	            	<span>Create New SMS</span> 
 	            	<i class="zmdi zmdi-account-add"></i> 
 	            </a>
           </div>
@@ -64,55 +64,47 @@
                                 <thead>
                                    <tr>
                                       <th>id</th>
-                                      <th>Company Name</th>
+                                      <th>Message</th>
                                       <th>Phone</th>
-                                      <th>Email</th>
+                                      <th>Phone</th>
                                       <th>Created</th>
                                       <th>Actions</th>
                                    </tr>
                                 </thead>
                                 <tbody>
 
-                                   @foreach ($companies as $company)                                   
+                                   @foreach ($smsoutboxes as $smsoutbox)                                   
 	                                   <tr>
 	                                      <td>
 	                                      	<span class="txt-dark weight-500">
-	                                      		{{ $company->id }}
+	                                      		{{ $smsoutbox->id }}
 	                                      	</span>
 	                                      </td>
 	                                      <td>
                                           <span class="txt-dark weight-500">
-                                            {{ $company->name }}
+                                            {{ $smsoutbox->message }}
                                           </span>
                                         </td>
 	                                      <td>
                                            <span class="txt-dark weight-500">
-                                            {{ $company->phone_number }}
+                                            {{ $smsoutbox->phone_number }}
                                            </span>
                                         </td>
                                         <td>
                                            <span class="txt-dark weight-500">
-                                            {{ $company->email }}
+                                            {{ $smsoutbox->phone_number }}
                                            </span>
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-	                                         	{{ $company->created_at->toFormattedDateString() }}
+	                                         	{{ $smsoutbox->created_at->toFormattedDateString() }}
 	                                         </span>
 	                                      </td>
 	                                      <td>
 
-              								             <a href="{{ route('companies.show', $company->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
+              								             <a href="{{ route('smsoutbox.show', $smsoutbox->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
                                             <i class="zmdi zmdi-eye"></i> 
                                            </a>
-
-                                           <a href="{{ route('companies.edit', $company->id) }}" class="btn btn-primary btn-sm btn-icon-anim btn-square">
-                                            <i class="zmdi zmdi-edit"></i> 
-                                           </a>
-
-              								             <a href="{{ route('companies.destroy', $company->id) }}" class="btn btn-danger btn-sm btn-icon-anim btn-square">
-              								             	<i class="zmdi zmdi-delete"></i> 
-              								             </a>
 
 	                                      </td>
 	                                   </tr>
@@ -124,7 +116,7 @@
                        </div>
                        <hr>
                        <div class="text-center">
-							             {{ $companies->links() }}
+							             {{ $smsoutboxes->links() }}
                        </div>   
                     </div>   
                  </div>

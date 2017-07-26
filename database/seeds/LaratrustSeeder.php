@@ -65,6 +65,7 @@ class LaratrustSeeder extends Seeder
                 'phone_number' => $faker->numberBetween(1000,99999),
                 'email' => $key.'@app.com',
                 'gender' => 'f',
+                'api_token' => str_random(60),
                 'password' => bcrypt('123')
             ]);
             $user->attachRole($role);

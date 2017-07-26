@@ -28,7 +28,7 @@ class Company extends Model
         return $this->belongsToMany(User::class)->withTimeStamps();
     }
 
-    public function smsoutbox()
+    public function smsoutboxes()
     {
         return $this->hasMany(SmsOutbox::class);
     }

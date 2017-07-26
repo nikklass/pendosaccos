@@ -1,5 +1,9 @@
 <?php
 
+$api_domain_url = "http://127.0.0.1:8000/";
+$api_version_url = "api/v1/";
+$api_path_url = $api_domain_url . $api_version_url;
+
 return [
     'options' => [
         'option_attachment' => '13',
@@ -9,6 +13,17 @@ return [
         'option_textarea' => '17',
     ],
     'error' => [
-    	'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br> 07XXXXXXXX <br> or 2547XXXXXXXX <br> or +2547XXXXXXXX'
+        'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br> 07XXXXXXXX <br> or 2547XXXXXXXX <br> or +2547XXXXXXXX'
+    ],
+    'routes' => [
+        'get_users_url' => $api_path_url . 'users/index',
+        'create_user_url' => $api_path_url . 'users/create',
+        'create_message_url' => $api_path_url . 'smsoutbox/create'
+    ],
+    'passport' => [
+        'client_id' => env('PASSPORT_CLIENT_ID'),
+        'client_secret' => env('PASSPORT_CLIENT_SECRET'),
+        'login_url' => $api_domain_url . 'oauth/token',
+        'user_url' => $api_domain_url . 'api/user'
     ]
 ];

@@ -52,6 +52,16 @@ function isValidPhoneNumber($phone_number) {
 	
 }
 
+//shorten text title
+function reducelength($str,$maxlength=100) {
+	if (strlen($str) > $maxlength) {
+		$newstr = substr($str,0,$maxlength-3) . "...";	
+	} else {
+		$newstr = $str;
+	}
+	return $newstr;
+}
+
 /// function to generate random number ///////////////
 function generateCode($length = 5, $add_dashes = false, $available_sets = 'ud')
 {

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Group;
 use App\SmsOutbox;
+use App\ScheduleSmsOutbox;
 use App\User;
+use Session;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class SmsOutboxController extends Controller
 {
@@ -27,8 +30,9 @@ class SmsOutboxController extends Controller
      */
     public function index()
     {
-        $smsoutbox = SmsOutbox::orderBy('id', 'desc')->paginate(10);
-        return view('smsoutbox.index')->withGroups($groups);
+        $smsoutboxes = SmsOutbox::orderBy('id', 'desc')->paginate(10);
+        //dd($smsoutboxes);
+        return view('smsoutbox.index', compact('smsoutboxes'));
     }
 
     /**
@@ -41,14 +45,14 @@ class SmsOutboxController extends Controller
         $user = auth()->user();
         //if user is superadmin, show all companies, else show a user's companies
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
+            $groups = Group::all();
             $users = User::all();
         } else {
-            $companies = $user->companies;
-            $users = $companies->groups->users;
+            $groups = Group::all();
+            $users = User::all();
         }
         return view('smsoutbox.create')
-               ->withCompanies($companies)
+               ->withGroups($groups)
                ->withUsers($users);
     }
 
@@ -64,27 +68,62 @@ class SmsOutboxController extends Controller
         $user_id = auth()->user()->id;
 
         $this->validate($request, [
-            'name' => 'required|max:255',
-            'company_id' => 'required'
+            'sms_message' => 'required'
         ]);
 
-        /*if (!isValidPhoneNumber($request->phone_number)){
-            return redirect()->back()->withErrors(['error', INVALID_PHONE_NUMBER_ERROR_MESSAGE]);
-        }*/
+        $usersSelected = explode(',', $request->usersSelected);
 
-        $group = new Group();
-        $group->name = $request->name;
-        $group->company_id = $request->company_id;
-        $group->phone_number = $request->phone_number;
-        $group->email = $request->email;
-        $group->physical_address = $request->physical_address;
-        $group->box = $request->box;
-        $group->created_by = $user_id;
-        $group->updated_by = $user_id;
-        $group->save();
+        if (count($usersSelected) > 0) {
+            foreach ($usersSelected as $x) {
+                
+                //get the recipient user details
+                $user = User::where('id', $x)->first();
 
-        Session::flash('success', 'Successfully created new group - ' . $group->name);
-        return redirect()->route('groups.show', $group->id);
+                if ($request->sendSmsCheckBox == 'now') {
+            
+                    //send sms
+                    /*$client = new GuzzleHttp\Client();
+                    $res = $client->request('GET', 'url_here', [
+                        'headers' => [
+                            'api_token' => ['676b788yuhgjhkghfjhuy7yytfygi']
+                        ]
+                    ]);*/
+
+                    //create new outbox
+                    $smsoutbox = new SmsOutbox();
+                    $smsoutbox->message = $request->sms_message;
+                    $smsoutbox->short_message = reducelength($sms_message,100);
+                    $smsoutbox->user_id = $x;
+                    $smsoutbox->phone_number = $user->phone_number;
+                    $smsoutbox->user_agent = getUserAgent();
+                    $smsoutbox->src_ip = getIp();
+                    $smsoutbox->src_host = getHost();
+                    $smsoutbox->created_by = $user_id;
+                    $smsoutbox->updated_by = $user_id;
+                    $smsoutbox->save();
+
+                } else {
+                    
+                    //create new scheduled sms outbox
+                    $schedulesmsoutbox = new ScheduleSmsOutbox();
+                    $schedulesmsoutbox->message = $request->sms_message;
+                    $schedulesmsoutbox->user_id = $x;
+                    $schedulesmsoutbox->phone_number = $user->phone_number;
+                    $schedulesmsoutbox->user_agent = getUserAgent();
+                    $schedulesmsoutbox->src_ip = getIp();
+                    $schedulesmsoutbox->src_host = getHost();
+                    $schedulesmsoutbox->created_by = $user_id;
+                    $schedulesmsoutbox->updated_by = $user_id;
+                    $schedulesmsoutbox->save();
+
+                }
+
+            }
+
+            Session::flash('success', 'SMS successfully sent/ scheduled');
+            return redirect()->route('smsoutbox.index');
+        
+        }
 
     }
 
@@ -97,12 +136,12 @@ class SmsOutboxController extends Controller
     public function show($id)
     {
         
-        //get admin user for this group
-        $group = Group::where('id', $id)
+        //get details for this smsoutbox
+        $smsoutbox = SmsOutbox::where('id', $id)
                  ->with('company')
                  ->first();
         
-        return view('groups.show')->withGroup($group);
+        return view('smsoutbox.show', compact('smsoutbox'));
 
     }
 
@@ -127,7 +166,7 @@ class SmsOutboxController extends Controller
             $companies = $user->companies;
         }
         
-        return view('groups.edit')->withGroup($group)->withCompanies($companies);
+        return view('smsoutbox.edit')->withGroup($group)->withCompanies($companies);
 
     }
 
@@ -160,7 +199,7 @@ class SmsOutboxController extends Controller
         $group->save();
 
         Session::flash('success', 'Successfully updated group - ' . $group->name);
-        return redirect()->route('groups.show', $group->id);
+        return redirect()->route('smsoutbox.show', $group->id);
 
     }
 

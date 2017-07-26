@@ -23,6 +23,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'phone_number' => $faker->numberBetween(1000,99999),
         'password' => $password ?: $password = bcrypt('123'),
         'remember_token' => str_random(10),
+        'api_token' => str_random(60),
         'created_by' => 5,
         'updated_by' => 5,
     ];

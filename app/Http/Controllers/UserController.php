@@ -97,6 +97,7 @@ class UserController extends Controller
             'email' => request()->email,
             'phone_number' => formatPhoneNumber(request()->phone_number),
             'password' => bcrypt($password),
+            'api_token' => str_random(60),
             'created_by' => request()->user()->id,
             'updated_by' => request()->user()->id
         ];

@@ -23,7 +23,7 @@ class User extends Authenticatable
      * The attributes that are mass assignable
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'gender', 'phone_number', 'created_by', 'updated_by'
+        'first_name', 'last_name', 'email', 'password', 'gender', 'phone_number', 'api_token', 'created_by', 'updated_by'
     ];
 
     /**
@@ -32,7 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'api_token',
     ];
 
     /*relation between token and user*/
@@ -62,7 +62,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Company::class)->withTimeStamps();
     }
 
-    public function smsoutbox()
+    public function smsoutboxes()
     {
         return $this->hasMany(SmsOutbox::class);
     }
