@@ -92,11 +92,8 @@ class SmsOutboxController extends Controller
                 if ($request->sendSmsCheckBox == 'now') {
             
                     //send sms
-                    $client = new GuzzleHttp\Client();
-                    $res = $client->request('POST', $send_bulk_sms_url, [
-                        'headers' => [
-                            
-                        ],
+                    $client = new \GuzzleHttp\Client();
+                    $res = $client->createRequest('POST', $send_bulk_sms_url, [
                         'body' => [
                             'usr' => $usr,
                             'pass' => $pass,
@@ -105,6 +102,9 @@ class SmsOutboxController extends Controller
                             'msg' => $message
                         ]
                     ]);
+
+                    $response = $client->send($response);
+                    dd($response);
 
                     //create new outbox
                     $smsoutbox = new SmsOutbox();

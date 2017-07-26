@@ -32,7 +32,7 @@
              <div class=" ml-auto mr-auto no-float">
                 
 
-                  <form class="form-horizontal" method="POST" action="{{ route('smsoutboxes.store') }}">
+                  <form class="form-horizontal" method="POST" action="{{ route('smsoutbox.store') }}">
                   
                   <!-- <form class="form-horizontal" @submit.prevent="handleSubmit()">  -->
 
