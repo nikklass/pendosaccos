@@ -77,6 +77,9 @@ class SmsOutboxController extends Controller
         $result = $this->executeLink($send_sms_link, $fields, "post");*/
 
         $send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
+        $src = \Config::get('constants.bulk_sms.src');
+        $usr = \Config::get('constants.bulk_sms.usr');
+        $pass = \Config::get('constants.bulk_sms.pass');
 
         $usersSelected = explode(',', $request->usersSelected);
 
