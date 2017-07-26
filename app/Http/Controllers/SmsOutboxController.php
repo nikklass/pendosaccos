@@ -93,13 +93,21 @@ class SmsOutboxController extends Controller
             
                     //send sms
                     $client = new \GuzzleHttp\Client();
-                    $res = $client->createRequest('POST', $send_bulk_sms_url, [
-                        'body' => [
+                    /*$body['usr'] = $usr;
+                    $body['pass'] = $pass;
+                    $body['src'] = $src;
+                    $body['dest'] = $user->phone_number;
+                    $body['msg'] = $request->message;
+
+                    $response = $client->createRequest('POST', $send_bulk_sms_url, ['body'=>$body]);*/
+
+                    $response = $client->request('POST', $send_bulk_sms_url, [
+                        'form_params' => [
                             'usr' => $usr,
                             'pass' => $pass,
                             'src' => $src,
                             'dest' => $user->phone_number,
-                            'msg' => $message
+                            'msg' => $request->message
                         ]
                     ]);
 
