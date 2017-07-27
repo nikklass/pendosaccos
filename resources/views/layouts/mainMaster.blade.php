@@ -8,8 +8,10 @@
         <title>
             @yield('title') :: Pendo Admin - Your financial convenience home
         </title>
+
         <meta name="description" content="Pendo media admin console" />
         <meta name="keywords" content="pendomedia, pendoadmin, kenya" />
+
         <meta name="author" content="Nikk"/>
         
         <meta name="csrf-token" content="{{ csrf_token() }}">
