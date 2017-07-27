@@ -1,6 +1,6 @@
 
   <a href="/">
-     <img class="brand-img mr-10" src="/css/images/logo.png" alt="QuickLoans"/>
+     <img class="brand-img mr-10" src="{{ asset('css/images/logo.png') }}" alt="PendoAdmin"/>
      <span class="brand-text">Pendo Admin</span>
   </a>
    

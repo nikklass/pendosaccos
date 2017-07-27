@@ -8,15 +8,15 @@
         <title>
             @yield('title') :: Pendo Admin - Your financial convenience home
         </title>
-        <meta name="description" content="Quick Loans enables you get your loan quickly." />
-        <meta name="keywords" content="loans, kenya" />
+        <meta name="description" content="Pendo media admin console" />
+        <meta name="keywords" content="pendomedia, pendoadmin, kenya" />
         <meta name="author" content="Nikk"/>
         
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="/favicon.ico">
-        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
