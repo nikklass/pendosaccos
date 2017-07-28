@@ -8,8 +8,9 @@ use App\SmsOutbox;
 use App\ScheduleSmsOutbox;
 use App\User;
 use Session;
+
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request as GuzzleRequest;
 
 class SmsOutboxController extends Controller
 {
@@ -76,7 +77,9 @@ class SmsOutboxController extends Controller
         $fields = "usr=" . $usr . "&pass=" . $pass . "&src=" . $src . "&dest=" . $phone_number . "&msg=" . $message; 
         $result = $this->executeLink($send_sms_link, $fields, "post");*/
 
-        $send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
+        $send_bulk_sms_url = "http://localhost:6000/admin/api/v1/sendBulkSMS";
+
+        //$send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
         $src = \Config::get('constants.bulk_sms.src');
         $usr = \Config::get('constants.bulk_sms.usr');
         $pass = \Config::get('constants.bulk_sms.pass');
@@ -93,25 +96,15 @@ class SmsOutboxController extends Controller
             
                     //send sms
                     $client = new \GuzzleHttp\Client();
-                    /*$body['usr'] = $usr;
+
+                    $body['usr'] = $usr;
                     $body['pass'] = $pass;
                     $body['src'] = $src;
                     $body['dest'] = $user->phone_number;
                     $body['msg'] = $request->message;
 
-                    $response = $client->createRequest('POST', $send_bulk_sms_url, ['body'=>$body]);*/
+                    $response = $client->request('POST', $send_bulk_sms_url, ['form_params' => $body]);
 
-                    $response = $client->createRequest('POST', $send_bulk_sms_url, [
-                        'form_params' => [
-                            'usr' => $usr,
-                            'pass' => $pass,
-                            'src' => $src,
-                            'dest' => $user->phone_number,
-                            'msg' => $request->message
-                        ]
-                    ]);
-
-                    //$response = $client->send($response);
                     dd($response);
 
                     //create new outbox
@@ -127,6 +120,9 @@ class SmsOutboxController extends Controller
                     $smsoutbox->updated_by = $user_id;
                     $smsoutbox->save();
 
+                    Session::flash('success', 'SMS successfully sent');
+                    return redirect()->route('smsoutbox.index');
+
                 } else {
                     
                     //create new scheduled sms outbox
@@ -141,12 +137,12 @@ class SmsOutboxController extends Controller
                     $schedulesmsoutbox->updated_by = $user_id;
                     $schedulesmsoutbox->save();
 
+                    Session::flash('success', 'SMS successfully scheduled');
+                    return redirect()->route('scheduled-smsoutbox.index');
+
                 }
 
-            }
-
-            Session::flash('success', 'SMS successfully sent/ scheduled');
-            return redirect()->route('smsoutbox.index');
+            } 
         
         }
 

@@ -3,14 +3,7 @@
 
 @section('title')
 
-    Edit Group - {{ $group->name }}
-
-@endsection
-
-
-@section('css_header')
-
-<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+    Edit Company - {{ $company->name }}
 
 @endsection
 
@@ -37,7 +30,7 @@
 
                                  <div class="mb-30">
                                     <h3 class="text-center txt-dark mb-10">
-                                        Edit Group - {{ $group->name }}
+                                        Edit Company - {{ $company->name }}
                                     </h3>
                                  </div>   
 
@@ -58,52 +51,15 @@
                                     @endif
 
                                     <form class="form-horizontal" method="POST" 
-                                        action="{{ route('groups.update', $group->id) }}"> 
+                                        action="{{ route('companies.update', $company->id) }}"> 
 
                                        {{ method_field('PUT') }}
                                        {{ csrf_field() }}
 
-                                       <div  class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
-                                              
-                                          <label for="company_name" class="col-sm-3 control-label">
-                                             Company Name
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                            
-                                             <select class="selectpicker form-control" 
-                                                name="company_id" 
-                                                data-style="form-control btn-default btn-outline"
-                                                required>
-
-                                                @foreach ($companies as $company)
-                                                <li class="mb-10">
-                                                    <option value="{{ $company->id }}"
-                                                    @if ($company == old('company_id', $company->id))
-                                                        selected="selected"
-                                                    @endif
-                                                    >
-                                                      {{ $company->name }}
-                                                    </option>
-                                                </li>
-                                                @endforeach
-                                                
-                                             </select>
-
-                                             @if ($errors->has('company_name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('company_name') }}</strong>
-                                                  </span>
-                                             @endif
-                                          
-                                          </div>
-
-                                       </div>
-
                                        <div  class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                               
                                           <label for="name" class="col-sm-3 control-label">
-                                             Group Name
+                                             Company Name
                                              <span class="text-danger"> *</span>
                                           </label>
                                           <div class="col-sm-9">
@@ -112,7 +68,7 @@
                                                 class="form-control" 
                                                 id="name" 
                                                 name="name"
-                                                value="{{ $group->name }}" 
+                                                value="{{ $company->name }}" 
                                                 required 
                                                 autofocus>
 
@@ -138,7 +94,7 @@
                                                 id="phone_number" 
                                                 name="phone_number"
                                                 maxlength="13" 
-                                                value="{{ $group->phone_number }}">
+                                                value="{{ $company->phone_number }}">
 
                                              @if ($errors->has('phone_number'))
                                                   <span class="help-block">
@@ -160,7 +116,7 @@
                                                 class="form-control" 
                                                 id="email" 
                                                 name="email"
-                                                value="{{ $group->email }}">
+                                                value="{{ $company->email }}">
 
                                              @if ($errors->has('email'))
                                                   <span class="help-block">
@@ -183,7 +139,7 @@
                                                 class="form-control" 
                                                 id="physical_address" 
                                                 name="physical_address"
-                                                value="{{ $group->physical_address }}">
+                                                value="{{ $company->physical_address }}">
 
                                              @if ($errors->has('physical_address'))
                                                   <span class="help-block">
@@ -206,7 +162,7 @@
                                                 class="form-control" 
                                                 id="box" 
                                                 name="box"
-                                                value="{{ $group->box }}">
+                                                value="{{ $company->box }}">
 
                                              @if ($errors->has('box'))
                                                   <span class="help-block">
@@ -229,16 +185,6 @@
                                                  Submit
                                               </button>
                                           </div>
-                                       </div>
-
-                                       <br/>
-
-                                       <hr>
-
-                                       <div class="text-center">
-                                          <a href="{{ route('users.createbulk') }}">
-                                          <i class="zmdi zmdi-accounts-add mr-10"></i> Create Bulk Accounts
-                                          </a>
                                        </div>
 
                                     </form>
@@ -269,8 +215,6 @@
 
 @section('page_scripts')
 
-  <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-
   <script type="text/javascript">
 
       var app = new Vue({
@@ -278,15 +222,11 @@
         
         data() {
             return {
-               companiesCount: {!! $companies->count() !!}
+
             }
         },
         
         methods : {
-
-            /*handleSubmit() {
-                $("#submit-btn").LoadingOverlay("show")
-            }*/
             
         }
 

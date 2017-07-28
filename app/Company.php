@@ -19,13 +19,13 @@ class Company extends Model
     /*many to many relationship*/
     public function groups()
     {
-        return $this->hasMany(Group::class)->withTimeStamps();
+        return $this->hasMany(Group::class);
     }
 
     /*many to many relationship*/
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimeStamps();
+        return $this->hasMany(User::class);
     }
 
     public function smsoutboxes()

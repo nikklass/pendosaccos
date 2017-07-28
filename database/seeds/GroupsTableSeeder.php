@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Seeder;
-
 use App\Group;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class GroupsTableSeeder extends Seeder
 {
@@ -13,9 +13,19 @@ class GroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        //Sacco::truncate();
+        $this->command->info('Truncating companies table');
+        $this->truncateGroupTables();
         
-        factory(App\Group::class, 20)->create();
+        factory(App\Group::class, 100)->create();
 
     }
+
+    public function truncateGroupTables()
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::table('groups')->truncate();
+        \App\Group::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+    }
+
 }

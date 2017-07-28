@@ -204,6 +204,9 @@
                      <a href="{{ route('smsoutbox.create') }}">Send SMS</a>
                   </li>
                   <li>
+                     <a href="{{ route('scheduled-smsoutbox.index') }}">Scheduled SMS</a>
+                  </li>
+                  <li>
                      <a href="{{ route('smsoutbox.index') }}">My Outbox</a>
                   </li>
                   <!-- <li>

@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Edit {{ $user->first_name }}
+    Edit User - {{ $user->first_name }}
 
 @endsection
 
@@ -14,7 +14,7 @@
       <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6">
-            <h5 class="txt-dark">Edit User Account - {{ $user->first_name }} {{ $user->last_name }}</h5>
+            <h5 class="txt-dark">Edit User - {{ $user->first_name }} {{ $user->last_name }}</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6">
@@ -70,7 +70,38 @@
                                                           {{ session('message') }}
                                                       </div>
                                                     @endif
-                                                    
+
+                                                    @if (session('error'))
+                                                      <div class="alert alert-danger text-center">
+                                                          {{ session('error') }}
+                                                      </div>
+                                                    @endif
+                                                      
+                                                      <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
+                                              
+                                                        <label for="account_number" class="col-sm-3 control-label">
+                                                           Account Number
+                                                           <span class="text-danger"> *</span>
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                           <div class="input-group">
+                                                              <input 
+                                                                  type="text" 
+                                                                  class="form-control" 
+                                                                  id="account_number" 
+                                                                  name="account_number"
+                                                                  value="{{ $user->account_number }}" 
+                                                                  required autofocus>
+                                                              <div class="input-group-addon"><i class="icon-plus"></i></div>
+                                                           </div>
+                                                           @if ($errors->has('account_number'))
+                                                                <span class="help-block">
+                                                                    <strong>{{ $errors->first('account_number') }}</strong>
+                                                                </span>
+                                                           @endif
+                                                        </div>
+
+                                                     </div>
 
                                                        <div  class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                                                               
@@ -85,7 +116,7 @@
                                                                     class="form-control" 
                                                                     id="first_name" 
                                                                     name="first_name"
-                                                                    value="{{ $user->first_name }}" required autofocus>
+                                                                    value="{{ $user->first_name }}" required>
                                                                 <div class="input-group-addon"><i class="icon-user"></i></div>
                                                              </div>
                                                              @if ($errors->has('first_name'))
@@ -135,7 +166,7 @@
                                                                     class="form-control" 
                                                                     id="email" 
                                                                     name="email"
-                                                                    value="{{ $user->email }}" required>
+                                                                    value="{{ $user->email }}" >
                                                                 <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
                                                              </div>
                                                              @if ($errors->has('email'))
@@ -251,6 +282,9 @@
 
                                     </div>
 
+
+                                    @if (Auth::user()->hasRole('superadministrator'))
+
                                     <div  class="col-sm-12 col-md-6">
                                                   
                                            <input type="hidden" name="rolesSelected" :value="rolesSelected">
@@ -261,13 +295,68 @@
 
                                                  <div class="pull-left">
                                                     <h5 class="panel-title txt-dark">
-                                                      <strong>Roles</strong>
+                                                      <strong>User Roles</strong>
                                                     </h5>
                                                  </div>
                                                  <div class="clearfix"></div>
                                               </div>
                                               <div  class="panel-wrapper collapse in">
                                                  <div  class="panel-body">
+                                                    
+                                                    <div  
+                                                        class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
+                                                        v-show="{{ (Auth::user()->hasRole('superadministrator')) }}">
+                                                            
+                                                        <label for="company_id" class="col-sm-3 control-label">
+                                                           Company
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                          
+                                                           <select class="selectpicker form-control" 
+                                                              name="company_id" 
+                                                              data-style="form-control btn-default btn-outline"
+                                                              >
+
+                                                              <li class="mb-10">
+                                                                  <option value="">
+                                                                    Select
+                                                                  </option>
+                                                              </li>
+
+                                                              @foreach ($companies as $company)
+                                                              <li class="mb-10">
+                                                                  <option value="{{ $company->id }}"
+                          @if ($user->company) {
+                              {{ $company_field = $user->company->id }}
+                          }
+                          @else
+                              {{ $company_field = '' }}
+                          @endif
+
+                          @if ($company->id == old('company_id', $company_field))
+                              selected="selected"
+                          @endif
+                                                                  >
+                                                                    {{ $company->name }}
+                                                                  </option>
+                                                              </li>
+                                                              @endforeach
+
+                                                              
+                                                           </select>
+
+                                                           @if ($errors->has('company_name'))
+                                                                <span class="help-block">
+                                                                    <strong>{{ $errors->first('company_name') }}</strong>
+                                                                </span>
+                                                           @endif
+                                                        
+                                                        </div>
+
+                                                     </div>
+
+                                                     <hr>
+
                                                     <p>
                                                         <ul>
                                                             @foreach ($roles as $role)
@@ -290,6 +379,7 @@
                                                             @endforeach
                                                         </ul>
                                                     </p>
+                                                    
                                                  </div>
                                               </div>
 
@@ -297,12 +387,66 @@
 
                                     </div>
 
+                                    @endif
+
+
+                                    <div  class="col-sm-12 col-md-6">
+                                                  
+                                           <input type="hidden" name="rolesSelected" :value="rolesSelected">
+
+                                           <div class="panel panel-default border-panel card-view">
+                                              
+                                              <div class="panel-heading">
+
+                                                 <div class="pull-left">
+                                                    <h5 class="panel-title txt-dark">
+                                                      <strong>User Groups</strong>
+                                                    </h5>
+                                                 </div>
+                                                 <div class="clearfix"></div>
+                                              </div>
+                                              <div  class="panel-wrapper collapse in">
+                                                 <div  class="panel-body">
+                                                    
+                                                    <input type="hidden" name="groupsSelected" :value="groupsSelected">
+
+                                                    <p>
+                                                        <ul>
+                                                            @foreach ($groups as $group)
+                                                            <li>
+                                                               <div class="checkbox">
+                                                                  <input 
+                                                                      id="{{ $group->id }}" 
+                                                                      type="checkbox"
+                                                                      :value="{{ $group->id }}"
+                                                                      v-model="groupsSelected">
+                                                                  <label for="{{ $group->id }}"> 
+                                                                      {{ $group->name }} 
+                                                                      &nbsp;&nbsp;
+                                                                      <em class="ml-15"> 
+                                                                          ({{ $group->description }})
+                                                                      </em>
+                                                                  </label>
+                                                               </div>
+                                                            </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </p>
+
+                                                 </div>
+                                              </div>
+
+                                           </div>
+
+                                    </div>                                    
+
+
                                     <div class="form-group">
                                         <div class="row">
                                           <div class="col-sm-12">
                                             <button 
                                               type="submit" 
-                                              class="btn btn-primary btn-lg btn-block mr-10"
+                                              class="btn btn-primary btn-lg btn-block"
                                                id="submit-btn">
                                                Edit User
                                             </button>
@@ -344,7 +488,8 @@
         data() {
             return {
               password_option: 'keep',
-              rolesSelected: {!!$user->roles->pluck('id')!!}
+              rolesSelected: {!!$user->roles->pluck('id')!!},
+              groupsSelected: {!!$user->groups->pluck('id')!!}
             }
         },
         

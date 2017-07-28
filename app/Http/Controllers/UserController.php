@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
@@ -41,7 +43,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->paginate(10);
+        $users = User::orderBy('id', 'desc')
+                ->with('roles')
+                ->with('company')
+                ->paginate(10);
         return view('users.index')->withUsers($users);
     }
 
@@ -54,7 +59,18 @@ class UserController extends Controller
     /*show user create form*/
     public function create()
     {
-        return view('users.create');
+        $user = auth()->user();
+        //if user is superadmin, show all companies, else show a user's companies
+        if ($user->hasRole('superadministrator')){
+            $companies = Company::all();
+        } else {
+            $companies = $user->company;
+        }
+        if (!count($companies)) {
+            $companies = [];
+        }
+        //dd($companies);
+        return view('users.create')->withCompanies($companies);
     }
 
     /*create bulk accounts*/
@@ -73,13 +89,17 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
+        dd($request);
+
         $this->validate(request(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:users',
-            'phone_number' => 'required|unique:users',
-            'gender' => 'required'
+            'account_number' => 'required',
+            'email' => 'email|unique:users',
+            'phone_number' => 'required|unique:users'
         ]);
+
+
 
         if (!isValidPhoneNumber($request->phone_number)){
             $message = \Config::get('constants.error.invalid_phone_number');
@@ -95,6 +115,8 @@ class UserController extends Controller
             'first_name' => request()->first_name,
             'last_name' => request()->last_name,
             'email' => request()->email,
+            'company_id' => request()->company_id,
+            'account_number' => request()->account_number,
             'phone_number' => formatPhoneNumber(request()->phone_number),
             'password' => bcrypt($password),
             'api_token' => str_random(60),
@@ -140,9 +162,42 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id', $id)->with('roles')->first();
+
+        $user = User::where('id', $id)
+            ->with('roles')
+            ->with('groups')
+            ->with('company')
+            ->first();
+        //if user is superadmin, show all companies, else show a user's companies
+        if (auth()->user()->hasRole('superadministrator')){
+            $companies = Company::all();
+        } else {
+            $companies = $user->company;
+        }
+        if (count($companies) < 1) {
+            $companies = [];
+        }
+        //dd($user, $companies);
+        
+        $groups = [];
+        if ($user->company) {
+            //get groups
+            $groups = $user->company->groups;
+        }
+        
+        if (count($groups) < 1) {
+            $groups = [];
+        }
+
+        //get all roles
         $roles = Role::all();
-        return view("users.edit")->withUser($user)->withRoles($roles);
+
+        return view("users.edit")
+                ->withUser($user)
+                ->withRoles($roles)
+                ->withGroups($groups)
+                ->withCompanies($companies);
+
     }
 
     /**
@@ -157,17 +212,21 @@ class UserController extends Controller
         $this->validate(request(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'phone_number' => 'required',
-            'gender' => 'required'
+            'email' => 'email|unique:users,email,'.$id,
+            'account_number' => 'required',
+            'phone_number' => 'required'
         ]);
+
+        //dd($request);
 
         $user = User::findOrFail($id);
 
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
+        $user->company_id = $request->company_id;
         $user->phone_number = $request->phone_number;
+        $user->account_number = $request->account_number;
         $user->gender = $request->gender;
 
         if ($request->password_option == 'auto'){
@@ -180,7 +239,15 @@ class UserController extends Controller
         }
 
         if ($user->save()) {
-            $user->syncRoles(explode(',', $request->rolesSelected));
+            if ($request->rolesSelected) {
+                //sync roles
+                $user->syncRoles(explode(',', $request->rolesSelected));
+            }
+            if ($request->groupsSelected) {
+                //sync groups
+                $groups = explode(',', $request->groupsSelected);
+                $user->groups()->sync($groups);
+            }
             return redirect()->route('users.show', $id);
         } else {
             Session::flash('error', 'There ws an error saving the update');
@@ -196,6 +263,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        
+        return redirect('users.index');
     }
+
+    private function syncGroups($groups)
+    {
+        foreach ($groups as $group) {
+            $this->groups()->sync($group);
+        }
+    }
+
 }

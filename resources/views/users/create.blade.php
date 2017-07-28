@@ -6,6 +6,12 @@
 
 @endsection
 
+@section('css_header')
+
+<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+
+@endsection
+
 
 @section('content')
     
@@ -44,6 +50,31 @@
                                     <form class="form-horizontal" method="POST" action="{{ route('users.store') }}"> 
 
                                        {{ csrf_field() }}
+
+                                       <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
+                                              
+                                          <label for="account_number" class="col-sm-3 control-label">
+                                             Account Number
+                                             <span class="text-danger"> *</span>
+                                          </label>
+                                          <div class="col-sm-9">
+                                             <div class="input-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="account_number" 
+                                                    name="account_number"
+                                                    value="{{ old('account_number') }}" required autofocus>
+                                                <div class="input-group-addon"><i class="icon-plus"></i></div>
+                                             </div>
+                                             @if ($errors->has('account_number'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('account_number') }}</strong>
+                                                  </span>
+                                             @endif
+                                          </div>
+
+                                       </div>
 
                                        <div  class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                                               
@@ -116,6 +147,43 @@
                                                       <strong>{{ $errors->first('email') }}</strong>
                                                   </span>
                                              @endif
+                                          </div>
+
+                                       </div>
+
+                                       
+                                       <div  
+                                          class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
+                                          v-show="{{ (Auth::user()->hasRole('superadministrator')) }}">
+                                              
+                                          <label for="company_id" class="col-sm-3 control-label">
+                                             Company Name
+                                             <span class="text-danger"> *</span>
+                                          </label>
+                                          <div class="col-sm-9">
+                                            
+                                             <select class="selectpicker form-control" 
+                                                name="company_id" 
+                                                data-style="form-control btn-default btn-outline"
+                                                required>
+                                           
+                                                @foreach ($companies as $company)
+                                                <li class="mb-10">
+                                                    <option value="{{ $company->id }}">
+                                                      {{ $company->name }}
+                                                    </option>
+                                                </li>
+                                                @endforeach
+
+                                                
+                                             </select>
+
+                                             @if ($errors->has('company_name'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                  </span>
+                                             @endif
+                                          
                                           </div>
 
                                        </div>
@@ -220,6 +288,8 @@
 
 @section('page_scripts')
 
+  <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+
   <script type="text/javascript">
 
       var app = new Vue({
@@ -233,9 +303,9 @@
         
         methods : {
 
-            handleSubmit() {
+            /*handleSubmit() {
                 $("#submit-btn").LoadingOverlay("show")
-            }
+            }*/
             
         }
 
@@ -243,3 +313,4 @@
   </script>
   
 @endsection
+

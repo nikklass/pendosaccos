@@ -11,18 +11,12 @@ return [
             'users' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
-        'editor' => [
+        'manager' => [
             'profile' => 'r,u'
         ],
-        'author' => [
+        'supervisor' => [
             'profile' => 'r,u'
-        ],
-        'contributor' => [
-            'profile' => 'r,u'
-        ],
-        'subscriber' => [
-            'profile' => 'r,u'
-        ],
+        ]
     ],
     'permission_structure' => [
         /*'cru_user' => [

@@ -65,7 +65,7 @@ Route::group(['middleware' => 'role:superadministrator|administrator|editor|auth
 	Route::resource('/smsoutbox', 'SmsOutboxController', ['except' => 'destroy']);
 
 	//schedule smsoutbox routes...
-	Route::resource('/schedule-smsoutbox', 'ScheduleSmsOutboxController', ['except' => 'destroy']);
+	Route::resource('/scheduled-smsoutbox', 'ScheduleSmsOutboxController');
 
 });
 
