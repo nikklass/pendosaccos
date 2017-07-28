@@ -84,6 +84,7 @@ class UserImportController extends Controller
             if (!empty($data) && $data->count()) {
                 
                 $errors = [];
+                
 
                 //check for errors in submitted data
                 foreach ($data as $key => $value) {

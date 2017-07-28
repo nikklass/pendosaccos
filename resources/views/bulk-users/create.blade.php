@@ -67,7 +67,7 @@
                                           <label for="company_id" class="col-sm-3 control-label">
                                              Company Name
                                              <span class="text-danger"> *</span>
-                                          </label>
+                                          </label> 
                                           <div class="col-sm-9">
                                             
                                              <select class="selectpicker form-control" 

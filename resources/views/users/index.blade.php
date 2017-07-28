@@ -25,7 +25,7 @@
           </div>
           <!-- /Breadcrumb -->
        </div>
-       <!-- /Title -->
+       <!-- /Title --> 
       
       @if (session('success'))
         <div class="row">
