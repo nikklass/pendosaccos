@@ -26,7 +26,7 @@ class CreateBulkSmsOutboxesTable extends Migration
             $table->string('src_ip');
             $table->string('src_host');
             $table->integer('user_id')->unsigned();
-            $table->integer('status_id')->unsigned()->default(1);
+            $table->integer('status_id')->unsigned()->default(8);
             $table->integer('sms_type_id')->unsigned()->default(6);
             $table->integer('schedule_sms_outbox_id')->unsigned()->nullable();
             $table->integer('company_id')->unsigned()->nullable();

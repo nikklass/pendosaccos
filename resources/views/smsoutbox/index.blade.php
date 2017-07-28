@@ -92,7 +92,7 @@
                                         </td>
                                         <td>
                                            <span class="txt-dark weight-500">
-                                            {{ $smsoutbox->status }}
+                                            {{ $smsoutbox->status->name }}
                                            </span>
                                         </td>
 	                                      <td>
