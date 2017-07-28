@@ -143,23 +143,23 @@
                       <hr class="light-grey-hr ma-0"/>
                       <div class="product-carousel owl-carousel owl-theme text-center">
                          <a href="#">
-                            <img src="/css/images/chair.jpg" alt="chair">
+                            <img src="/public/css/images/chair.jpg" alt="chair">
                             <span>Circle chair</span>
                          </a>
                          <a href="#">
-                            <img src="/css/images/chair2.jpg" alt="chair">
+                            <img src="/public/css/images/chair2.jpg" alt="chair">
                             <span>square chair</span>
                          </a>
                          <a href="#">
-                            <img src="/css/images/chair3.jpg" alt="chair">
+                            <img src="/public/css/images/chair3.jpg" alt="chair">
                             <span>semi circle chair</span>
                          </a>
                          <a href="#">
-                            <img src="/css/images/chair4.jpg" alt="chair">
+                            <img src="/public/css/images/chair4.jpg" alt="chair">
                             <span>wooden chair</span>
                          </a>
                          <a href="#">
-                            <img src="/css/images/chair2.jpg" alt="chair">
+                            <img src="/public/css/images/chair2.jpg" alt="chair">
                             <span>square chair</span>
                          </a>                       
                       </div>
@@ -227,7 +227,7 @@
                    <div class="sl-item">
                       <a href="javascript:void(0)">
                          <div class="sl-avatar">
-                            <img class="img-responsive" src="/css/images/avatar.jpg" alt="avatar"/>
+                            <img class="img-responsive" src="/public/css/images/avatar.jpg" alt="avatar"/>
                          </div>
                          <div class="sl-content">
                             <span class="inline-block capitalize-font  pull-left truncate head-notifications">Sandy Doe</span>
