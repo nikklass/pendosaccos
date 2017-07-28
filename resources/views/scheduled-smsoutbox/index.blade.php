@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Manage SMS Outbox
+    Manage Scheduled SMS
 
 @endsection
 
@@ -14,15 +14,15 @@
 		<!-- Title -->
        <div class="row heading-bg">
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h5 class="txt-dark">Manage SMS Outbox</h5>
+            <h5 class="txt-dark">Manage Scheduled SMS</h5>
           </div>
           <!-- Breadcrumb -->
-          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <!-- <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
 	            <a href="{{ route('smsoutbox.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
 	            	<span>Create New SMS</span> 
 	            	<i class="zmdi zmdi-account-add"></i> 
 	            </a>
-          </div>
+          </div> -->
           <!-- /Breadcrumb -->
        </div>
        <!-- /Title -->
@@ -73,36 +73,36 @@
                                 </thead>
                                 <tbody>
 
-                                   @foreach ($smsoutboxes as $smsoutbox)                                   
+                                   @foreach ($scheduled_smsoutboxes as $scheduled_smsoutbox)                                   
 	                                   <tr>
 	                                      <td>
 	                                      	<span class="txt-dark weight-500">
-	                                      		{{ $smsoutbox->id }}
+	                                      		{{ $scheduled_smsoutbox->id }}
 	                                      	</span>
 	                                      </td>
 	                                      <td>
                                           <span class="txt-dark weight-500">
-                                            {{ $smsoutbox->message }}
+                                            {{ $scheduled_smsoutbox->message }}
                                           </span>
                                         </td>
 	                                      <td>
                                            <span class="txt-dark weight-500">
-                                            {{ $smsoutbox->phone_number }}
+                                            {{ $scheduled_smsoutbox->phone_number }}
                                            </span>
                                         </td>
                                         <td>
                                            <span class="txt-dark weight-500">
-                                            {{ $smsoutbox->status }}
+                                            {{ $scheduled_smsoutbox->phone_number }}
                                            </span>
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-	                                         	{{ $smsoutbox->created_at->toFormattedDateString() }}
+	                                         	{{ $scheduled_smsoutbox->created_at->toFormattedDateString() }}
 	                                         </span>
 	                                      </td>
 	                                      <td>
 
-              								             <a href="{{ route('smsoutbox.show', $smsoutbox->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
+              								             <a href="{{ route('scheduled-smsoutbox.show', $scheduled_smsoutbox->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
                                             <i class="zmdi zmdi-eye"></i> 
                                            </a>
 
@@ -116,7 +116,7 @@
                        </div>
                        <hr>
                        <div class="text-center">
-							             {{ $smsoutboxes->links() }}
+							             {{ $scheduled_smsoutboxes->links() }}
                        </div>   
                     </div>   
                  </div>

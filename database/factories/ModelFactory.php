@@ -23,6 +23,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'phone_number' => $faker->numberBetween(1000,99999),
         'password' => $password ?: $password = bcrypt('123'),
         'remember_token' => str_random(10),
+        'account_number' => $faker->numberBetween(1000,99999),
         'api_token' => str_random(60),
         'created_by' => 5,
         'updated_by' => 5,
@@ -31,11 +32,11 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Group::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->company,
         'description' => $faker->paragraph,
         'physical_address' => $faker->address,
         'email' => $faker->unique()->safeEmail,
-        'company_id' => $faker->numberBetween(1,10),
+        'company_id' => $faker->numberBetween(1,50),
         'box' => $faker->numberBetween(250, 5000),
         'phone_number' => $faker->numberBetween(1000,99999),
         'latitude' => $faker->latitude($min = -90, $max = 90),
@@ -45,14 +46,16 @@ $factory->define(App\Group::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Company::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->company,
         'description' => $faker->paragraph,
         'physical_address' => $faker->address,
         'email' => $faker->unique()->safeEmail,
         'box' => $faker->numberBetween(250, 5000),
         'phone_number' => $faker->numberBetween(1000,99999),
         'latitude' => $faker->latitude($min = -90, $max = 90),
-        'longitude' => $faker->longitude($min = -180, $max = 180) 
+        'longitude' => $faker->longitude($min = -180, $max = 180),
+        'created_by' => '1', 
+        'updated_by' => '1'
     ];
 });
 

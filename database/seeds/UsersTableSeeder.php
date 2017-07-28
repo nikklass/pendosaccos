@@ -4,6 +4,7 @@ use App\User;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,9 +15,19 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //User::truncate();
+        $this->command->info('Truncating User table');
+        $this->truncateUserTables();
 
         factory(App\User::class, 50)->create();
 
     }
+
+    public function truncateUserTables()
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::table('users')->truncate();
+        \App\User::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+    }
+
 }

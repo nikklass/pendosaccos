@@ -23,7 +23,7 @@ class User extends Authenticatable
      * The attributes that are mass assignable
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'gender', 'phone_number', 'api_token', 'created_by', 'updated_by'
+        'first_name', 'last_name', 'email', 'password', 'gender', 'company_id', 'phone_number', 'api_token', 'account_number', 'created_by', 'updated_by'
     ];
 
     /**
@@ -53,13 +53,13 @@ class User extends Authenticatable
     /*many to many relationship*/
     public function groups()
     {
-        return $this->belongsToMany(Group::class)->withTimeStamps();
+        return $this->belongsToMany(Group::class);
     }
 
     /*many to many relationship*/
-    public function companies()
+    public function company()
     {
-        return $this->belongsToMany(Company::class)->withTimeStamps();
+        return $this->belongsTo(Company::class);
     }
 
     public function smsoutboxes()

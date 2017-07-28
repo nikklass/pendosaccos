@@ -63,12 +63,18 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th>id</th>
+                                      <th>Acct. No.</th>
                                       <th>Full Names</th>
+                                      <th>Role</th>
+                                      
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                      <th>Company</th>
+                                      @endif
+                                      
                                       <th>Phone</th>
                                       <th>Email</th>
                                       <th>Created</th>
-                                      <th>Actions</th>
+                                      <th width="150">Actions</th>
                                    </tr>
                                 </thead>
                                 <tbody>
@@ -77,14 +83,32 @@
 	                                   <tr>
 	                                      <td>
 	                                      	<span class="txt-dark weight-500">
-	                                      		{{ $user->id }}
+	                                      		{{ $user->account_number }}
 	                                      	</span>
 	                                      </td>
 	                                      <td>
-	                                      	<span class="txt-dark weight-500">
-	                                      		{{ $user->first_name }} &nbsp; {{ $user->last_name }}
-	                                      	</span>
-	                                      </td>
+                                          <span class="txt-dark weight-500">
+                                            {{ $user->first_name }} &nbsp; {{ $user->last_name }}
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <span class="txt-dark weight-500">
+                                              @foreach ($user->roles as $role) 
+                                                <span>{{ $role->name }}</span>
+                                              @endforeach
+                                          </span>
+                                        </td>
+                                        
+                                        @if (Auth::user()->hasRole('superadministrator'))
+                                        <td>
+                                          @if ($user->company)
+                                          <span class="txt-dark weight-500">
+                                              {{ $user->company->name }}
+                                          </span>
+                                          @endif
+                                        </td>
+                                        @endif
+
 	                                      <td>
                                            <span class="txt-dark weight-500">
                                             {{ $user->phone_number }}

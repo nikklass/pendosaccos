@@ -63,8 +63,9 @@ class LaratrustSeeder extends Seeder
                 'first_name' => ucwords(str_replace("_", " ", $key)),
                 'last_name' => ucwords(str_replace("_", " ", $key)),
                 'phone_number' => $faker->numberBetween(1000,99999),
+                'account_number' => $faker->numberBetween(1000,99999),
                 'email' => $key.'@app.com',
-                'gender' => 'f',
+                'gender' => 'm',
                 'api_token' => str_random(60),
                 'password' => bcrypt('123')
             ]);
