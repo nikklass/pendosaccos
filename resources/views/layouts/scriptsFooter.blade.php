@@ -24,8 +24,6 @@
 
 <script src="{{ asset('myjs/jquery.easypiechart.min.js') }}"></script>
 
-
-
 <script src="{{ asset('myjs/owl.carousel.min.js') }}"></script>
 
 <script src="{{ asset('myjs/Chart.min.js') }}"></script>

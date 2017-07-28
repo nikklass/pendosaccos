@@ -29,7 +29,7 @@
                     </div>
                     <div class="profile-info text-center">
                       <div class="profile-img-wrap">
-                        <img class="inline-block mb-10" src="/css/images/nikk.jpg" alt="{{ $user->first_name }}"/>
+                        <img class="inline-block mb-10" src="{{ asset('images/no_user.jpg') }}" alt="{{ $user->first_name }}"/>
                         <div class="fileupload btn btn-default">
                           <span class="btn-text">edit</span>
                           <input class="upload" type="file">
