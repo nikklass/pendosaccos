@@ -101,7 +101,7 @@ class SmsOutboxController extends Controller
 
                     $response = $client->createRequest('POST', $send_bulk_sms_url, ['body'=>$body]);*/
 
-                    $response = $client->request('POST', $send_bulk_sms_url, [
+                    $response = $client->createRequest('POST', $send_bulk_sms_url, [
                         'form_params' => [
                             'usr' => $usr,
                             'pass' => $pass,
@@ -111,7 +111,7 @@ class SmsOutboxController extends Controller
                         ]
                     ]);
 
-                    $response = $client->send($response);
+                    //$response = $client->send($response);
                     dd($response);
 
                     //create new outbox
