@@ -48,6 +48,15 @@ function isValidPhoneNumber($phone_number) {
 			$phone_number_status = true;
 		}
 	}
+
+	if (strlen($phone_number) == 9) 
+	{
+		$pattern = "/^7(\d{8})$/";
+		if (preg_match($pattern, $phone_number)) {
+			$phone_number_status = true;
+		}
+	}
+
     return  $phone_number_status;
 	
 }

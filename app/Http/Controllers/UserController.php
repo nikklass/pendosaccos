@@ -50,12 +50,6 @@ class UserController extends Controller
         return view('users.index')->withUsers($users);
     }
 
-    /*show bulk user create form*/
-    public function showBulkRegistrationForm()
-    {
-        return view('users.createbulk');
-    }
-
     /*show user create form*/
     public function create()
     {
@@ -71,12 +65,6 @@ class UserController extends Controller
         }
         //dd($companies);
         return view('users.create')->withCompanies($companies);
-    }
-
-    /*create bulk accounts*/
-    public function createbulk(){
-        //process data here
-        dd(request());
     }
 
     /**
@@ -129,14 +117,9 @@ class UserController extends Controller
         //add generated password to returned data
         $user['password'] = $password;
 
-        //dd($user);
-
         event(new Registered($user));
 
         session()->flash("message", "User successfully created");
-
-        //return $this->registered(request(), $user)
-        //                ?: redirect($this->redirectPath());
         return $this->registered(request(), $user)
                         ?: redirect()->back();
 

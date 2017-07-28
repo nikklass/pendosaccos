@@ -95,21 +95,14 @@
                                                 name="company_id" 
                                                 data-style="form-control btn-default btn-outline"
                                                 required>
-                                                
-                                                {!! $companies->count() < 1 ? 
-                                                '
-                                                    <li class="mb-10">
-                                                        <option value="" selected="selected">
-                                                            No companies available
-                                                        </option>
-                                                    </li>
-                                                ' 
-                                                : '' 
-                                                !!}
 
                                                 @foreach ($companies as $company)
                                                 <li class="mb-10">
-                                                    <option value="{{ $company->id }}">
+                                                    <option value="{{ $company->id }}"
+                                          @if ($company->id == old('company_id', $user->company->id))
+                                              selected="selected"
+                                          @endif
+                                                    >
                                                       {{ $company->name }}
                                                     </option>
                                                 </li>

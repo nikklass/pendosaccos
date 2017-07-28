@@ -21,13 +21,15 @@ class CreateUsersGroupsTable extends Migration
             $table->string('last_name', 50);
             $table->string('account_number', 50);
             $table->enum('gender', ['m', 'f']);
-            $table->string('email', 50)->unique()->nullable();
+            $table->string('email', 50)->nullable();
             $table->string('phone_number', 13)->unique();
             $table->string('password')->nullable();
             $table->integer('company_id')->unsigned()->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->string('api_token', 60)->unique()->nullable();
+            $table->unique(array('email', 'company_id'));
+            $table->unique(array('account_number', 'company_id'));
             $table->rememberToken();
             $table->timestamps();
         });
@@ -42,7 +44,7 @@ class CreateUsersGroupsTable extends Migration
             $table->string('physical_address')->nullable();
             $table->string('box', 50)->nullable();
             $table->string('phone_number', 13)->nullable();
-            $table->string('email', 50)->unique()->nullable();
+            $table->string('email', 50)->nullable();
             $table->decimal('latitude', 13, 3)->nullable();
             $table->decimal('longitude', 13, 3)->nullable();
             $table->integer('company_id')->unsigned();
@@ -75,7 +77,7 @@ class CreateUsersGroupsTable extends Migration
             $table->string('physical_address')->nullable();
             $table->string('box', 50)->nullable();
             $table->string('phone_number', 13)->nullable();
-            $table->string('email', 50)->unique()->nullable();
+            $table->string('email', 50)->nullable();
             $table->decimal('latitude', 13, 3)->nullable();
             $table->decimal('longitude', 13, 3)->nullable(); 
             $table->integer('created_by')->unsigned()->nullable();
