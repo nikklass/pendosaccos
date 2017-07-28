@@ -21,6 +21,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'gender' => $faker->randomElement($array = array ('m','f')),
         'email' => $faker->unique()->safeEmail,
         'phone_number' => $faker->numberBetween(1000,99999),
+        'company_id' => $faker->numberBetween(1,50),
         'password' => $password ?: $password = bcrypt('123'),
         'remember_token' => str_random(10),
         'account_number' => $faker->numberBetween(1000,99999),
