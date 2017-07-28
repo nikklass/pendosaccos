@@ -7,13 +7,20 @@
 @endsection
 
 
+@section('css_header')
+
+<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+
+@endsection
+
+
 @section('content')
     
     <div class="container-fluid">
 
       <!-- Row -->
        <div class="table-struct full-width full-height">
-          <div class="table-cell vertical-align-middle auth-form-wrap-inner">
+          <div class="table-cell auth-form-wrap-inner">
              <div class="ml-auto mr-auto no-float">
                 
                 <div  class="col-sm-12 col-md-8 col-md-offset-2">
@@ -35,11 +42,59 @@
 
                                  <div class="form-wrap">
                                     
-                                    <form class="form-horizontal" method="POST" action="{{ route('users.createbulk.store') }}">
+                                    <form class="form-horizontal" method="POST" 
+                                        enctype="multipart/form-data" action="{{ route('bulk-users.store') }}">
                                        
                                        {{ csrf_field() }}
 
+                                       @if (count($errors))
+                                         <div class="alert alert-danger text-center">
+                                             <ul class="list-icons mb-20">
+                                                 @foreach ($errors->all() as $error)                                          
+                                                    <li> 
+                                                      <i class="fa fa-genderless text-white mr-5"></i>
+                                                      {!! $error !!}
+                                                    </li>
+                                                 @endforeach
+                                             </ul>
+                                         </div>
+                                       @endif
                                        
+                                       <div  
+                                          class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
+                                          v-show="{{ (Auth::user()->hasRole('superadministrator')) }}">
+                                              
+                                          <label for="company_id" class="col-sm-3 control-label">
+                                             Company Name
+                                             <span class="text-danger"> *</span>
+                                          </label>
+                                          <div class="col-sm-9">
+                                            
+                                             <select class="selectpicker form-control" 
+                                                name="company_id" 
+                                                data-style="form-control btn-default btn-outline"
+                                                required>
+                                           
+                                                @foreach ($companies as $company)
+                                                <li class="mb-10">
+                                                    <option value="{{ $company->id }}">
+                                                      {{ $company->name }}
+                                                    </option>
+                                                </li>
+                                                @endforeach
+                                                
+                                             </select>
+
+                                             @if ($errors->has('company_name'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                  </span>
+                                             @endif
+                                          
+                                          </div>
+
+                                       </div>
+
                                        <div class="form-group">
                                          <label class="col-sm-3 control-label">
                                             Select Source File (XLS, XLSX, CSV)
@@ -54,7 +109,7 @@
                                                 <i class="fa fa-upload"></i> 
                                                 <span class="fileinput-new btn-text">Select file</span> 
                                                 <span class="fileinput-exists btn-text">Change</span>
-                                                <input type="file" name="...">
+                                                <input type="file" name="import_file">
                                               </span> 
                                               <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput">
                                                 <i class="fa fa-trash"></i>
@@ -107,3 +162,11 @@
          
 
 @endsection
+
+
+@section('page_scripts')
+
+  <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+  
+@endsection
+

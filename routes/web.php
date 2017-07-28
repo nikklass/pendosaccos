@@ -43,11 +43,12 @@ Route::group(['middleware' => 'role:superadministrator|administrator|editor|auth
 	Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.store');
 	Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 
-	//users routes...
-	Route::get('users/create-bulk', 'UserController@showBulkRegistrationForm')->name('users.createbulk');
-	Route::post('users/create-bulk', 'UserController@createbulk')->name('users.createbulk.store');
+	//handle bulk import user...
+	Route::get('users/create-bulk', 'UserImportController@create')->name('bulk-users.create');
+	Route::post('users/create-bulk', 'UserImportController@store')->name('bulk-users.store');
+	
+	//user routes...
 	Route::resource('/users', 'UserController');
-
 
 	//permission routes...
 	Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);

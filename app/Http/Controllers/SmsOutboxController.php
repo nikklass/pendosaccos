@@ -66,6 +66,8 @@ class SmsOutboxController extends Controller
     public function store(Request $request)
     {
         
+        //dd($request);
+
         $user_id = auth()->user()->id;
 
         $this->validate($request, [
@@ -77,9 +79,9 @@ class SmsOutboxController extends Controller
         $fields = "usr=" . $usr . "&pass=" . $pass . "&src=" . $src . "&dest=" . $phone_number . "&msg=" . $message; 
         $result = $this->executeLink($send_sms_link, $fields, "post");*/
 
-        $send_bulk_sms_url = "http://localhost:6000/admin/api/v1/sendBulkSMS";
+        //$send_bulk_sms_url = "http://localhost:6000/admin/api/v1/sendBulkSMS";
 
-        //$send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
+        $send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
         $src = \Config::get('constants.bulk_sms.src');
         $usr = \Config::get('constants.bulk_sms.usr');
         $pass = \Config::get('constants.bulk_sms.pass');
@@ -101,16 +103,22 @@ class SmsOutboxController extends Controller
                     $body['pass'] = $pass;
                     $body['src'] = $src;
                     $body['dest'] = $user->phone_number;
-                    $body['msg'] = $request->message;
+                    $body['msg'] = $request->sms_message;
+
+                    /*$body['usr'] = "barddy";
+                    $body['pass'] = "bd@2017";
+                    $body['src'] = "707218";*/
+
+                    //dd($body);
 
                     $response = $client->request('POST', $send_bulk_sms_url, ['form_params' => $body]);
 
-                    dd($response);
+                    //dd($response);
 
                     //create new outbox
                     $smsoutbox = new SmsOutbox();
                     $smsoutbox->message = $request->sms_message;
-                    $smsoutbox->short_message = reducelength($sms_message,100);
+                    $smsoutbox->short_message = reducelength($request->sms_message,100);
                     $smsoutbox->user_id = $x;
                     $smsoutbox->phone_number = $user->phone_number;
                     $smsoutbox->user_agent = getUserAgent();

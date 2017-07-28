@@ -158,7 +158,7 @@
                </a>
             </li>
             <li>
-               <a href="{{ route('users.createbulk') }}">
+               <a href="{{ route('bulk-users.create') }}">
                   <i class="zmdi zmdi-accounts-add mr-10"></i>
                   <span class="right-nav-text">Create Bulk</span>
                </a>
