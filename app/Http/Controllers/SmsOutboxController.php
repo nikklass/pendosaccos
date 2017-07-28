@@ -105,10 +105,6 @@ class SmsOutboxController extends Controller
                     $body['dest'] = $user->phone_number;
                     $body['msg'] = $request->sms_message;
 
-                    /*$body['usr'] = "barddy";
-                    $body['pass'] = "bd@2017";
-                    $body['src'] = "707218";*/
-
                     //dd($body);
 
                     $response = $client->request('POST', $send_bulk_sms_url, ['form_params' => $body]);
