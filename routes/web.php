@@ -37,7 +37,7 @@ Route::group(['middleware' => 'role:superadministrator|administrator|editor|auth
 
 	Route::get('/', 'HomeController@index')->name('home');
 
-	Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+	Route::post('logout', 'Auth\LoginController@logout')->name('logout'); 
 
 	// Password Reset Routes...
 	Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.store');
