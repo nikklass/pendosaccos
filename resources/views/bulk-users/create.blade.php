@@ -128,6 +128,16 @@
                                          </div>
                                       </div>
 
+
+                                      <div class="form-group">
+                                          <div class="col-sm-3"></div>
+                                          <div class="col-sm-9">
+                                            <a href="{{ asset('templates/new_user_template.xls') }}">
+                                              <i class="fa download"></i> Download Sample Excel File  
+                                            </a>
+                                          </div>
+                                      </div>
+
                                        <br/>
 
                                        <div class="form-group">
