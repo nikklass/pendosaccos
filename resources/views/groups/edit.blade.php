@@ -79,7 +79,7 @@
                                                 @foreach ($companies as $company)
                                                 <li class="mb-10">
                                                     <option value="{{ $company->id }}"
-                                                    @if ($company == old('company_id', $company->id))
+                                                    @if ($company->id == old('company_id', $company->id))
                                                         selected="selected"
                                                     @endif
                                                     >
@@ -232,14 +232,6 @@
                                        </div>
 
                                        <br/>
-
-                                       <hr>
-
-                                       <div class="text-center">
-                                          <a href="{{ route('users.createbulk') }}">
-                                          <i class="zmdi zmdi-accounts-add mr-10"></i> Create Bulk Accounts
-                                          </a>
-                                       </div>
 
                                     </form>
 
