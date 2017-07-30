@@ -13,13 +13,13 @@ class CreateTempImportTable extends Migration
      */
     public function up()
     {
-        Schema::create('temp_import_tbl', function (Blueprint $table) {
+        /*Schema::create('temp_import_tbl', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('uuid');
             $table->integer('user_id')->unsigned();
             $table->text('data');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -29,6 +29,6 @@ class CreateTempImportTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temp_import_tbl');
+        //Schema::dropIfExists('temp_import_tbl');
     }
 }

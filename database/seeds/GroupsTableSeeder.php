@@ -13,10 +13,10 @@ class GroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->command->info('Truncating companies table');
+        /*$this->command->info('Truncating companies table');
         $this->truncateGroupTables();
         
-        factory(App\Group::class, 100)->create();
+        factory(App\Group::class, 100)->create();*/
 
     }
 

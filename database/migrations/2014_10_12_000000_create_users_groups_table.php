@@ -14,7 +14,7 @@ class CreateUsersGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name', 50);
@@ -32,11 +32,11 @@ class CreateUsersGroupsTable extends Migration
             $table->unique(array('account_number', 'company_id'));
             $table->rememberToken();
             $table->timestamps();
-        });
+        });*/
 
         
         /*create groups table*/
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -51,11 +51,11 @@ class CreateUsersGroupsTable extends Migration
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();           
             $table->timestamps();
-        });
+        });*/
 
 
         // Create table for associating groups to users
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('group_user', function (Blueprint $table) {
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('user_id');
@@ -65,11 +65,11 @@ class CreateUsersGroupsTable extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['user_id', 'group_id']);
-        });
+        });*/
         
 
         // Create companies table
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -83,7 +83,7 @@ class CreateUsersGroupsTable extends Migration
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();           
             $table->timestamps();
-        });
+        });*/
 
     }
 
@@ -94,12 +94,12 @@ class CreateUsersGroupsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('users');
         Schema::dropIfExists('groups');
         Schema::dropIfExists('companies');
         Schema::dropIfExists('group_user');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
     }
 
     

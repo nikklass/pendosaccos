@@ -15,10 +15,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        /*$this->command->info('Truncating User table');
-        $this->truncateUserTables();*/
 
-        factory(App\User::class, 50)->create();
+        //factory(App\User::class, 50)->create();
 
     }
 

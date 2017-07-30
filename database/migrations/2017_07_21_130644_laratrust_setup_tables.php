@@ -12,7 +12,7 @@ class LaratrustSetupTables extends Migration
     public function up()
     {
         // Create table for storing roles
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
@@ -69,7 +69,7 @@ class LaratrustSetupTables extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['permission_id', 'role_id']);
-        });
+        });*/
     }
 
     /**
@@ -79,10 +79,10 @@ class LaratrustSetupTables extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
+        /*Schema::dropIfExists('permission_user');
         Schema::dropIfExists('permission_role');
         Schema::dropIfExists('permissions');
         Schema::dropIfExists('role_user');
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('roles');*/
     }
 }

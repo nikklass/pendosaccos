@@ -13,7 +13,7 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        /*Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('notificationtable_type'); //e.g. liked, created, logged in, etc
@@ -21,7 +21,7 @@ class CreateNotificationsTable extends Migration
             $table->string('notificationtableitem_type'); //e.g. post, photo, etc
             $table->integer('notificationtableitem_id')->unsigned();
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notifications');
+        //Schema::dropIfExists('notifications');
     }
 }

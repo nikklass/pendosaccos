@@ -658,13 +658,20 @@
               
               attachContentCheck = this.attachContentCheck
               if (attachContentCheck){
+                  
+                  this.usersSelected = []
+                  this.usersSelectedCount = this.usersSelected.length
                   //show attach content box
                   this.showAttachContentBox = true
-                  //console.log('show date box')
+
               } else {
+
+                  allUsers = {!! $users->pluck('id') !!}
+                  this.usersSelected = allUsers
+                  this.usersSelectedCount = this.usersSelected.length
                   //show attach content box
                   this.showAttachContentBox = false
-                  //console.log('hide date box')
+
               }
               
             },

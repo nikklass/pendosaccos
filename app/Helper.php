@@ -152,6 +152,7 @@ function getBulkSMSData($username) {
 	//get bulk sms data for this client
 	$get_sms_data_url_main = \Config::get('constants.bulk_sms.get_sms_data_url');
 	$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $username;
+	dd($get_sms_data_url);
 
 	//get sms data
     $client = new \GuzzleHttp\Client();

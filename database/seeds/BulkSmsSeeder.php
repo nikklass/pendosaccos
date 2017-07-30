@@ -16,10 +16,10 @@ class BulkSmsSeeder extends Seeder
     public function run()
     {
 
-        $this->command->info('Truncating statuses and sms_types tables');
+        /*$this->command->info('Truncating statuses and sms_types tables');
         $this->truncateBulkSmsTables();
 
-        /*sms types*/
+        //sms types
         $sms_type = new \App\SmsType([
         	'id' => '1',
         	'name' => 'Registration SMS',
@@ -61,10 +61,10 @@ class BulkSmsSeeder extends Seeder
         	'description' => 'sms sent by the client company'
         ]);
         $sms_type->save();
-        /*end sms types*/
+        //end sms types
 
 
-        /*statuses*/
+        //statuses
         $status = new \App\Status([
         	'id' => '1',
         	'name' => 'Active',
@@ -127,7 +127,8 @@ class BulkSmsSeeder extends Seeder
         	'section' => ''
         ]);
         $status->save();
-        /*end statuses*/
+        //end statuses
+        */
 
     }
 
