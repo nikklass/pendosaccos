@@ -151,20 +151,35 @@
 
                                                          <div class="form-group" v-show="showDateBox">
                                                             <div class="col-sm-12">
+                                                                
+                                                                <hr>
+
                                                                <label class="control-label mb-10 text-left">
                                                                   Please select date and time
                                                                </label>
-                                                               <div class='input-group date' id='smsdate'>
-                                                                  <input 
-                                                                      type='text' 
-                                                                      class="form-control"  
-                                                                      :value="smsScheduleDateTime"
-                                                                      v-model="smsScheduleDateTime"
-                                                                       />
-                                                                  <span class="input-group-addon">
-                                                                     <span class="fa fa-calendar"></span>
-                                                                  </span>
-                                                               </div>
+
+
+                                                               <div style="overflow:hidden;">
+                                                                   
+                                                                    <div class="form-group">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div id="datetimepicker12"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <script type="text/javascript">
+                                                                        $(function () {
+                                                                            $('#datetimepicker12').datetimepicker({
+                                                                                inline: true,
+                                                                                sideBySide: true
+                                                                            });
+                                                                        });
+                                                                    </script>
+                                                                </div>
+
+
+
                                                             </div>
                                                          </div>
 
