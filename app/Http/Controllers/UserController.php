@@ -77,7 +77,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        dd($request);
+        //dd($request);
 
         $this->validate(request(), [
             'first_name' => 'required',
@@ -119,7 +119,7 @@ class UserController extends Controller
 
         event(new Registered($user));
 
-        session()->flash("message", "User successfully created");
+        session()->flash("success", "User successfully created");
         return $this->registered(request(), $user)
                         ?: redirect()->back();
 
