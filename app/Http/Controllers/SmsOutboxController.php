@@ -174,7 +174,7 @@ class SmsOutboxController extends Controller
                             }
                         }                        
 
-                        if (!$response['error']) {
+                        if ($response['mobile']) {
 
                             //create new outbox
                             $smsoutbox = new SmsOutbox();
@@ -191,7 +191,7 @@ class SmsOutboxController extends Controller
 
                         } else {
 
-                            $errors['sms'] = $response->message;
+                            //$errors['sms'] = $response->message;
 
                         }
 
