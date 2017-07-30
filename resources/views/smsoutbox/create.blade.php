@@ -158,7 +158,10 @@
                                                                         1. Load <strong>xls, xlsx</strong> or <strong>csv</strong> file which has the data you want to use by selecting it in the "Attach Dynamic Message Content" box. 
                                                                       </p>
                                                                       <p class="mb-15">
-                                                                        2. The first line in the excel file should have the column titles. An example file can be downloaded here: <a href="#">Sample Excel File</a>
+                                                                        2. The first line in the excel file should have the column titles. An example file can be downloaded here: 
+                                                                        <a href="{{ asset('templates/sms_template.xls') }}">
+                                                                            Sample Excel File
+                                                                        </a>
                                                                       </p>
                                                                       <p class="mb-15">
                                                                         3. Once file is loaded, you can attach the data by referencing the column names. 
