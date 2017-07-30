@@ -164,7 +164,10 @@
                                                                         </a>
                                                                       </p>
                                                                       <p class="mb-15">
-                                                                        3. Once file is loaded, you can attach the data by referencing the column names. 
+                                                                        3. The column that contains phone number has to be titled <strong>phone_number</strong> for the phone numbers to be detected correctly.
+                                                                      </p>
+                                                                      <p class="mb-15">
+                                                                        4. Once file is loaded, you can attach the data by referencing the column names. 
                                                                         <br>
                                                                         For example, if your excel file has two columns titled:  
                                                                         "<strong>first_name</strong>"  and 
@@ -182,8 +185,9 @@
                                                                         Please complete your bill payment of Kshs. [[bill_balance]] by 20th Jan 2018...
                                                                       </p>
                                                                       <p>
-                                                                        4. <strong>[[first_name]]</strong> &nbsp; and &nbsp; <strong>[[bill_balance]]</strong> fields will then be replaced individually for each unique line of data in your excel file.
+                                                                        5. <strong>[[first_name]]</strong> &nbsp; and &nbsp; <strong>[[bill_balance]]</strong> fields will then be replaced individually for each unique line of data in your excel file.
                                                                       </p>
+
                                                                       
                                                                    </div>
                                                                    <div class="modal-footer">
