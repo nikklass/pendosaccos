@@ -108,9 +108,113 @@
                                                                 <div class="clearfix"></div>
                                                             </div>
 
-                                                        </div>
+                                                       </div>
 
                                                        <hr>
+
+                                                       <div class="form-group">
+                                                          <div class="col-sm-12">
+                                                             <div class="checkbox">
+                                                                <input 
+                                                                    id="attachContent" 
+                                                                    type="checkbox" 
+                                                                    name="attachContent" 
+                                                                    v-model="attachContentCheck"
+                                                                    @change="attachContentCheckToggle"
+                                                                  {{ old('attachContent') ? 'checked' : '' }}>
+                                                                <label for="attachContent"> 
+                                                                    Attach Dynamic Message Content (Optional)
+                                                                </label>
+                                                             </div>
+                                                          </div>
+                                                       </div>
+
+                                                       <div class="form-group"  v-if="showAttachContentBox">
+                                                         <label class="col-sm-12 control-label mb-5">
+                                                            <span class="pull-left">
+                                                              Attach Dynamic Message Content (Optional)
+                                                            </span>
+                                                            <span class="pull-right">
+                                                              <a href="#" 
+                                                                data-toggle="modal" 
+                                                                data-target="#howtoModal">
+                                                                How To Use
+                                                              </a>
+                                                            </span>
+                                                         </label>
+
+                                                         <!-- start modal content -->
+                                                         <div id="howtoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                             <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                   <div class="modal-header">
+                                                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                      <h5 class="modal-title" id="myModalLabel">
+                                                                          Hot To Attach Dynamic Message Content
+                                                                      </h5>
+                                                                   </div>
+                                                                   <div class="modal-body">
+                                                                      <p class="mb-15">
+                                                                        1. Load <strong>xls, xlsx</strong> or <strong>csv</strong> file which has the data you want to use by selecting it in the "Attach Dynamic Message Content" box. 
+                                                                      </p>
+                                                                      <p class="mb-15">
+                                                                        2. The first line in the excel file should have the column titles. An example file can be downloaded here: <a href="#">Sample Excel File</a>
+                                                                      </p>
+                                                                      <p class="mb-15">
+                                                                        3. Once file is loaded, you can attach the data by referencing the column names. 
+                                                                        <br>
+                                                                        For example, if your excel file has two columns titled:  
+                                                                        "<strong>first_name</strong>"  and 
+                                                                        "<strong>bill_balance</strong>", 
+                                                                        you can refer to them in your sms message as 
+                                                                        <br>"<strong>[[first_name]]</strong>" 
+                                                                        &nbsp;and&nbsp;
+                                                                        "<strong>[[bill_balance]]</strong>"<br>
+                                                                        without spaces in between the words and [[]]markers.
+                                                                        <br><br>
+                                                                        An example sms message would be:
+                                                                        <br><br>
+                                                                        Dear [[first_name]],
+                                                                        <br>
+                                                                        Please complete your bill payment of Kshs. [[bill_balance]] by 20th Jan 2018...
+                                                                      </p>
+                                                                      <p>
+                                                                        4. <strong>[[first_name]]</strong> &nbsp; and &nbsp; <strong>[[bill_balance]]</strong> fields will then be replaced individually for each unique line of data in your excel file.
+                                                                      </p>
+                                                                      
+                                                                   </div>
+                                                                   <div class="modal-footer">
+                                                                      <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                                                                   </div>
+                                                                </div>
+                                                                <!-- /.modal-content -->
+                                                             </div>
+                                                             <!-- /.modal-dialog -->
+                                                          </div>
+                                                          <!-- end modal content -->
+
+                                                         <div class="col-sm-12">
+                                                           <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                              <div class="form-control" data-trigger="fileinput"> 
+                                                                <i class="glyphicon glyphicon-file fileinput-exists"></i> 
+                                                                <span class="fileinput-filename"></span>
+                                                              </div>
+                                                              <span class="input-group-addon fileupload btn btn-info btn-anim btn-file">
+                                                                <i class="fa fa-upload"></i> 
+                                                                <span class="fileinput-new btn-text">Select file</span> 
+                                                                <span class="fileinput-exists btn-text">Change</span>
+                                                                <input type="file" name="import_file">
+                                                              </span> 
+                                                              <a href="#" class="input-group-addon btn btn-danger btn-anim fileinput-exists" data-dismiss="fileinput">
+                                                                <i class="fa fa-trash"></i>
+                                                                <span class="btn-text"> Remove</span>
+                                                              </a> 
+                                                           </div>
+                                                         </div>
+
+                                                      </div>
+
+                                                      <hr>
 
                                                        <div class="form-group">
                                                           
@@ -142,14 +246,12 @@
                                                                 </div>
                                                              </div>
                                                           </div>
-
-                                                          
                                                             
                                                        </div>
 
                                                        <transition name="fade" mode="out-in">
 
-                                                         <div class="form-group" v-show="showDateBox">
+                                                         <div class="form-group" v-if="showDateBox">
                                                             <div class="col-sm-12">
                                                                 
                                                                 <hr>
@@ -158,27 +260,29 @@
                                                                   Please select date and time
                                                                </label>
 
-
-                                                               <div style="overflow:hidden;">
-                                                                   
-                                                                    <div class="form-group">
-                                                                        <div class="row">
-                                                                            <div class="col-md-12">
-                                                                                <div id="datetimepicker12"></div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <script type="text/javascript">
-                                                                        $(function () {
-                                                                            $('#datetimepicker12').datetimepicker({
-                                                                                inline: true,
-                                                                                sideBySide: true
-                                                                            });
-                                                                        });
-                                                                    </script>
-                                                                </div>
-
-
+                                                             
+                                                               <div class='input-group date' 
+                                                                  id='smsScheduleDateTime'>
+                                                                  <input 
+                                                                      type='text' 
+                                                                      class="form-control" 
+                                                                      id='smsdate'
+                                                                      name="smsScheduleDateTime" 
+                                                                      v-model="smsScheduleDateTime"/>
+                                                                  <span class="input-group-addon">
+                                                                     <span class="fa fa-calendar"></span>
+                                                                  </span>
+                                                               </div>
+                                                               <hr>
+                                                               
+                                                               <div class="col-sm-12">
+                                                                  <label class="control-label mb-10 text-left">
+                                                                      Please select date and time
+                                                                  </label>
+                                                                  <div class="form-group">
+                                                                     <div class='input-group date' id='datetimepicker4'></div>
+                                                                  </div>
+                                                               </div>
 
                                                             </div>
                                                          </div>
@@ -413,9 +517,34 @@
             $(this).data("DateTimePicker").date(moment());
         });
 
+        $('#datetimepicker4').datetimepicker({
+          inline:true,
+          sideBySide: true,
+          useCurrent: false,
+          icons: {
+              time: "fa fa-clock-o",
+              date: "fa fa-calendar",
+              up: "fa fa-arrow-up",
+              down: "fa fa-arrow-down"
+          }
+        });
+
+        if( $('#exampleModal').length > 0 ){
+          $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+            modal.find('.modal-body input').val(recipient)
+          });
+        }
+
     });
 
   </script>
+
 
   <script type="text/javascript">      
 
@@ -432,6 +561,8 @@
                 textLength:'',
                 enteredContactsNumbers: '',
                 selectedGroup: '',
+                attachContentCheck: '',
+                showAttachContentBox: false,
                 showDateBox: false,
                 addLoading: false,
                 userListLoading: false
@@ -523,6 +654,21 @@
                 this.usersSelectedCount = this.usersSelected.length
             },
 
+            attachContentCheckToggle() {
+              
+              attachContentCheck = this.attachContentCheck
+              if (attachContentCheck){
+                  //show attach content box
+                  this.showAttachContentBox = true
+                  //console.log('show date box')
+              } else {
+                  //show attach content box
+                  this.showAttachContentBox = false
+                  //console.log('hide date box')
+              }
+              
+            },
+
             sendSmsCheckToggle() {
               
               sendSmsCheck = this.sendSmsCheck
@@ -561,6 +707,7 @@
         }
 
       });
+
   </script>
   
 @endsection
