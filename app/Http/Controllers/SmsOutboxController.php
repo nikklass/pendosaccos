@@ -179,7 +179,7 @@ class SmsOutboxController extends Controller
                             //create new outbox
                             $smsoutbox = new SmsOutbox();
                             $smsoutbox->message = $local_sms_message;
-                            $smsoutbox->short_message = reducelength($local_sms_message);
+                            $smsoutbox->short_message = reducelength($local_sms_message, 45);
                             $smsoutbox->user_id = $local_user_id;
                             $smsoutbox->phone_number = $local_phone_number;
                             $smsoutbox->user_agent = getUserAgent();
@@ -250,7 +250,7 @@ class SmsOutboxController extends Controller
                         //create new outbox
                         $smsoutbox = new SmsOutbox();
                         $smsoutbox->message = $request->sms_message;
-                        $smsoutbox->short_message = reducelength($request->sms_message,100);
+                        $smsoutbox->short_message = reducelength($request->sms_message,45);
                         $smsoutbox->user_id = $x;
                         $smsoutbox->phone_number = $user->phone_number;
                         $smsoutbox->user_agent = getUserAgent();
