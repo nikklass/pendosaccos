@@ -47,7 +47,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        
+                
         $user_id = auth()->user()->id;
 
         $this->validate($request, [
@@ -85,7 +85,12 @@ class CompanyController extends Controller
     public function show($id)
     {
         
-        $company = Company::where('id', $id)->first();
+        $company = Company::where('id', $id)
+                  ->with('groups')
+                  ->with('users')
+                  ->first();
+
+        //dd($company);
 
         return view('companies.show')->withCompany($company);
 

@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Create Bulk Accounts
+    Create Bulk User Accounts
 
 @endsection
 
@@ -23,10 +23,10 @@
           <div class="table-cell auth-form-wrap-inner">
              <div class="ml-auto mr-auto no-float">
                 
-                <div  class="col-sm-12 col-md-8 col-md-offset-2">
+                <div  class="col-sm-12">
 
                   <div class="row">
-                     <div class="col-sm-12 col-xs-12">
+                     <div class="col-md-6 col-sm-12 col-xs-12">
                         
                         <div class="panel panel-default card-view">
                            
@@ -35,7 +35,7 @@
                               <div class="panel-body">               
 
                                  <div class="mb-30">
-                                    <h3 class="text-center txt-dark mb-10">Create Bulk Accounts</h3>
+                                    <h3 class="text-center txt-dark mb-10">Create Bulk User Accounts</h3>
                                  </div>   
 
                                  <hr>
@@ -47,18 +47,18 @@
                                        
                                        {{ csrf_field() }}
 
-                                       @if (count($errors))
+                                       <!-- @if (count($errors))
                                          <div class="alert alert-danger text-center">
                                              <ul class="list-icons mb-20">
-                                                 @foreach ($errors->all() as $error)                                          
-                                                    <li> 
-                                                      <i class="fa fa-genderless text-white mr-5"></i>
-                                                      {!! $error !!}
-                                                    </li>
-                                                 @endforeach
+                                 @foreach ($errors as $error)                                          
+                                    <li> 
+                                      <i class="fa fa-genderless text-white mr-5"></i>
+                                      {!! $error !!}
+                                    </li>
+                                 @endforeach
                                              </ul>
                                          </div>
-                                       @endif
+                                       @endif -->
                                        
                                        <div  
                                           class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
@@ -77,7 +77,11 @@
                                            
                                                 @foreach ($companies as $company)
                                                 <li class="mb-10">
-                                                    <option value="{{ $company->id }}">
+                                                <option value="{{ $company->id }}"
+                                          @if ($company->id == old('company_id', $company->id))
+                                              selected="selected"
+                                          @endif
+                                                    >
                                                       {{ $company->name }}
                                                     </option>
                                                 </li>
@@ -148,6 +152,63 @@
 
                         </div>   
                      </div>
+
+                     <div class="col-md-6 col-sm-12 col-xs-12">
+                        
+                        <div class="panel panel-default card-view">
+                           
+                           <div class="panel-wrapper collapse in">
+                              
+                              <div class="panel-body">               
+
+                                 <div class="mb-30">
+                                    <h3 class="text-center txt-dark mb-10">Upload Results</h3>
+                                 </div>   
+
+                                 <hr>
+
+                                 @if (session('valid_row_id'))
+
+                                    <div class="user_options slimScrollDiv">
+
+                                       @if (session('success'))
+                                       <div class="alert alert-success text-center">
+                                          Data successfully uploaded {{ session('valid_row_id') }}
+                                       </div>
+                                       @endif
+
+                                       
+
+                                   </div>
+
+                                 @endif
+
+                                 @if (session('error_row_id'))
+
+                                   <div class="user_options slimScrollDiv">
+
+                                       <div class="alert alert-default text-center">
+                                          <div class="text-danger">
+                                            Data not uploaded. Please correct errors and try again.
+                                          </div>
+                                          <br/><br/>
+                                          <a href="{{ route('bulk-users.getimportdata', session('error_row_id')) }}" class="btn btn-block btn-danger">
+                                            Click here to download the error csv file
+                                          </a>
+                                          
+                                       </div>
+
+                                   </div>
+
+                                  @endif
+
+                              </div>
+
+                           </div>
+
+                        </div>   
+                     </div>
+
                   </div>
 
                 </div>

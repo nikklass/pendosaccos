@@ -66,22 +66,12 @@ class SmsOutboxController extends Controller
     public function store(Request $request)
     {
         
-        //dd($request);
-
         $user_id = auth()->user()->id;
 
         $this->validate($request, [
             'sms_message' => 'required'
         ]);
 
-
-        /*$send_sms_link = SEND_BULK_SMS_URL;
-        $fields = "usr=" . $usr . "&pass=" . $pass . "&src=" . $src . "&dest=" . $phone_number . "&msg=" . $message; 
-        $result = $this->executeLink($send_sms_link, $fields, "post");*/
-
-        //$send_bulk_sms_url = "http://localhost:6000/admin/api/v1/sendBulkSMS";
-
-        $send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
         $src = \Config::get('constants.bulk_sms.src');
         $usr = \Config::get('constants.bulk_sms.usr');
         $pass = \Config::get('constants.bulk_sms.pass');
@@ -95,37 +85,41 @@ class SmsOutboxController extends Controller
                 $user = User::where('id', $x)->first();
 
                 if ($request->sendSmsCheckBox == 'now') {
-            
-                    //send sms
-                    $client = new \GuzzleHttp\Client();
 
-                    $body['usr'] = $usr;
-                    $body['pass'] = $pass;
-                    $body['src'] = $src;
-                    $body['dest'] = $user->phone_number;
-                    $body['msg'] = $request->sms_message;
+                    $params['usr'] = $usr;
+                    $params['pass'] = $pass;
+                    $params['src'] = $src;
+                    $params['phone_number'] = $user->phone_number;
+                    $params['sms_message'] = $request->sms_message;
 
-                    //dd($body);
-
-                    $response = $client->request('POST', $send_bulk_sms_url, ['form_params' => $body]);
+                    $response = sendSms($params);
 
                     //dd($response);
 
-                    //create new outbox
-                    $smsoutbox = new SmsOutbox();
-                    $smsoutbox->message = $request->sms_message;
-                    $smsoutbox->short_message = reducelength($request->sms_message,100);
-                    $smsoutbox->user_id = $x;
-                    $smsoutbox->phone_number = $user->phone_number;
-                    $smsoutbox->user_agent = getUserAgent();
-                    $smsoutbox->src_ip = getIp();
-                    $smsoutbox->src_host = getHost();
-                    $smsoutbox->created_by = $user_id;
-                    $smsoutbox->updated_by = $user_id;
-                    $smsoutbox->save();
+                    if (!$response['error']) {
+                        
+                        //create new outbox
+                        $smsoutbox = new SmsOutbox();
+                        $smsoutbox->message = $request->sms_message;
+                        $smsoutbox->short_message = reducelength($request->sms_message,100);
+                        $smsoutbox->user_id = $x;
+                        $smsoutbox->phone_number = $user->phone_number;
+                        $smsoutbox->user_agent = getUserAgent();
+                        $smsoutbox->src_ip = getIp();
+                        $smsoutbox->src_host = getHost();
+                        $smsoutbox->created_by = $user_id;
+                        $smsoutbox->updated_by = $user_id;
+                        $smsoutbox->save();
 
-                    Session::flash('success', 'SMS successfully sent');
-                    return redirect()->route('smsoutbox.index');
+                        Session::flash('success', 'SMS successfully sent');
+                        return redirect()->route('smsoutbox.index');
+
+                    } else {
+
+                        $errors['sms'] = $response->message;
+                        return redirect()->back()->withErrors($errors);
+
+                    }
 
                 } else {
                     
@@ -238,4 +232,5 @@ class SmsOutboxController extends Controller
     {
         //
     }
+
 }

@@ -16,13 +16,13 @@ class Company extends Model
         'name', 'description', 'physical_address', 'box', 'phone', 'email', 'latitude', 'longitude'
     ];
 
-    /*many to many relationship*/
+    /*one to many relationship*/
     public function groups()
     {
         return $this->hasMany(Group::class);
     }
 
-    /*many to many relationship*/
+    /*one to many relationship*/
     public function users()
     {
         return $this->hasMany(User::class);

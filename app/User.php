@@ -56,7 +56,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class);
     }
 
-    /*many to many relationship*/
+    /*one to many relationship*/
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -72,9 +72,6 @@ class User extends Authenticatable
         $user_id = auth()->user();
         return static::find($user_id);
     }
-
-    
-
 
     /*public function getProfileImageAttribute()
     {

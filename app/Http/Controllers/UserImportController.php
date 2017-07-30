@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Services\User\UserImport;
+use App\TempTable;
 use App\User;
+use DB;
 use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +14,7 @@ use Session;
 
 class UserImportController extends Controller
 {
+    
     /**
      * Create a new controller instance.
      *
@@ -60,92 +64,108 @@ class UserImportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, UserImport $userImport)
     {
-        
+
         $user_id = auth()->user()->id;
 
         $validator = Validator::make($request->all(), [
-            'import_file' => 'required'
+            'import_file' => 'required',
+            'company_id' => 'required',
             
         ]);
 
         if ($validator->fails()){
             return redirect()->back()
                 ->withErrors($validator)
-                -withInput();
+                ->withInput();
         }
 
         if ($request->hasFile('import_file')) {
+            
+            $company_id = $request->company_id;
             $path = $request->file('import_file')->getRealPath();
             $data = Excel::load($path, function($reader) {
             })->get();
-            //dd($data);
+
             if (!empty($data) && $data->count()) {
                 
                 $errors = [];
+
+                //toarray
+                $arrdata = $data->toArray();
+
+                //dd($res);
+
+                if (!$userImport->checkImportData($arrdata, $company_id))
+                {
+                    Session::flash('error_row_id', $userImport->getErrorRowId());
+                    Session::flash('valid_row_id', $userImport->getValidRowId());
+                    return redirect()->back()->withInput();
+                }
+
+                //dump(count($data));
+                //dd($data);
+
+                //if all is ok, create users
+                $res = $userImport->createUsers($data, $company_id);
+                //$total_rows = count($userImport->getValidRows());
+                //dd($res);
                 
-
-                //check for errors in submitted data
-                foreach ($data as $key => $value) {
-                    
-                    if (!$value->first_name) {
-                        $errors['first_name'] = "First Name missing in supplied data";
-                    }
-
-                    if (!$value->last_name) {
-                        $errors['last_name'] = "Last Name missing in supplied data";
-                    }
-
-                    if (!$value->phone_number) {
-                        $errors['phone_number'] = "Phone Number missing in supplied data";
-                    }
-
-                    if (!isValidPhoneNumber($value->phone_number)){
-                        //$message = \Config::get('constants.error.invalid_phone_number');
-                        $errors['phone_number'] = "Phone Number <strong>" . $value->phone_number . "</strong> is Invalid. Please use formats: <br>7XXXXXXXX or 07XXXXXXXX or 2547XXXXXXXX or +2547XXXXXXXX";
-                    }
-
-                }
-
-                if (count($errors)) {
-
-                    return redirect()->route('bulk-users.create')
-                        ->withErrors($errors)
-                        ->withInput();
-
-                } else {
-                    
-                    $i = 0;
-
-                    //insert data
-                    foreach ($data as $key => $value) {
-                        
-                        // create user
-                        $userData = [
-                            'account_number' => $value->account_number,
-                            'first_name' => $value->first_name,
-                            'last_name' => $value->last_name,
-                            'gender' => $value->gender,
-                            'email' => $value->email,
-                            'phone_number' => formatPhoneNumber($value->phone_number),
-                            'company_id' => $request->company_id,
-                            'created_by' => auth()->user()->id,
-                            'updated_by' => auth()->user()->id
-                        ];
-
-                        $user = User::create($userData);
-
-                        $i++;
-
-                    }
-
-                }
-
             }
-            Session::flash('success', 'Successfully inserted <strong>' . $i . '</strong> users');
-            return redirect()->route('users.index');
+            Session::flash('success', 'Successfully inserted users');
+            return redirect()->back();
+            //return redirect()->route('users.index');
         }
+
+    }
+
+    //get import data
+    public function getImportData($id)
+    {
+        $data = TempTable::where('uuid', $id)->first();
+
+        if (!$data) {
+            abort(400, "Cannot find import data");
+        }
+
+        if ($data->user_id != auth()->user()->id) {
+            abort(403, "Access Denied");
+        }
+
+        $data = unserialize($data->data);
+        $header = [];
+
+        foreach ($data[0] as $key => $value) {
+            $header[] = $key;
+        }
+
+        if (!file_exists(public_path('download'))) {
+            mkdir(public_path('download'), 0755, true);
+        }
+
+        $filename = time() . ".csv";
+        $handle = fopen(public_path('download/' . $filename), 'w+');
+        fputcsv($handle, $header);
+
+        foreach ($data as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+        ];
+
+        return response()->download(public_path('download/' . $filename), $filename, $headers);
+
+    }
+
+    //get incomplete data
+    public function getIncompleteData($id)
+    {
+        
 
     }
 

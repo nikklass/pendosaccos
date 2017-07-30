@@ -7312,3 +7312,5 @@ ul.inbox-nav li a:hover, ul.inbox-nav li.active a, ul.inbox-nav li a:focus {
 }
 
 em{ font-style: italic; }
+.user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
+    overflow-x: hidden;}
