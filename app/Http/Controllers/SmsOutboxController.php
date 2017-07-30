@@ -8,6 +8,7 @@ use App\SmsOutbox;
 use App\ScheduleSmsOutbox;
 use App\User;
 use Session;
+use Excel;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
@@ -68,8 +69,11 @@ class SmsOutboxController extends Controller
         
         $user_id = auth()->user()->id;
 
+        //dump($request);
+
         $this->validate($request, [
-            'sms_message' => 'required'
+            'sms_message' => 'required',
+            'usersSelected' => 'required'
         ]);
 
         $src = \Config::get('constants.bulk_sms.src');
@@ -77,8 +81,81 @@ class SmsOutboxController extends Controller
         $pass = \Config::get('constants.bulk_sms.pass');
 
         $usersSelected = explode(',', $request->usersSelected);
+        $sms_message = trim($request->sms_message);
 
         if (count($usersSelected) > 0) {
+            
+            //formulate sms message if excel file was loaded
+            if ($request->attachContent) {
+
+                //read sms and check for delimiters in sms box
+                //$matches_regex = "/\[\[[\w\_]\]\]/";
+
+                $matches_regex = "/\s?\w+\s?/";
+                $remove_spaces_regex = "/\s+/";
+
+                //remove all spaces
+                $regex_message = preg_replace($remove_spaces_regex, ' ', $sms_message);
+                //get the replaceable matches
+                $hits = preg_match_all($matches_regex, $regex_message, $match_results, PREG_SET_ORDER);
+
+                dump("==========");
+                dump($regex_message);
+                dump("==========");
+                dump($hits);
+                dump("==========");
+                dd($match_results);
+
+                //read excel file if it exists
+                if ($request->hasFile('import_file')) {
+            
+                    //$company_id = $request->company_id;
+                    $path = $request->file('import_file')->getRealPath();
+                    $data = Excel::load($path, function($reader) {
+                    })->get();
+                    
+                    //get column titles/ headers
+                    $line0 = $data[0];
+                    $headers = $line0->keys();
+                    dump($headers);
+
+                    dd($data);
+
+
+
+
+                    if (!empty($data) && $data->count()) {
+                        
+                        $errors = [];
+
+                        //toarray
+                        $arrdata = $data->toArray();
+
+                        //dd($res);
+
+                        if (!$userImport->checkImportData($arrdata, $company_id))
+                        {
+                            Session::flash('error_row_id', $userImport->getErrorRowId());
+                            Session::flash('valid_row_id', $userImport->getValidRowId());
+                            return redirect()->back()->withInput();
+                        }
+
+                        //dump(count($data));
+                        //dd($data);
+
+                        //if all is ok, create users
+                        $res = $userImport->createUsers($data, $company_id);
+                        //$total_rows = count($userImport->getValidRows());
+                        //dd($res);
+                        
+                    }
+
+                }
+
+            }
+            dd("hello");
+            
+            //send message(s)
             foreach ($usersSelected as $x) {
                 
                 //get the recipient user details
