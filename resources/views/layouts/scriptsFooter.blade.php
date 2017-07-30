@@ -32,7 +32,8 @@
 <script src="{{ asset('myjs/morris.min.js') }}"></script>
 <script src="{{ asset('myjs/jquery.toast.min.js') }}"></script>
 
-<script src="{{ asset('myjs/switchery.min.js') }}"></script> 
+<script src="{{ asset('myjs/switchery.min.js') }}"></script>  
+
 
 <script src="{{ asset('myjs/init.js') }}"></script>
 <script src="{{ asset('myjs/dashboard-data.js') }}"></script>
