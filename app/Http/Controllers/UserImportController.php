@@ -145,7 +145,7 @@ class UserImportController extends Controller
         }
 
         $filename = time() . ".csv";
-        $handle = fopen(public_path('download' . $filename), 'w+');
+        $handle = fopen(public_path('download/' . $filename), 'w+');
         fputcsv($handle, $header);
 
         foreach ($data as $row) {
@@ -158,7 +158,7 @@ class UserImportController extends Controller
             'Content-Type' => 'text/csv',
         ];
 
-        return response()->download(public_path('download' . $filename), $filename, $headers);
+        return response()->download(public_path('download/' . $filename), $filename, $headers);
 
     }
 
