@@ -13,12 +13,12 @@ class CreateTokensTable extends Migration
      */
     public function up()
     {
-        Schema::create('tokens', function (Blueprint $table) {
+        /*Schema::create('tokens', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('token');
             $table->timestamp('expire_at');
-        });
+        });*/
     }
 
     /**
@@ -28,6 +28,6 @@ class CreateTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tokens');
+        //Schema::dropIfExists('tokens');
     }
 }

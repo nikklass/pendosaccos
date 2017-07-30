@@ -15,7 +15,7 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         
-        $faker = Faker::create();
+        /*$faker = Faker::create();
 
         $this->command->info('Truncating User, Role and Permission tables');
         $this->truncateLaratrustTables();
@@ -103,14 +103,10 @@ class LaratrustSeeder extends Seeder
                     }
                 }
             }
-        }
+        }*/
     }
 
-    /**
-     * Truncates all the laratrust tables and the users table
-     * @return    void
-     */
-    public function truncateLaratrustTables()
+    /*public function truncateLaratrustTables()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('permission_role')->truncate();
@@ -120,5 +116,5 @@ class LaratrustSeeder extends Seeder
         \App\Role::truncate();
         \App\Permission::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-    }
+    }*/
 }

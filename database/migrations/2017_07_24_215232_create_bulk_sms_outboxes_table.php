@@ -25,7 +25,7 @@ class CreateBulkSmsOutboxesTable extends Migration
             $table->string('user_agent');
             $table->string('src_ip');
             $table->string('src_host');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->integer('status_id')->unsigned()->default(8);
             $table->integer('sms_type_id')->unsigned()->default(6);
             $table->integer('schedule_sms_outbox_id')->unsigned()->nullable();
@@ -46,7 +46,7 @@ class CreateBulkSmsOutboxesTable extends Migration
             $table->string('user_agent');
             $table->string('src_ip');
             $table->string('src_host');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->integer('status_id')->unsigned()->default(5);
             $table->integer('sms_type_id')->unsigned()->default(6);
             $table->integer('company_id')->unsigned()->nullable();
@@ -59,22 +59,22 @@ class CreateBulkSmsOutboxesTable extends Migration
         });
 
         /*sms types table*/
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('sms_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
             $table->string('description', 255);
             $table->timestamps();
-        });
+        });*/
 
         /*sms types table*/
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
             $table->text('section');
             $table->timestamps();
-        });
+        });*/
 
     }
 
@@ -87,7 +87,7 @@ class CreateBulkSmsOutboxesTable extends Migration
     {
         Schema::dropIfExists('sms_outboxes');
         Schema::dropIfExists('schedule_sms_outboxes');
-        Schema::dropIfExists('sms_types');
-        Schema::dropIfExists('statuses');
+        /*Schema::dropIfExists('sms_types');
+        Schema::dropIfExists('statuses');*/
     }
 }

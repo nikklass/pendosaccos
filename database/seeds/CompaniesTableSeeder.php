@@ -12,12 +12,13 @@ class CompaniesTableSeeder extends Seeder
      *
      * @return void
      */
+    
     public function run()
     {
-        $this->command->info('Truncating companies table');
+        /*$this->command->info('Truncating companies table');
         $this->truncateCompaniesTables();
 
-        factory(App\Company::class, 50)->create();
+        factory(App\Company::class, 50)->create();*/
 
     }
 

@@ -13,7 +13,7 @@ class CreateChatsTable extends Migration
      */
     public function up()
     {
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('chats', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('sender_id')->unsigned();
@@ -25,7 +25,7 @@ class CreateChatsTable extends Migration
             $table->index('sender_id');
             $table->index('receiver_id');
             $table->index(['sender_id', 'receiver_id']);
-        });
+        });*/
     }
 
     /**
@@ -35,6 +35,6 @@ class CreateChatsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chats');
+        //Schema::dropIfExists('chats');
     }
 }

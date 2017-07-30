@@ -13,7 +13,7 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -23,7 +23,7 @@ class CreatePostsTable extends Migration
             $table->string('host')->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -33,6 +33,6 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        //Schema::dropIfExists('posts');
     }
 }

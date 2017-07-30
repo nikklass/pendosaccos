@@ -13,7 +13,7 @@ class CreateFailedJobsTable extends Migration
      */
     public function up()
     {
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('connection');
@@ -21,7 +21,7 @@ class CreateFailedJobsTable extends Migration
             $table->longText('payload');
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
-        });
+        });*/
     }
 
     /**
@@ -31,6 +31,6 @@ class CreateFailedJobsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('failed_jobs');
+        //Schema::dropIfExists('failed_jobs');
     }
 }
