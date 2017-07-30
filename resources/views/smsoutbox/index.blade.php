@@ -27,6 +27,16 @@
        </div>
        <!-- /Title -->
 
+       @if (session('success'))
+        <div class="row">
+          <div class="col-sm-12 col-xs-12">
+            <div class="alert alert-success text-center">
+                {!! session('success') !!}
+            </div>
+          </div>
+        </div>
+      @endif
+
        <!-- Row -->
         <div class="row">
            <div class="col-sm-12 col-xs-12">

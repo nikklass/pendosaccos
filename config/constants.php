@@ -30,8 +30,8 @@ return [
     ],
     'bulk_sms' => [
         'send_sms_url' => $remote_api_url . "send_bulk_sms",
-        'get_sms_data' => $remote_api_url . "get_bulk_sms_data",
-        'get_sms_inbox' => $remote_api_url . "get_sms_inbox",
+        'get_sms_data_url' => $remote_api_url . "get_bulk_sms_data",
+        'get_sms_inbox_url' => $remote_api_url . "get_sms_inbox",
         'get_sms_inbox' => $remote_api_url . "get_sms_inbox",
         'src' => env('BULK_SMS_SRC'),
         'usr' => env('BULK_SMS_USR'),

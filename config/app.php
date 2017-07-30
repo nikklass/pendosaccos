@@ -235,6 +235,7 @@ return [
 
         'Laratrust'   => Laratrust\LaratrustFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Uuid' => Webpatser\Uuid\Uuid::class,
 
 
     ],

@@ -55,7 +55,9 @@
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Status:</strong>  
-                                            <span class="text-success">Sent</span>
+                                            <span class="text-success">
+                                                {{ $smsoutbox->status->name }}
+                                            </span>
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -102,7 +104,10 @@
                           
                           <ul class="list-icons">
                               <li class="mb-10">
-                                  <strong>Status: </strong> <span class="text-success">Sent</span>
+                                  <strong>Status: </strong> 
+                                  <span class="text-success">
+                                      {{ $smsoutbox->status->name }}
+                                  </span>
                               </li>
                               <li class="mb-10">
                                   <strong>Sent at: </strong> {{ $smsoutbox->created_at }}

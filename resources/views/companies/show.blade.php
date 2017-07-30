@@ -131,10 +131,12 @@
                           
                           <ul class="list-icons">
                               <li class="mb-10">
-                                  <strong>Groups: </strong> 42
+                                  <strong>Groups: </strong> 
+                                  {{ count($company->groups) }}
                               </li>
                               <li class="mb-10">
-                                  <strong>Members: </strong> 265
+                                  <strong>Members: </strong> 
+                                  {{ count($company->users) }}
                               </li>
                           </ul>
 
