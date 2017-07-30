@@ -29,9 +29,9 @@
           
           <div class="table-cell">
              <div class=" ml-auto mr-auto no-float">
-                
 
-                  <form class="form-horizontal" method="POST" action="{{ route('smsoutbox.store') }}">
+                  <form class="form-horizontal" method="POST" 
+                                        enctype="multipart/form-data" action="{{ route('smsoutbox.store') }}">
                   
                   <!-- <form class="form-horizontal" @submit.prevent="handleSubmit()">  -->
 
