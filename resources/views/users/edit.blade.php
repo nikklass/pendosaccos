@@ -7,6 +7,13 @@
 @endsection
 
 
+@section('css_header')
+
+<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+
+@endsection
+
+
 @section('content')
     
     <div class="container-fluid">
@@ -479,6 +486,8 @@
 
 
 @section('page_scripts')
+
+  <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 
   <script type="text/javascript">
 

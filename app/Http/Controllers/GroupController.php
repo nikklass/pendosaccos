@@ -46,6 +46,11 @@ class GroupController extends Controller
         } else {
             $companies = $user->companies;
         }
+        if (!count($companies)) {
+            $companies = [];
+        }
+        //dd($companies);
+
         return view('groups.create')->withCompanies($companies);
     }
 
