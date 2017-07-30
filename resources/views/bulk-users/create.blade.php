@@ -11,6 +11,11 @@
 
 <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
 
+<style type="text/css">
+  .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
+    overflow-x: hidden;}
+</style>
+
 @endsection
 
 
