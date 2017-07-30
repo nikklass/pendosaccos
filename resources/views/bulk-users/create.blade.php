@@ -9,12 +9,12 @@
 
 @section('css_header')
 
-<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
 
-<style type="text/css">
-  .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
-    overflow-x: hidden;}
-</style>
+    <style type="text/css">
+      .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
+        overflow-x: hidden;}
+    </style>
 
 @endsection
 
@@ -106,7 +106,7 @@
 
                                        <div class="form-group">
                                          <label class="col-sm-3 control-label">
-                                            Select Source File (XLS, XLSX, CSV)
+                                            Select File (XLS, XLSX, CSV)
                                          </label>
                                          <div class="col-sm-9">
                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
@@ -181,8 +181,6 @@
                                           Data successfully uploaded {{ session('valid_row_id') }}
                                        </div>
                                        @endif
-
-                                       
 
                                    </div>
 
