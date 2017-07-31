@@ -52,6 +52,10 @@ Route::group(['middleware' => 'role:superadministrator|administrator|editor|auth
 	//user routes...
 	Route::resource('/users', 'UserController');
 
+	//user profile routes...
+	Route::get('/profile/{id}', 'ProfileController@indexId')->name('user.profile.id');
+	Route::get('/profile', 'ProfileController@index')->name('user.profile'); 
+
 	//permission routes...
 	Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
 

@@ -7,30 +7,12 @@ use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
-use Hash;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Session;
 
-class UserController extends Controller
+class ProfileController extends Controller
 {
-    
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -41,46 +23,37 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $users = User::orderBy('id', 'desc')
-                ->with('roles')
-                ->with('company')
-                ->paginate(10);
-        return view('users.index')->withUsers($users);
-    }
-
-    public function showUserProfile($id)
-    {
-        if (!$id) {
-            $id = auth()->user()->id;
-        }
-
-        dd($id);
+        
+        $id = auth()->user()->id;
 
         $user = User::where('id', $id)
                 ->with('roles')
                 ->with('company')
                 ->first();
-        return view('users.profile')->withUser($user);
+                
+        return view('profile.index')->withUser($user);
+
+    }
+
+    public function indexId($id)
+    {
+
+        $user = User::where('id', $id)
+                ->with('roles')
+                ->with('company')
+                ->first();
+
+        return view('profile.index')->withUser($user);
 
     }
 
     /*show user create form*/
     public function create()
     {
-        $user = auth()->user();
-        //if user is superadmin, show all companies, else show a user's companies
-        if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
-        } else {
-            $companies = $user->company;
-        }
-        if (!count($companies)) {
-            $companies = [];
-        }
-        //dd($companies);
-        return view('users.create')->withCompanies($companies);
+        
     }
 
     /**
@@ -261,11 +234,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        /*$user = User::findOrFail($id);
         $user->delete();
         
-        return redirect('users.index');
+        return redirect('users.index');*/
     }
-
-
 }

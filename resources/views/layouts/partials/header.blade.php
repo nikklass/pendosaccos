@@ -114,7 +114,10 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#"><i class="zmdi zmdi-account"></i><span>Profile</span></a>
+                        <a href="{{ route('user.profile') }}">
+                            <i class="zmdi zmdi-account"></i>
+                            <span>Profile</span>
+                        </a>
                     </li>
                     <li>
                         <a href="#"><i class="zmdi zmdi-card"></i><span>my balance</span></a>
