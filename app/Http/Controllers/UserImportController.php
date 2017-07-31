@@ -48,7 +48,7 @@ class UserImportController extends Controller
         if ($user->hasRole('superadministrator')){
             $companies = Company::all();
         } else {
-            $companies = $user->companies;
+            $companies = $user->company;
         }
         if (!count($companies)) {
             $companies = [];
