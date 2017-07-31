@@ -525,7 +525,7 @@
             $(this).data("DateTimePicker").date(moment());
         });
 
-        $('#datetimepicker4').datetimepicker({
+        /*$('#datetimepicker4').datetimepicker({
           inline:true,
           sideBySide: true,
           useCurrent: false,
@@ -535,7 +535,7 @@
               up: "fa fa-arrow-up",
               down: "fa fa-arrow-down"
           }
-        });
+        });*/
 
         if( $('#exampleModal').length > 0 ){
           $('#exampleModal').on('show.bs.modal', function (event) {

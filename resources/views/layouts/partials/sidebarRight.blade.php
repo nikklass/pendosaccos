@@ -174,7 +174,9 @@
                                     <ul class="nicescroll-bar pt-20">
                                        <li class="friend">
                                           <div class="friend-msg-wrap">
-                                             <img class="user-img img-circle block pull-left"  src="/public/css/images/user.png" alt="user"/>
+                                             <img class="user-img img-circle block pull-left"  
+                                             src="{{ asset('images/no_user.jpg') }}" 
+                                             alt="user"/>
                                              <div class="msg pull-left">
                                                 <p>Hello Jason, how are you, it's been a long time since we last met?</p>
                                                 <div class="msg-per-detail text-right">
@@ -206,7 +208,9 @@
                                        </li>
                                        <li class="friend">
                                           <div class="friend-msg-wrap">
-                                             <img class="user-img img-circle block pull-left"  src="/public/css/images/user.png" alt="user"/>
+                                             <img class="user-img img-circle block pull-left"  
+                                             src="{{ asset('images/no_user.jpg') }}" 
+                                             alt="user"/>
                                              <div class="msg pull-left"> 
                                                 <p>Not too bad.</p>
                                                 <div class="msg-per-detail  text-right">
