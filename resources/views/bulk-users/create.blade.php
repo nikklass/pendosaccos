@@ -133,7 +133,8 @@
                                           <div class="col-sm-3"></div>
                                           <div class="col-sm-9">
                                             <a href="{{ asset('templates/new_user_template.xls') }}">
-                                              <i class="fa download"></i> Download Sample Excel File  
+                                              <i class="fa fa-file-excel-o text-success"></i>  
+                                              Download Sample Excel File  
                                             </a>
                                           </div>
                                       </div>
@@ -182,8 +183,7 @@
 
                                  <hr>
 
-                                 @if (session('valid_row_id'))
-
+                                 @if (!session('error_row_id'))
                                     <div class="user_options slimScrollDiv">
 
                                        @if (session('success'))
@@ -196,6 +196,28 @@
 
                                  @endif
 
+                                 @if ((session('valid_row_id')) && (session('error_row_id')))
+
+                                    <div class="user_options slimScrollDiv">
+
+                                       <div class="alert alert-default text-center">
+                                          <div class="text-danger">
+                                            Data not uploaded
+                                          </div>
+                                          <br/><br/>
+                                          <a href="{{ route('bulk-users.getincompletedata', session('valid_row_id')) }}" class="btn btn-block btn-success">
+                                            <i class="fa fa-download text-white"></i> &nbsp;   
+                                            Click to create users using valid data
+                                          </a>
+                                          
+                                       </div>
+
+                                   </div>
+
+                                   <hr>
+
+                                @endif
+
                                  @if (session('error_row_id'))
 
                                    <div class="user_options slimScrollDiv">
@@ -206,7 +228,8 @@
                                           </div>
                                           <br/><br/>
                                           <a href="{{ route('bulk-users.getimportdata', session('error_row_id')) }}" class="btn btn-block btn-danger">
-                                            Click here to download the error csv file
+                                            <i class="fa fa-download text-white"></i>  &nbsp; 
+                                            Download file with detected errors
                                           </a>
                                           
                                        </div>

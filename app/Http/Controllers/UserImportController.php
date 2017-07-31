@@ -163,9 +163,37 @@ class UserImportController extends Controller
     }
 
     //get incomplete data
-    public function getIncompleteData($id)
+    public function getIncompleteData($id, UserImport $userImport)
     {
         
+        //get logged in user's company id
+        $company_id = null;
+        if (auth()->user()->company) {
+            $company_id = auth()->user()->company->id;
+        }
+
+        $data = TempTable::where('uuid', $id)->first();
+
+        if (!$data) {
+            abort(400, "Cannot find import data");
+        }
+
+        if ($data->user_id != auth()->user()->id) {
+            abort(403, "Access Denied");
+        }
+
+        $data = unserialize($data->data);
+        $header = [];
+
+        dd($data);
+
+        foreach ($data[0] as $key => $value) {
+            $header[] = $key;
+        }
+
+        $userImport->createUsers($data, $company_id);
+
+        return redirect()->back();
 
     }
 
