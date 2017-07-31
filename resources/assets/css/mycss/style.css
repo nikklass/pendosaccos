@@ -125,11 +125,14 @@ ul {
 
 a {
   text-decoration: none;
-  color: #212121; }
+  /*color: #212121; */
+  color: #2879ff;
+}
 
 a:hover {
   text-decoration: none;
-  color: #212121; }
+  /*color: #212121;*/
+  color: #ff2a00; }
 
 a:focus {
   text-decoration: none;

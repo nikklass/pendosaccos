@@ -1,4 +1,4 @@
-<div class="setting-panel">
+<!-- <div class="setting-panel">
    <ul class="right-sidebar nicescroll-bar pa-0">
       <li class="layout-switcher-wrap">
          <ul>
@@ -54,5 +54,9 @@
          </ul>
       </li>
    </ul>
-</div>
-<button id="setting_panel_btn" class="btn btn-success btn-circle setting-panel-btn shadow-2dp"><i class="zmdi zmdi-settings"></i></button>
+</div> -->
+
+<button id="setting_panel_btn" class="btn btn-success btn-circle setting-panel-btn shadow-2dp">
+   <i class="zmdi zmdi-settings"></i>
+</button>
+

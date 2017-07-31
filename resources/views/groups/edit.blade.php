@@ -262,27 +262,5 @@
 @section('page_scripts')
 
   <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-
-  <script type="text/javascript">
-
-      var app = new Vue({
-        el: "#app",
-        
-        data() {
-            return {
-               companiesCount: {!! $companies->count() !!}
-            }
-        },
-        
-        methods : {
-
-            /*handleSubmit() {
-                $("#submit-btn").LoadingOverlay("show")
-            }*/
-            
-        }
-
-      });
-  </script>
   
 @endsection

@@ -11,6 +11,7 @@ require('./bootstrap');
 import Vue from 'vue';
 //import VueRouter from 'vue-router';
 import axios from 'axios';
+//import VueAxios from 'vue-axios'; 
 //import { routes } from './routes/index.js';
 //import store from './store/store';
 import moment from 'moment';
@@ -24,8 +25,21 @@ import { HTTP } from './common/http-common';
 import { userUrl, getHeader } from './config';
 import { clientId, clientSecret } from './.env'; 
 
+//import custom components
+//import
+
+//add x-csrf-token to all axios requests
+let token = document.head.querySelector('meta[name="csrf-token"]');
+axios.interceptors.request.use(function(config) {
+    config.headers['X-CSRF-TOKEN'] = token
+    return config
+})
+
+//make axios available as $http
+Vue.prototype.$http = axios
+
 window.Vue = Vue;
-window.axios = axios; 
+//window.axios = axios; 
 window.Form = Form;
 window.HTTP = HTTP;
 //window._ = _;
