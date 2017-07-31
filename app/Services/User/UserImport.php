@@ -125,18 +125,25 @@ class UserImport
 
 	public function getErrorRowId()
 	{
-		ksort($this->errorRows);
+		 if (count($this->errorRows)) {
 
-		//store row data in db
-		$row = TempTable::create([
-			'uuid' => Uuid::generate(),
-			'user_id' => auth()->user()->id,
-			'data' => serialize($this->errorRows),
-		]);
+			ksort($this->errorRows);
 
-		$this->errorRowId = $row->uuid->string;
+			//store row data in db
+			$row = TempTable::create([
+				'uuid' => Uuid::generate(),
+				'user_id' => auth()->user()->id,
+				'data' => serialize($this->errorRows),
+			]);
 
-		return $row->uuid->string;
+			$this->errorRowId = $row->uuid->string;
+
+			return $row->uuid->string;
+
+		} else {
+			return [];
+		}
+
 	}
 
 	private function checkEmailUserExist($emails, $company_id)
@@ -233,14 +240,21 @@ class UserImport
 			}
 		}
 
-		//store row data in db
-		$row = TempTable::create([
-			'uuid' => Uuid::generate(),
-			'user_id' => auth()->user()->id,
-			'data' => serialize($validUsers),
-		]);
+		if (count($validUsers))  {
+			//store row data in db
+			$row = TempTable::create([
+				'uuid' => Uuid::generate(),
+				'user_id' => auth()->user()->id,
+				'data' => serialize($validUsers),
+			]);
 
-		return $row->uuid->string;
+			return $row->uuid->string;
+
+		} else {
+
+			return [];
+
+		}
 
 	}
 
