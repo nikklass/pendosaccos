@@ -371,7 +371,7 @@
                                     How was your day today, u told me all was ok</span>
                                     <p class="txt-grey truncate">
                                        How was your day today, u told me all was ok How was your day today, u told me all was ok
-                                    </p>
+                                    </p> 
                                  </div>
                               </div>
                            </a>
