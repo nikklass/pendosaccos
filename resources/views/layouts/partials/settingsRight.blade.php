@@ -57,6 +57,6 @@
 </div> -->
 
 <button id="setting_panel_btn" class="btn btn-success btn-circle setting-panel-btn shadow-2dp">
-   <i class="zmdi zmdi-settings"></i>
+   <i class="fa fa-wechat"></i>
 </button>
 

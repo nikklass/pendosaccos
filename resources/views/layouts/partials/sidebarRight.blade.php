@@ -267,8 +267,11 @@
                                     <span class="inline-block capitalize-font   pull-left message-per">User 1</span>
                                     <span class="inline-block font-11  pull-right message-time">12:28 AM</span>
                                     <div class="clearfix"></div>
-                                    <span class=" truncate message-subject">Themeforest message sent via your envato market profile</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsu messm quia dolor sit amet, consectetur, adipisci velit</p>
+                                    <span class=" truncate message-subject">
+                                    How was your day today, u told me all was ok</span>
+                                    <p class="txt-grey truncate">
+                                       How was your day today, u told me all was ok How was your day today, u told me all was ok
+                                    </p>
                                  </div>
                               </div>
                            </a>

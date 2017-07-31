@@ -184,7 +184,7 @@
                                  <hr>
 
                                  @if (!session('error_row_id'))
-                                    <div class="user_options slimScrollDiv">
+                                    <div class="user_options slimScrollDiv nicescroll-bar">
 
                                        @if (session('success'))
                                        <div class="alert alert-success text-center">
@@ -198,7 +198,7 @@
 
                                  @if ((session('valid_row_id')) && (session('error_row_id')))
 
-                                    <div class="user_options slimScrollDiv">
+                                    <div class="user_options slimScrollDiv nicescroll-bar">
 
                                        <div class="alert alert-default text-center">
                                           <div class="text-danger">

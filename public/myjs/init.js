@@ -260,11 +260,13 @@ var theLoans = function(){
 		return;
 	});
 	
+
 	$(document).on('click', '#setting_panel_btn', function (e) {
-		//$wrapper.toggleClass('open-setting-panel').removeClass('open-right-sidebar');
 		$wrapper.toggleClass('open-right-sidebar').removeClass('open-setting-panel');
 		return false;
+	
 	});
+
 	$(document).on('click', '#toggle_mobile_nav', function (e) {
 		$wrapper.toggleClass('mobile-nav-open').removeClass('open-right-sidebar');
 		return;

@@ -397,7 +397,7 @@
                                                         <div  class="tab-struct custom-tab-1 mt-0">
                                                         
 
-                                                            <div class="user_options slimScrollDiv">
+                                                            <div class="user_options slimScrollDiv nicescroll-bar">
                                                               
                                                               <p>
                                                                   <ul>
