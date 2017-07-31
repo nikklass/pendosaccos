@@ -105,6 +105,7 @@ class UserController extends Controller
             'email' => request()->email,
             'company_id' => request()->company_id,
             'account_number' => request()->account_number,
+            'gender' => request()->gender,
             'phone_number' => formatPhoneNumber(request()->phone_number),
             'password' => bcrypt($password),
             'api_token' => str_random(60),
@@ -200,8 +201,6 @@ class UserController extends Controller
             'phone_number' => 'required'
         ]);
 
-        //dd($request);
-
         $user = User::findOrFail($id);
 
         $user->first_name = $request->first_name;
@@ -252,11 +251,5 @@ class UserController extends Controller
         return redirect('users.index');
     }
 
-    private function syncGroups($groups)
-    {
-        foreach ($groups as $group) {
-            $this->groups()->sync($group);
-        }
-    }
 
 }

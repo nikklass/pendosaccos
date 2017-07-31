@@ -283,14 +283,14 @@
                                                                </div>
                                                                <hr>
                                                                
-                                                               <div class="col-sm-12">
+                                                               <!-- <div class="col-sm-12">
                                                                   <label class="control-label mb-10 text-left">
                                                                       Please select date and time
                                                                   </label>
                                                                   <div class="form-group">
                                                                      <div class='input-group date' id='datetimepicker4'></div>
                                                                   </div>
-                                                               </div>
+                                                               </div> -->
 
                                                             </div>
                                                          </div>

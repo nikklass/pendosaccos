@@ -184,7 +184,7 @@ class ScheduleSmsOutboxController extends Controller
         if ($user->hasRole('superadministrator')){
             $companies = Company::all();
         } else {
-            $companies = $user->companies;
+            $companies = $user->company;
         }
         
         return view('smsoutbox.edit')->withGroup($group)->withCompanies($companies);

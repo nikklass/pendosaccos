@@ -48,7 +48,7 @@ class UserImportController extends Controller
         if ($user->hasRole('superadministrator')){
             $companies = Company::all();
         } else {
-            $companies = $user->companies;
+            $companies = $user->company;
         }
         if (!count($companies)) {
             $companies = [];
@@ -105,15 +105,14 @@ class UserImportController extends Controller
                 }
 
                 //dump(count($data));
-                //dd($data);
+                $count = count($data);
 
                 //if all is ok, create users
-                $res = $userImport->createUsers($data, $company_id);
-                //$total_rows = count($userImport->getValidRows());
-                //dd($res);
+                $userImport->createUsers($data, $company_id);
                 
             }
-            Session::flash('success', 'Successfully inserted users');
+            //Session::flash('success', 'Successfully inserted users');
+            Session::flash('success', 'Successfully inserted ' . $count . ' users');
             return redirect()->back();
             //return redirect()->route('users.index');
         }
@@ -185,7 +184,9 @@ class UserImportController extends Controller
         $data = unserialize($data->data);
         $header = [];
 
-        dd($data);
+        $count = count($data);
+
+        //dd($data);
 
         foreach ($data[0] as $key => $value) {
             $header[] = $key;
@@ -193,6 +194,7 @@ class UserImportController extends Controller
 
         $userImport->createUsers($data, $company_id);
 
+        Session::flash('success', 'Successfully inserted ' . $count . ' users');
         return redirect()->back();
 
     }

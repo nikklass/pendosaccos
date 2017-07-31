@@ -211,26 +211,3 @@
          
 
 @endsection
-
-
-@section('page_scripts')
-
-  <script type="text/javascript">
-
-      var app = new Vue({
-        el: "#app",
-        
-        data() {
-            return {
-
-            }
-        },
-        
-        methods : {
-            
-        }
-
-      });
-  </script>
-  
-@endsection

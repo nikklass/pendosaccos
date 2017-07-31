@@ -43,7 +43,7 @@
             <li>
                <a href="{{ route('companies.index') }}">
                   <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">View Companies</span>
+                  <span class="right-nav-text">Manage Companies</span>
                </a>
             </li>
 
@@ -72,7 +72,7 @@
             <li>
                <a href="{{ route('permissions.index') }}">
                   <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">View Permissions</span>
+                  <span class="right-nav-text">Manage Permissions</span>
                </a>
             </li>
 
@@ -101,7 +101,7 @@
             <li>
                <a href="{{ route('roles.index') }}">
                   <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">View Roles</span>
+                  <span class="right-nav-text">Manage Roles</span>
                </a>
             </li>
 
@@ -131,7 +131,7 @@
             <li>
                <a href="{{ route('groups.index') }}">
                   <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">View Groups</span>
+                  <span class="right-nav-text">Manage Groups</span>
                </a>
             </li>
 
@@ -166,7 +166,7 @@
             <li>
                <a href="{{ route('users.index') }}">
                   <i class="zmdi zmdi-accounts-list mr-10"></i>
-                  <span class="right-nav-text">View Users</span>
+                  <span class="right-nav-text">Manage Users</span>
                </a>
             </li>
 
@@ -234,7 +234,7 @@
                </ul>
             </li> -->
             <li>
-               <a href="sweetalert.html">Inbox</a>
+               <a href="#">Inbox</a>
             </li>
             <!-- <li>
                <a href="notifications.php">Short Codes</a>
@@ -256,10 +256,10 @@
          </a>
          <ul id="voice_dr" class="collapse collapse-level-1 two-col-list">
             <li>
-               <a href="panels_wells.php">Phone Numbers</a>
+               <a href="#">Phone Numbers</a>
             </li>
             <li>
-               <a href="modals.php">Create a Number</a>
+               <a href="#">Create a Number</a>
             </li>
             
          </ul>
@@ -278,13 +278,13 @@
          </a>
          <ul id="ussd_dr" class="collapse collapse-level-1 two-col-list">
             <li>
-               <a href="panels_wells.php">Service Codes</a>
+               <a href="#">Service Codes</a>
             </li>
             <li>
-               <a href="modals.php">Push Request</a>
+               <a href="#">Push Request</a>
             </li>
             <li>
-               <a href="modals.php">Analytics</a>
+               <a href="#">Analytics</a>
             </li>
             
          </ul>
@@ -303,13 +303,13 @@
          </a>
          <ul id="airtime_dr" class="collapse collapse-level-1 two-col-list">
             <li>
-               <a href="panels_wells.php">Transactions</a>
+               <a href="#">Transactions</a>
             </li>
             <li>
-               <a href="modals.php">Callback URL</a>
+               <a href="#">Callback URL</a>
             </li>
             <li>
-               <a href="modals.php">Analytics</a>
+               <a href="#">Analytics</a>
             </li>
             
          </ul>
@@ -330,10 +330,10 @@
          </a>
          <ul id="account_dr" class="collapse collapse-level-1 two-col-list">
             <li>
-               <a href="panels_wells.php">API Key</a>
+               <a href="#">Profile</a>
             </li>
             <li>
-               <a href="modals.php">Change Password</a>
+               <a href="#">Change Password</a>
             </li>
             
          </ul>

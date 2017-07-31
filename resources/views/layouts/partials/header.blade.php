@@ -24,7 +24,8 @@
        <li>
           <a id="open_right_sidebar" href="#"><i class="zmdi zmdi-settings top-nav-icon"></i></a>
        </li>
-       <li class="dropdown app-drp">
+
+       <!-- <li class="dropdown app-drp">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="zmdi zmdi-apps top-nav-icon"></i></a>
           <ul class="dropdown-menu app-dropdown" data-dropdown-in="slideInRight" data-dropdown-out="flipOutX">
              <li>
@@ -75,100 +76,6 @@
                    <a class="block text-center read-all" href="javascript:void(0)"> more </a>
                 </div>
              </li>
-          </ul>
-       </li>
-       <li class="dropdown full-width-drp">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="zmdi zmdi-more-vert top-nav-icon"></i></a>
-          <ul class="dropdown-menu mega-menu pa-0" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-             <li class="product-nicescroll-bar row">
-                <ul class="pa-20">
-                   <li class="col-md-3 col-xs-6 col-menu-list">
-                      <a href="javascript:void(0);"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">Dashboard</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
-                      <hr class="light-grey-hr ma-0"/>
-                      <ul>
-                         <li>
-                            <a href="index.html">Analytical</a>
-                         </li>
-                         <li>
-                            <a  href="index2.html">Demographic</a>
-                         </li>
-                         <li>
-                            <a href="index3.html">Project</a>
-                         </li>
-                         <li>
-                            <a href="profile.html">profile</a>
-                         </li>
-                      </ul>
-                      <a href="widgets.html"><div class="pull-left"><i class="zmdi zmdi-flag mr-20"></i><span class="right-nav-text">widgets</span></div><div class="pull-right"><span class="label label-warning">8</span></div><div class="clearfix"></div></a>
-                      <hr class="light-grey-hr ma-0"/>
-                      <a href="documentation.html"><div class="pull-left"><i class="zmdi zmdi-book mr-20"></i><span class="right-nav-text">documentation</span></div><div class="clearfix"></div></a>
-                      <hr class="light-grey-hr ma-0"/>
-                   </li>
-                   <li class="col-md-3 col-xs-6 col-menu-list">
-                      <a href="javascript:void(0);">
-                         <div class="pull-left">
-                            <i class="zmdi zmdi-shopping-basket mr-20"></i><span class="right-nav-text">E-Commerce</span>
-                         </div>   
-                         <div class="pull-right"><span class="label label-success">hot</span>
-                         </div>
-                         <div class="clearfix"></div>
-                      </a>
-                      <hr class="light-grey-hr ma-0"/>
-                      <ul>
-                         <li>
-                            <a href="e-commerce.html">Dashboard</a>
-                         </li>
-                         <li>
-                            <a href="product.html">Products</a>
-                         </li>
-                         <li>
-                            <a href="product-detail.html">Product Detail</a>
-                         </li>
-                         <li>
-                            <a href="add-products.html">Add Product</a>
-                         </li>
-                         <li>
-                            <a href="product-orders.html">Orders</a>
-                         </li>
-                         <li>
-                            <a href="product-cart.html">Cart</a>
-                         </li>
-                         <li>
-                            <a href="product-checkout.html">Checkout</a>
-                         </li>
-                      </ul>
-                   </li>
-                   <li class="col-md-6 col-xs-12 preview-carousel">
-                      <a href="javascript:void(0);"><div class="pull-left"><span class="right-nav-text">latest products</span></div><div class="clearfix"></div></a>
-                      <hr class="light-grey-hr ma-0"/>
-                      <div class="product-carousel owl-carousel owl-theme text-center">
-                         <a href="#">
-                            <img src="/public/css/images/chair.jpg" alt="chair">
-                            <span>Circle chair</span>
-                         </a>
-                         <a href="#">
-                            <img src="/public/css/images/chair2.jpg" alt="chair">
-                            <span>square chair</span>
-                         </a>
-                         <a href="#">
-                            <img src="/public/css/images/chair3.jpg" alt="chair">
-                            <span>semi circle chair</span>
-                         </a>
-                         <a href="#">
-                            <img src="/public/css/images/chair4.jpg" alt="chair">
-                            <span>wooden chair</span>
-                         </a>
-                         <a href="#">
-                            <img src="/public/css/images/chair2.jpg" alt="chair">
-                            <span>square chair</span>
-                         </a>                       
-                      </div>
-                   </li>
-                </ul>
-             </li> 
-          </ul>
-       </li>
-       <li class="dropdown alert-drp">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="zmdi zmdi-notifications top-nav-icon"></i><span class="top-nav-icon-badge">5</span></a>
           <ul  class="dropdown-menu alert-dropdown" data-dropdown-in="bounceIn" data-dropdown-out="bounceOut">
              <li>
@@ -188,10 +95,11 @@
                          </div>
                          <div class="sl-content">
                             <span class="inline-block capitalize-font  pull-left truncate head-notifications">
-                            New subscription created</span>
+                            New message received</span>
                             <span class="inline-block font-11  pull-right notifications-time">2pm</span>
                             <div class="clearfix"></div>
-                            <p class="truncate">Your customer subscribed for the basic plan. The customer will pay $25 per month.</p>
+                            <p class="truncate">
+                            Your customer xyz sent you a message. Click to view message.</p>
                          </div>
                       </a>  
                    </div>
@@ -202,7 +110,7 @@
                             <i class="zmdi zmdi-trending-down"></i>
                          </div>
                          <div class="sl-content">
-                            <span class="inline-block capitalize-font  pull-left truncate head-notifications txt-warning">Server #2 not responding</span>
+                            <span class="inline-block capitalize-font  pull-left truncate head-notifications txt-warning">Mpesa payments are due</span>
                             <span class="inline-block font-11 pull-right notifications-time">1pm</span>
                             <div class="clearfix"></div>
                             <p class="truncate">Some technical error occurred needs to be resolved.</p>
@@ -216,9 +124,10 @@
                             <i class="zmdi zmdi-email"></i>
                          </div>
                          <div class="sl-content">
-                            <span class="inline-block capitalize-font  pull-left truncate head-notifications">2 new messages</span>
+                            <span class="inline-block capitalize-font  pull-left truncate head-notifications">SMS balance is almost depleted</span>
                             <span class="inline-block font-11  pull-right notifications-time">4pm</span>
                             <div class="clearfix"></div>
+<<<<<<< HEAD
                             <p class="truncate"> The last payment for your G Suite Basic subscription failed.</p>
                          </div>
                       </a>  
@@ -234,9 +143,13 @@
                             <span class="inline-block font-11  pull-right notifications-time">1pm</span>
                             <div class="clearfix"></div>
                             <p class="truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
+=======
+                            <p class="truncate"> Click here to renew sms balances.</p>
+>>>>>>> 56c4708723ef9f25b7002d74bf6aa208e8c3db43
                          </div>
                       </a>  
                    </div>
+                   
                    <hr class="light-grey-hr ma-0"/>
                    <div class="sl-item">
                       <a href="javascript:void(0)">
@@ -244,7 +157,7 @@
                             <i class="zmdi zmdi-storage"></i>
                          </div>
                          <div class="sl-content">
-                            <span class="inline-block capitalize-font  pull-left truncate head-notifications txt-danger">99% server space occupied.</span>
+                            <span class="inline-block capitalize-font  pull-left truncate head-notifications txt-danger">New Message</span>
                             <span class="inline-block font-11  pull-right notifications-time">1pm</span>
                             <div class="clearfix"></div>
                             <p class="truncate">consectetur, adipisci velit.</p>
@@ -256,7 +169,7 @@
              <li>
                 <div class="notification-box-bottom-wrap">
                    <hr class="light-grey-hr ma-0"/>
-                   <a class="block text-center read-all" href="javascript:void(0)"> read all </a>
+                   <a class="block text-center read-all" href="javascript:void(0)"> View all </a>
                    <div class="clearfix"></div>
                 </div>
              </li>
@@ -272,7 +185,7 @@
           <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
              <li>
                 <a href="#" class="dropdown-toggle pr-0 level-2-drp">
-                    <i class="zmdi zmdi-check text-success"></i> 
+                    <i class="zmdi zmdi-account text-success"></i> 
                     {{ Auth::user()->first_name }} 
                     &nbsp; 
                     <!-- {{ Auth::user()->last_name }} -->
@@ -294,7 +207,7 @@
              <li class="divider"></li>
              <li class="sub-menu show-on-hover">
                 <a href="#" class="dropdown-toggle pr-0 level-2-drp">
-                  <i class="zmdi zmdi-check text-danger"></i> 
+                  <i class="zmdi zmdi-check text-success"></i> 
                   available
                 </a>
                 <ul class="dropdown-menu open-left-side">

@@ -261,7 +261,8 @@ var theLoans = function(){
 	});
 	
 	$(document).on('click', '#setting_panel_btn', function (e) {
-		$wrapper.toggleClass('open-setting-panel').removeClass('open-right-sidebar');
+		//$wrapper.toggleClass('open-setting-panel').removeClass('open-right-sidebar');
+		$wrapper.toggleClass('open-right-sidebar').removeClass('open-setting-panel');
 		return false;
 	});
 	$(document).on('click', '#toggle_mobile_nav', function (e) {

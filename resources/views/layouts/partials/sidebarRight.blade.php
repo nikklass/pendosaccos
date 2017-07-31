@@ -5,7 +5,6 @@
             <ul role="tablist" class="nav nav-tabs" id="right_sidebar_tab">
                <li class="active" role="presentation"><a aria-expanded="true"  data-toggle="tab" role="tab" id="chat_tab_btn" href="#chat_tab">chat</a></li>
                <li role="presentation" class=""><a  data-toggle="tab" id="messages_tab_btn" role="tab" href="#messages_tab" aria-expanded="false">messages</a></li>
-               <li role="presentation" class=""><a  data-toggle="tab" id="todo_tab_btn" role="tab" href="#todo_tab" aria-expanded="false">todo</a></li>
             </ul>
             <div class="tab-content" id="right_sidebar_content">
                <div  id="chat_tab" class="tab-pane fade active in" role="tabpanel">
@@ -32,105 +31,125 @@
                               <ul class="chat-list-wrap">
                                  <li class="chat-list">
                                     <div class="chat-body">
+                                       
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Clay Masse</span>
+                                                <span class="name block capitalize-font">User 1</span>
                                                 <span class="time block truncate txt-grey">No one saves us but ourselves.</span>
                                              </div>
                                              <div class="status away"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user1.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Evie Ono</span>
+                                                <span class="name block capitalize-font">User 2</span>
                                                 <span class="time block truncate txt-grey">Unity is strength</span>
                                              </div>
                                              <div class="status offline"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user2.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Madalyn Rascon</span>
+                                                <span class="name block capitalize-font">User 3</span>
                                                 <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
                                              </div>
                                              <div class="status online"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user3.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Mitsuko Heid</span>
-                                                <span class="time block truncate txt-grey">I’m thankful.</span>
+                                                <span class="name block capitalize-font">User 3</span>
+                                                <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
                                              </div>
                                              <div class="status online"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Ezequiel Merideth</span>
-                                                <span class="time block truncate txt-grey">Patience is bitter.</span>
-                                             </div>
-                                             <div class="status offline"></div>
-                                             <div class="clearfix"></div>
-                                          </div>
-                                       </a>
-                                       <a  href="javascript:void(0)">
-                                          <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user1.png" alt="user"/>
-                                             <div class="user-data">
-                                                <span class="name block capitalize-font">Jonnie Metoyer</span>
-                                                <span class="time block truncate txt-grey">Genius is eternal patience.</span>
+                                                <span class="name block capitalize-font">User 3</span>
+                                                <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
                                              </div>
                                              <div class="status online"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user2.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Angelic Lauver</span>
-                                                <span class="time block truncate txt-grey">Every burden is a blessing.</span>
-                                             </div>
-                                             <div class="status away"></div>
-                                             <div class="clearfix"></div>
-                                          </div>
-                                       </a>
-                                       <a  href="javascript:void(0)">
-                                          <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user3.png" alt="user"/>
-                                             <div class="user-data">
-                                                <span class="name block capitalize-font">Priscila Shy</span>
-                                                <span class="time block truncate txt-grey">Wise to resolve, and patient to perform.</span>
+                                                <span class="name block capitalize-font">User 3</span>
+                                                <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
                                              </div>
                                              <div class="status online"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
                                        <a  href="javascript:void(0)">
                                           <div class="chat-data">
-                                             <img class="user-img img-circle"  src="/public/css/images/user4.png" alt="user"/>
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
                                              <div class="user-data">
-                                                <span class="name block capitalize-font">Linda Stack</span>
-                                                <span class="time block truncate txt-grey">Our patience will achieve more than our force.</span>
+                                                <span class="name block capitalize-font">User 3</span>
+                                                <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
                                              </div>
-                                             <div class="status away"></div>
+                                             <div class="status online"></div>
                                              <div class="clearfix"></div>
                                           </div>
                                        </a>
+
+                                       <a  href="javascript:void(0)">
+                                          <div class="chat-data">
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
+                                             <div class="user-data">
+                                                <span class="name block capitalize-font">User 3</span>
+                                                <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
+                                             </div>
+                                             <div class="status online"></div>
+                                             <div class="clearfix"></div>
+                                          </div>
+                                       </a>
+
+                                       <a  href="javascript:void(0)">
+                                          <div class="chat-data">
+                                             <img class="user-img img-circle"  
+                                             src="{{ asset('images/no_user.jpg') }}" alt="user"/>
+                                             <div class="user-data">
+                                                <span class="name block capitalize-font">User 3</span>
+                                                <span class="time block truncate txt-grey">Respect yourself if you would have others respect you.</span>
+                                             </div>
+                                             <div class="status online"></div>
+                                             <div class="clearfix"></div>
+                                          </div>
+                                       </a>
+
+
                                     </div>
                                  </li>
                               </ul>
@@ -237,15 +256,18 @@
                      </div>
                      <div class="set-height-wrap">
                         <div class="streamline message-box nicescroll-bar">
+                           
                            <a href="javascript:void(0)">
                               <div class="sl-item unread-message">
                                  <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user.png" alt="avatar"/>
+                                    <img class="img-responsive img-circle" 
+                                    src="{{ asset('images/no_user.jpg') }}" alt="avatar"/>
                                  </div>
                                  <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Clay Masse</span>
+                                    <span class="inline-block capitalize-font   pull-left message-per">User 1</span>
                                     <span class="inline-block font-11  pull-right message-time">12:28 AM</span>
                                     <div class="clearfix"></div>
+<<<<<<< HEAD
                                     <span class=" truncate message-subject">Themeforest message sent via your envato market profile</span>
                                     <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsu messm quia dolor sit amet, consectetur, adipisci velit</p>
                                  </div>
@@ -276,27 +298,36 @@
                                     <div class="clearfix"></div>
                                     <span class=" truncate message-subject">Congratulations from design nominees</span>
                                     <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
+                                    <span class=" truncate message-subject">
+                                    How was your day today, u told me all was ok</span>
+                                    <p class="txt-grey truncate">
+                                       How was your day today, u told me all was ok How was your day today, u told me all was ok
+                                    </p>
                                  </div>
                               </div>
                            </a>
+
                            <a href="javascript:void(0)">
                               <div class="sl-item unread-message">
                                  <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user3.png" alt="avatar"/>
+                                    <img class="img-responsive img-circle" 
+                                    src="{{ asset('images/no_user.jpg') }}" alt="avatar"/>
                                  </div>
                                  <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Ezequiel Merideth</span>
-                                    <span class="inline-block font-11  pull-right message-time">29 Jan</span>
+                                    <span class="inline-block capitalize-font   pull-left message-per">User 1</span>
+                                    <span class="inline-block font-11  pull-right message-time">12:28 AM</span>
                                     <div class="clearfix"></div>
-                                    <span class=" truncate message-subject">Themeforest item support message</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
+                                    <span class=" truncate message-subject">
+                                    How was your day today, u told me all was ok</span>
+                                    <p class="txt-grey truncate">
+                                       How was your day today, u told me all was ok How was your day today, u told me all was ok
+                                    </p>
                                  </div>
                               </div>
                            </a>
                            <a href="javascript:void(0)">
                               <div class="sl-item unread-message">
                                  <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user4.png" alt="avatar"/>
                                  </div>
                                  <div class="sl-content">
                                     <span class="inline-block capitalize-font   pull-left message-per">Jonnie Metoyer</span>
@@ -311,106 +342,45 @@
                               <div class="sl-item">
                                  <div class="sl-avatar avatar avatar-sm avatar-circle">
                                     <img class="img-responsive img-circle" src="/public/css/images/user.png" alt="avatar"/>
+                                    <img class="img-responsive img-circle" 
+                                    src="{{ asset('images/no_user.jpg') }}" alt="avatar"/>
                                  </div>
                                  <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Priscila Shy</span>
-                                    <span class="inline-block font-11  pull-right message-time">19 Jan</span>
+                                    <span class="inline-block capitalize-font   pull-left message-per">User 1</span>
+                                    <span class="inline-block font-11  pull-right message-time">12:28 AM</span>
                                     <div class="clearfix"></div>
-                                    <span class=" truncate message-subject">Your uploaded theme is been selected</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
+                                    <span class=" truncate message-subject">
+                                    How was your day today, u told me all was ok</span>
+                                    <p class="txt-grey truncate">
+                                       How was your day today, u told me all was ok How was your day today, u told me all was ok
+                                    </p>
                                  </div>
                               </div>
                            </a>
                            <a href="javascript:void(0)">
-                              <div class="sl-item">
+                              <div class="sl-item unread-message">
                                  <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user1.png" alt="avatar"/>
+                                    <img class="img-responsive img-circle" 
+                                    src="{{ asset('images/no_user.jpg') }}" alt="avatar"/>
                                  </div>
                                  <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Linda Stack</span>
-                                    <span class="inline-block font-11  pull-right message-time">13 Jan</span>
+                                    <span class="inline-block capitalize-font   pull-left message-per">User 1</span>
+                                    <span class="inline-block font-11  pull-right message-time">12:28 AM</span>
                                     <div class="clearfix"></div>
-                                    <span class=" truncate message-subject"> A new rating has been received</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
+                                    <span class=" truncate message-subject">
+                                    How was your day today, u told me all was ok</span>
+                                    <p class="txt-grey truncate">
+                                       How was your day today, u told me all was ok How was your day today, u told me all was ok
+                                    </p>
                                  </div>
                               </div>
                            </a>
+
                         </div>
                      </div>
                   </div>
                </div>
-               <div  id="todo_tab" class="tab-pane fade" role="tabpanel">
-                  <div class="todo-box-wrap">
-                     <div class="add-todo">
-                        <a href="javascript:void(0)" class="inline-block txt-grey">
-                           <i class="zmdi zmdi-more"></i>
-                        </a>  
-                        <span class="inline-block txt-dark">todo list</span>
-                        <a href="javascript:void(0)" class="inline-block text-right txt-grey"><i class="zmdi zmdi-plus"></i></a>
-                        <div class="clearfix"></div>
-                     </div>
-                     <div class="set-height-wrap">
-                        <!-- Todo-List -->
-                        <ul class="todo-list nicescroll-bar">
-                           <li class="todo-item">
-                              <div class="checkbox checkbox-default">
-                                 <input type="checkbox" id="checkbox01"/>
-                                 <label for="checkbox01">Record The First Episode</label>
-                              </div>
-                           </li>
-                           <li>
-                              <hr class="light-grey-hr"/>
-                           </li>
-                           <li class="todo-item">
-                              <div class="checkbox checkbox-pink">
-                                 <input type="checkbox" id="checkbox02"/>
-                                 <label for="checkbox02">Prepare The Conference Schedule</label>
-                              </div>
-                           </li>
-                           <li>
-                              <hr class="light-grey-hr"/>
-                           </li>
-                           <li class="todo-item">
-                              <div class="checkbox checkbox-warning">
-                                 <input type="checkbox" id="checkbox03" checked/>
-                                 <label for="checkbox03">Decide The Live Discussion Time</label>
-                              </div>
-                           </li>
-                           <li>
-                              <hr class="light-grey-hr"/>
-                           </li>
-                           <li class="todo-item">
-                              <div class="checkbox checkbox-success">
-                                 <input type="checkbox" id="checkbox04" checked/>
-                                 <label for="checkbox04">Prepare For The Next Project</label>
-                              </div>
-                           </li>
-                           <li>
-                              <hr class="light-grey-hr"/>
-                           </li>
-                           <li class="todo-item">
-                              <div class="checkbox checkbox-danger">
-                                 <input type="checkbox" id="checkbox05" checked/>
-                                 <label for="checkbox05">Finish Up AngularJs Tutorial</label>
-                              </div>
-                           </li>
-                           <li>
-                              <hr class="light-grey-hr"/>
-                           </li>
-                           <li class="todo-item">
-                              <div class="checkbox checkbox-purple">
-                                 <input type="checkbox" id="checkbox06" checked/>
-                                 <label for="checkbox06">Finish Infinity Project</label>
-                              </div>
-                           </li>
-                           <li>
-                              <hr class="light-grey-hr"/>
-                           </li>
-                        </ul>
-                        <!-- /Todo-List -->
-                     </div>
-                  </div>
-               </div>
+               
             </div>
          </div>
       </li>
