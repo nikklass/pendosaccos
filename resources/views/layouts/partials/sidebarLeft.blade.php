@@ -330,7 +330,9 @@
          </a>
          <ul id="account_dr" class="collapse collapse-level-1 two-col-list">
             <li>
-               <a href="#">Profile</a>
+               <a href="{{ route('user.profile') }}">
+                  Profile
+               </a>
             </li>
             <li>
                <a href="#">Change Password</a>
