@@ -267,45 +267,12 @@
                                     <span class="inline-block capitalize-font   pull-left message-per">User 1</span>
                                     <span class="inline-block font-11  pull-right message-time">12:28 AM</span>
                                     <div class="clearfix"></div>
-<<<<<<< HEAD
                                     <span class=" truncate message-subject">Themeforest message sent via your envato market profile</span>
                                     <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsu messm quia dolor sit amet, consectetur, adipisci velit</p>
                                  </div>
                               </div>
                            </a>
-                           <a href="javascript:void(0)">
-                              <div class="sl-item">
-                                 <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user1.png" alt="avatar"/>
-                                 </div>
-                                 <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Evie Ono</span>
-                                    <span class="inline-block font-11  pull-right message-time">1 Feb</span>
-                                    <div class="clearfix"></div>
-                                    <span class=" truncate message-subject">Pogody theme support</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
-                                 </div>
-                              </div>
-                           </a>
-                           <a href="javascript:void(0)">
-                              <div class="sl-item">
-                                 <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user2.png" alt="avatar"/>
-                                 </div>
-                                 <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Madalyn Rascon</span>
-                                    <span class="inline-block font-11  pull-right message-time">31 Jan</span>
-                                    <div class="clearfix"></div>
-                                    <span class=" truncate message-subject">Congratulations from design nominees</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
-                                    <span class=" truncate message-subject">
-                                    How was your day today, u told me all was ok</span>
-                                    <p class="txt-grey truncate">
-                                       How was your day today, u told me all was ok How was your day today, u told me all was ok
-                                    </p>
-                                 </div>
-                              </div>
-                           </a>
+                           
 
                            <a href="javascript:void(0)">
                               <div class="sl-item unread-message">
@@ -325,23 +292,10 @@
                                  </div>
                               </div>
                            </a>
-                           <a href="javascript:void(0)">
-                              <div class="sl-item unread-message">
-                                 <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                 </div>
-                                 <div class="sl-content">
-                                    <span class="inline-block capitalize-font   pull-left message-per">Jonnie Metoyer</span>
-                                    <span class="inline-block font-11  pull-right message-time">27 Jan</span>
-                                    <div class="clearfix"></div>
-                                    <span class=" truncate message-subject">Help with beavis contact form</span>
-                                    <p class="txt-grey truncate">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit</p>
-                                 </div>
-                              </div>
-                           </a>
+                           
                            <a href="javascript:void(0)">
                               <div class="sl-item">
                                  <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                    <img class="img-responsive img-circle" src="/public/css/images/user.png" alt="avatar"/>
                                     <img class="img-responsive img-circle" 
                                     src="{{ asset('images/no_user.jpg') }}" alt="avatar"/>
                                  </div>
