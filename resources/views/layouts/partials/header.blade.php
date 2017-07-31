@@ -77,25 +77,11 @@
                                         <span class="inline-block capitalize-font  pull-left truncate head-notifications">2 new messages</span>
                                         <span class="inline-block font-11  pull-right notifications-time">4pm</span>
                                         <div class="clearfix"></div>
-                                        <p class="truncate"> The last payment for your G Suite Basic subscription failed.</p>
+                                        <p class="truncate"> You received a message from a user</p>
                                     </div>
                                 </a>
                             </div>
                            
-                            <hr class="light-grey-hr ma-0" />
-                            <div class="sl-item">
-                                <a href="javascript:void(0)">
-                                    <div class="icon bg-red">
-                                        <i class="zmdi zmdi-storage"></i>
-                                    </div>
-                                    <div class="sl-content">
-                                        <span class="inline-block capitalize-font  pull-left truncate head-notifications txt-danger">99% server space occupied.</span>
-                                        <span class="inline-block font-11  pull-right notifications-time">1pm</span>
-                                        <div class="clearfix"></div>
-                                        <p class="truncate">consectetur, adipisci velit.</p>
-                                    </div>
-                                </a>
-                            </div>
                         </div>
                     </li>
                     <li>
