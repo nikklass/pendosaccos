@@ -61,7 +61,7 @@ class UserController extends Controller
         //get company users
         $users = [];
 
-        if ($companies) {
+        if ($companies) { 
 
             $users = User::whereIn('company_id', $companies)
                     ->orderBy('id', 'desc')
