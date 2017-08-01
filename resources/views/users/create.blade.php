@@ -69,7 +69,7 @@
                                              <select class="selectpicker form-control" 
                                                 name="company_id" 
                                                 data-style="form-control btn-default btn-outline"
-                                                required>
+                                                required>  
 
                                                 @foreach ($companies as $company)
                                                 <li class="mb-10">
