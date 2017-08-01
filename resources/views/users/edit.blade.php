@@ -100,7 +100,7 @@
                                                               
                                                           <label for="company_id" class="col-sm-3 control-label">
                                                              Company
-                                                             <span class="text-danger"> *</span>
+                                                             <span class="text-danger"> *</span> 
                                                           </label>
                                                           <div class="col-sm-9">
                                                             
@@ -136,7 +136,7 @@
                                                        @else
 
                                                           <div class="form-group">
-                                                            <label class="control-label col-md-3">Company Name</label>
+                                                            <label class="control-label col-md-3">Company</label>
                                                             <div class="col-md-9">
                                                             
                                                               @if ($user->company)
