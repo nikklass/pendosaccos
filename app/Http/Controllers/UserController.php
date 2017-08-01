@@ -70,7 +70,7 @@ class UserController extends Controller
 
         }
 
-        dd($users, $companies);
+        //dd($users, $companies);
 
         return view('users.index')
                 ->withUser($user)
