@@ -98,7 +98,7 @@
                                        @else
 
                                           <div class="form-group">
-                                            <label class="control-label col-md-3">Company Name</label>
+                                            <label class="control-label col-md-3">Company</label>
                                             <div class="col-md-9">
                                             
                                               @if ($user->company)
