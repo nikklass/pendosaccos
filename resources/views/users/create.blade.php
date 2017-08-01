@@ -114,6 +114,33 @@
 
                                        @endif
 
+                                       @if (Auth::user()->hasRole('superadministrator'))
+                                       <div  class="form-group{{ $errors->has('sms_user_name') ? ' has-error' : '' }}">
+                                              
+                                          <label for="sms_user_name" class="col-sm-3 control-label">
+                                             SMS User Name
+                                          </label>
+                                          <div class="col-sm-9">
+                                             <div class="input-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="sms_user_name" 
+                                                    name="sms_user_name"
+                                                    maxlength="13" 
+                                                    value="{{ old('sms_user_name') }}" required>
+                                                <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                             </div>
+                                             @if ($errors->has('sms_user_name'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('sms_user_name') }}</strong>
+                                                  </span>
+                                             @endif
+                                          </div>
+
+                                       </div>
+                                       @endif
+
                                        
                                        <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
                                               
@@ -238,32 +265,7 @@
                                              @endif
                                           </div>
 
-                                       </div>
-
-                                       <div  class="form-group{{ $errors->has('sms_user_name') ? ' has-error' : '' }}">
-                                              
-                                          <label for="sms_user_name" class="col-sm-3 control-label">
-                                             SMS User Name
-                                          </label>
-                                          <div class="col-sm-9">
-                                             <div class="input-group">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control" 
-                                                    id="sms_user_name" 
-                                                    name="sms_user_name"
-                                                    maxlength="13" 
-                                                    value="{{ old('sms_user_name') }}" required>
-                                                <div class="input-group-addon"><i class="icon-lock"></i></div>
-                                             </div>
-                                             @if ($errors->has('sms_user_name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('sms_user_name') }}</strong>
-                                                  </span>
-                                             @endif
-                                          </div>
-
-                                       </div>
+                                       </div>                                       
                                        
                                        <div class="form-group">
                                           <label for="gender" class="col-sm-3 control-label">

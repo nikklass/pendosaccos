@@ -67,7 +67,7 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         
-        dd($request);
+        //dd($request);
 
         $user_id = auth()->user()->id;
 

@@ -52,18 +52,7 @@
                                        
                                        {{ csrf_field() }}
 
-                                       <!-- @if (count($errors))
-                                         <div class="alert alert-danger text-center">
-                                             <ul class="list-icons mb-20">
-                                 @foreach ($errors as $error)                                          
-                                    <li> 
-                                      <i class="fa fa-genderless text-white mr-5"></i>
-                                      {!! $error !!}
-                                    </li>
-                                 @endforeach
-                                             </ul>
-                                         </div>
-                                       @endif -->
+                             
                                        
                                        <div  
                                           class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
@@ -83,7 +72,7 @@
                                                 @foreach ($companies as $company)
                                                   <li class="mb-10">
                                                   <option value="{{ $company->id }}"
-                                            @if ($company->id == old('company_id', $company->id))
+                                            @if ($company->id == old('company_id', $user->company->id))
                                                 selected="selected"
                                             @endif
                                                       >
