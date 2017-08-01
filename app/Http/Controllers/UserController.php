@@ -49,14 +49,12 @@ class UserController extends Controller
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies[] = Company::all()->pluck('id');
+            $companies = Company::all()->pluck('id');
         } else if ($user->hasRole('administrator')) {
             if ($user->company) {
                 $companies[] = $user->company->id;
             }
         }
-
-        //dd($user, $companies);
 
         //get company users
         $users = [];
@@ -66,6 +64,7 @@ class UserController extends Controller
             $users = User::whereIn('company_id', $companies)
                     ->orderBy('id', 'desc')
                     ->with('company')
+                    ->with('roles')
                     ->paginate(10);
 
         }
@@ -89,11 +88,11 @@ class UserController extends Controller
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies[] = Company::all();
+            $companies = Company::all();
         } else {
-            $companies[] = $user->company;
+            $companies = $user->company;
         }
-        //dd($userCompany);
+        //dd($companies);
 
         return view('users.create')
             ->withCompanies($companies)

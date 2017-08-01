@@ -23,7 +23,7 @@ class CreateUsersGroupsTable extends Migration
             $table->string('account_number', 50);
             $table->enum('gender', ['m', 'f']);
             $table->string('email', 50)->nullable();
-            $table->string('phone_number', 13)->unique();
+            $table->string('phone_number', 13);
             $table->string('password')->nullable();
             $table->integer('company_id')->unsigned()->nullable();
             $table->integer('created_by')->unsigned()->nullable();
@@ -32,6 +32,7 @@ class CreateUsersGroupsTable extends Migration
             $table->boolean('active')->default(0);
             $table->unique(array('email', 'company_id'));
             $table->unique(array('account_number', 'company_id'));
+            $table->unique(array('phone_number', 'company_id'));
             $table->rememberToken();
             $table->timestamps();
         });

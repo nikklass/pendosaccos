@@ -42,17 +42,37 @@ class UserImportController extends Controller
      */
     public function create()
     {
-        
+
         $user = auth()->user();
+
         //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
-        } else {
-            $companies = $user->company;
+            $companies[] = Company::all()->pluck('id');
+        } else if ($user->hasRole('administrator')) {
+            if ($user->company) {
+                $companies[] = $user->company->id;
+            }
         }
-        if (!count($companies)) {
-            $companies = [];
+
+        //get company users
+        $users = [];
+
+        if ($companies) { 
+
+            $users = User::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->paginate(10);
+
         }
+
+        //dd($users, $companies);
+
+        return view('users.index')
+                ->withUser($user)
+                ->withUsers($users);
+
         //dd($companies);
         return view('bulk-users.create')->withCompanies($companies);
 

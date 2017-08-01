@@ -81,15 +81,15 @@
                                                 required>
                                            
                                                 @foreach ($companies as $company)
-                                                <li class="mb-10">
-                                                <option value="{{ $company->id }}"
-                                          @if ($company->id == old('company_id', $company->id))
-                                              selected="selected"
-                                          @endif
-                                                    >
-                                                      {{ $company->name }}
-                                                    </option>
-                                                </li>
+                                                  <li class="mb-10">
+                                                  <option value="{{ $company->id }}"
+                                            @if ($company->id == old('company_id', $company->id))
+                                                selected="selected"
+                                            @endif
+                                                      >
+                                                        {{ $company->name }}
+                                                      </option>
+                                                  </li>
                                                 @endforeach
                                                 
                                              </select>
