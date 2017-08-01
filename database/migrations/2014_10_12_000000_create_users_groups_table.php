@@ -28,6 +28,7 @@ class CreateUsersGroupsTable extends Migration
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->string('api_token', 60)->unique()->nullable();
+            $table->boolean('active')->default(0);
             $table->unique(array('email', 'company_id'));
             $table->unique(array('account_number', 'company_id'));
             $table->rememberToken();

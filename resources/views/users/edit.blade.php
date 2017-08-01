@@ -243,16 +243,18 @@
                                                              <div class="col-sm-12">
                                                                 <div class="radio">
                                                                    <input type="radio" 
-                                                                      name="change_password" id="change_password" 
+                                                                      name="change_password" 
+                                                                      id="change_password" 
                                                                       v-model='password_option'
-                                                                      value="keep" checked="">
+                                                                      value="keep" checked>
                                                                    <label for="keep">Don't change Password</label>
                                                                 </div>
                                                              </div>
                                                              <div class="col-sm-12">
                                                                 <div class="radio">
                                                                    <input type="radio" 
-                                                                      name="change_password" id="change_password" 
+                                                                      name="change_password" 
+                                                                      id="change_password" 
                                                                       v-model='password_option'
                                                                       value="auto">
                                                                    <label for="auto">AutoGenerate New Password</label>
@@ -261,12 +263,14 @@
                                                              <div class="col-sm-12">
                                                                 <div class="radio">
                                                                    <input type="radio" 
-                                                                      name="change_password" id="change_password" 
+                                                                      name="change_password" 
+                                                                      id="change_password" 
                                                                       v-model='password_option'
                                                                       value="manual">
                                                                    <label for="manual">Manually Set New Password</label>
                                                                 </div>
-                                                                <div class="input-group" v-if="password_option=='manual'">
+                                                                <div class="input-group" 
+                                                                    v-if="password_option=='manual'">
                                                                     <input 
                                                                         type="password" 
                                                                         class="form-control" 
@@ -496,16 +500,23 @@
         
         data() {
             return {
-              password_option: 'keep',
+              password_option: 'auto',
               rolesSelected: {!!$user->roles->pluck('id')!!},
-              groupsSelected: {!!$user->groups->pluck('id')!!}
+              groupsSelected: {!!$user->groups->pluck('id')!!},
             }
         },
         
         methods : {
 
-            handleSubmit() {
-                $("#submit-btn").LoadingOverlay("show")
+            checkPasswordOption() {
+                password_option = this.password_option
+                if (password_option == 'manual'){
+                    console.log('manual')
+                } else if (password_option == 'auto'){
+                    console.log('auto')
+                } else {
+                    console.log('keep')
+                }
             }
             
         }

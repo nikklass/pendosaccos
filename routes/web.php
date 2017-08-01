@@ -49,6 +49,9 @@ Route::group(['middleware' => 'role:superadministrator|administrator|editor|auth
 	Route::get('users/create-bulk/get-data/{uuid}', 'UserImportController@getImportData')->name('bulk-users.getimportdata');
 	Route::get('users/create-bulk/get-incomplete/{uuid}', 'UserImportController@getIncompleteData')->name('bulk-users.getincompletedata');
 	
+	//send email routes...
+	Route::get('/email/newUser', 'EmailController@newUserEmail')->name('email.newuser');
+
 	//user routes...
 	Route::resource('/users', 'UserController');
 

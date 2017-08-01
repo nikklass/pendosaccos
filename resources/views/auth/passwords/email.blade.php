@@ -9,11 +9,11 @@
 @endsection
 
 @section('auth_button_text_url')
-    /register
+    {{ route('login') }}
 @endsection
 
 @section('auth_button_text')
-    Register
+    Login
 @endsection
 
 @section('content')
@@ -83,7 +83,9 @@
                                      <hr>
 
                                      <div class="text-center">
-                                        <a href="{{ route('register') }}">Don't Have an Account Yet? Register</a>
+                                        <a href="{{ route('login') }}">
+                                            Don't Have an Account Yet? Register
+                                        </a>
                                      </div>
 
                                   </form>

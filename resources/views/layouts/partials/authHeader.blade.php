@@ -6,7 +6,7 @@
    </div>
    <div class="form-group mb-0 pull-right">
       <span class="inline-block pr-10">
-        @yield('auth_text') 
+        @yield('auth_text')
       </span>
       <a 
         class="inline-block btn btn-info btn-rounded btn-outline" 

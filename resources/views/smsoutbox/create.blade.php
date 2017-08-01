@@ -10,12 +10,12 @@
 
 @section('css_header')
 
-<link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
-<style type="text/css">
-  .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
-    overflow-x: hidden;}
-</style>
+    <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+    <style type="text/css">
+      .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
+        overflow-x: hidden;}
+    </style>
 
 @endsection
 
@@ -492,6 +492,7 @@
 @section('page_scripts')
 
   <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+  
   <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 
   <script>

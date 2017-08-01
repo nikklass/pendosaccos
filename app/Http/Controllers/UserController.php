@@ -168,6 +168,7 @@ class UserController extends Controller
             ->with('groups')
             ->with('company')
             ->first();
+
         //if user is superadmin, show all companies, else show a user's companies
         if (auth()->user()->hasRole('superadministrator')){
             $companies = Company::all();
@@ -217,6 +218,8 @@ class UserController extends Controller
             'phone_number' => 'required'
         ]);
 
+        dd($request);
+
         $user = User::findOrFail($id);
 
         $user->first_name = $request->first_name;
@@ -231,6 +234,8 @@ class UserController extends Controller
             /*auto generate new password*/
             $password = generateCode(6);
             $user->password = Hash::make($password);
+            //send the user a link to change password
+
         } else if ($request->password_option == 'manual'){
             /*set to entered password*/
             $user->password = Hash::make($request->password);

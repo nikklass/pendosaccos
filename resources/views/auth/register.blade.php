@@ -8,10 +8,6 @@
     Want To Create Bulk Accounts?
 @endsection
 
-@section('auth_button_text_url')
-    /register-bulk
-@endsection
-
 @section('auth_button_text')
     Create Bulk
 @endsection
