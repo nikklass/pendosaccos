@@ -76,18 +76,20 @@ class GroupController extends Controller
             'company_id' => 'required'
         ]);
 
+        $phone_number = '';
         if ($request->phone_number) {
             if (!isValidPhoneNumber($request->phone_number)){
                 $message = \Config::get('constants.error.invalid_phone_number');
                 Session::flash('error', $message);
                 return redirect()->back()->withInput();
             }
+            $phone_number = formatPhoneNumber($request->phone_number);
         }
 
         $group = new Group();
         $group->name = $request->name;
         $group->company_id = $request->company_id;
-        $group->phone_number = formatPhoneNumber($request->phone_number);
+        $group->phone_number = $phone_number;
         $group->email = $request->email;
         $group->physical_address = $request->physical_address;
         $group->box = $request->box;
@@ -161,10 +163,20 @@ class GroupController extends Controller
             'company_id' => 'required|max:255'
         ]);
 
+        $phone_number = '';
+        if ($request->phone_number) {
+            if (!isValidPhoneNumber($request->phone_number)){
+                $message = \Config::get('constants.error.invalid_phone_number');
+                Session::flash('error', $message);
+                return redirect()->back()->withInput();
+            }
+            $phone_number = formatPhoneNumber($request->phone_number);
+        }
+
         $group = Group::findOrFail($id);
         $group->name = $request->name;
         $group->company_id = $request->company_id;
-        $group->phone_number = $request->phone_number;
+        $group->phone_number = $phone_number;
         $group->email = $request->email;
         $group->physical_address = $request->physical_address;
         $group->box = $request->box;

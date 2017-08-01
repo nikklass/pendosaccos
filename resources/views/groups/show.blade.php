@@ -56,7 +56,7 @@
                                     <div class="follo-data">
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
-                                            <strong>Company Name:</strong> 
+                                            <strong>Company:</strong> 
                                             {{ $group->company->name }}
                                         </span>
                                       </div>
