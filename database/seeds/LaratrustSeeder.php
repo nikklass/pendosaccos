@@ -15,7 +15,7 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         
-        /*$faker = Faker::create();
+        $faker = Faker::create();
 
         $this->command->info('Truncating User, Role and Permission tables');
         $this->truncateLaratrustTables();
@@ -25,6 +25,7 @@ class LaratrustSeeder extends Seeder
         $mapPermission = collect(config('laratrust_seeder.permissions_map'));
 
         foreach ($config as $key => $modules) {
+            
             // Create a new role
             $role = \App\Role::create([
                 'name' => $key,
@@ -63,13 +64,16 @@ class LaratrustSeeder extends Seeder
                 'first_name' => ucwords(str_replace("_", " ", $key)),
                 'last_name' => ucwords(str_replace("_", " ", $key)),
                 'phone_number' => $faker->numberBetween(1000,99999),
+                'sms_user_name' => '',
                 'account_number' => $faker->numberBetween(1000,99999),
-                'email' => $key.'@app.com',
+                'email' => $key.'@pendo.co.ke',
                 'gender' => 'm',
                 'api_token' => str_random(60),
                 'password' => bcrypt('123')
             ]);
+
             $user->attachRole($role);
+
         }
 
         // creating user with permissions
@@ -103,10 +107,10 @@ class LaratrustSeeder extends Seeder
                     }
                 }
             }
-        }*/
+        }
     }
 
-    /*public function truncateLaratrustTables()
+    public function truncateLaratrustTables()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('permission_role')->truncate();
@@ -116,5 +120,5 @@ class LaratrustSeeder extends Seeder
         \App\Role::truncate();
         \App\Permission::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-    }*/
+    }
 }

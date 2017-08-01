@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
+use App\User;
 use App\Company;
 use Session;
 
@@ -40,18 +41,21 @@ class GroupController extends Controller
     public function create()
     {
         $user = auth()->user();
+        $userCompany = User::where('id', $user->id)
+            ->with('company')
+            ->first();
         //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
+            $companies[] = Company::all();
         } else {
-            $companies = $user->company;
+            $companies[] = $user->company;
         }
-        if (!count($companies)) {
-            $companies = [];
-        }
-        //dd($companies);
+        //dd($userCompany);
 
-        return view('groups.create')->withCompanies($companies);
+        return view('groups.create')
+            ->withCompanies($companies)
+            ->withUser($userCompany);
     }
 
     /**
@@ -63,6 +67,8 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         
+        dd($request);
+
         $user_id = auth()->user()->id;
 
         $this->validate($request, [

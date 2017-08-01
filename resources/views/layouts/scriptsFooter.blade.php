@@ -33,6 +33,5 @@
 
 <script src="{{ asset('myjs/switchery.min.js') }}"></script>  
 
-
 <script src="{{ asset('myjs/init.js?d=555') }}"></script>
 <script src="{{ asset('myjs/dashboard-data.js') }}"></script>

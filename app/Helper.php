@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
+use App\User;
 
 /**
 * change plain number to formatted currency
@@ -147,12 +148,18 @@ function getHost() {
 }
 
 // fetching bulk sms data
-function getBulkSMSData($username) {
+function getBulkSMSData($user_id) {
 		
+	$user = User::where('id', $user_id)->first();
+	//dd($user);
+	$sms_username = $user->sms_user_name;
+
+	//dd($sms_username);
+
 	//get bulk sms data for this client
 	$get_sms_data_url_main = \Config::get('constants.bulk_sms.get_sms_data_url');
-	$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $username;
-	dd($get_sms_data_url);
+	$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_username;
+	//dd($get_sms_data_url);
 
 	//get sms data
     $client = new \GuzzleHttp\Client();

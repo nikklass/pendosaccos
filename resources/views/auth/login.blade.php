@@ -43,7 +43,7 @@
 
                                    <div class="form-wrap">
                                       
-                                      <form class="form-horizontal"  role="form" method="POST" action="{{ route('login') }}">
+                                      <form class="form-horizontal"  role="form" method="POST" action="{{ route('login.store') }}">
                                       <!-- <form class="form-horizontal"  
                                           role="form" @submit.prevent="handleSubmit()"> -->
                                          
@@ -62,7 +62,6 @@
                                                       class="form-control" 
                                                       id="email" 
                                                       name="email"
-                                                      v-model="email"
                                                       value="{{ old('email') }}" required autofocus>
                                                   <div class="input-group-addon"><i class="icon-envelope-open"></i></div>
                                                </div>
@@ -88,7 +87,6 @@
                                                       class="form-control" 
                                                       id="password" 
                                                       name="password"
-                                                      v-model="password"
                                                       required>
                                                   <div class="input-group-addon"><i class="icon-lock"></i></div>
                                                </div>
@@ -153,72 +151,4 @@
 
     </div>
 
-@endsection
-
-
-@section('page_scripts')
-
-  <script type="text/javascript">      
-
-      var app = new Vue({
-        el: "#app",
-        
-        data() {
-            return {
-                email: '',
-                password: ''
-            }
-        },
-        
-        methods : {
-            
-            /*handle  form submit*/
-            handleSubmit(){
-                
-                this.addLoading = true;
-
-                if (this.message !== null) {
-          
-                  //post form data
-                  passport_client_id = "{{ $passport_client_id }}"
-                  passport_client_secret = "dbkttj8Smu8Bo1GuCEHfValxOXpHlrVWmoY6jprV"
-                  //passport_client_secret = "{{ $passport_client_secret }}"
-                  passport_login_url = "{{ $passport_login_url }}"
-
-                  let postData = {
-                    'username': this.email,
-                    'password': this.password,
-                    grant_type: 'password',
-                    client_id: passport_client_id,
-                    client_secret: passport_client_secret,
-                    scope: ''
-                  }
-
-                  console.log(postData)
-
-                  
-                  axios.post(passport_login_url, postData)
-                  .then(response => {
-
-                      this.addLoading = false;
-
-                      console.log(postData)
-                      console.log(response)
-                      
-                  })
-                  .catch(error => {
-                      console.log(error)
-                  })
-                  
-                }
-
-            }
-
-            
-
-        }
-
-      });
-  </script>
-  
 @endsection

@@ -40,6 +40,17 @@
           <div class="table-cell">
              <div class=" ml-auto mr-auto no-float">
                 
+                  @if (session('error'))
+                    <div class="alert alert-danger text-center">
+                        {{ session('error') }}
+                    </div>
+                  @endif
+
+                  @if (session('success'))
+                    <div class="alert alert-success text-center">
+                        {{ session('success') }}
+                    </div>
+                  @endif
 
                   <form class="form-horizontal" method="POST" action="{{ route('users.update', $user->id) }}"> 
 
@@ -84,6 +95,63 @@
                                                       </div>
                                                     @endif
                                                       
+                                                      @if (Auth::user()->hasRole('superadministrator'))
+                                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
+                                                              
+                                                          <label for="company_id" class="col-sm-3 control-label">
+                                                             Company Name
+                                                             <span class="text-danger"> *</span>
+                                                          </label>
+                                                          <div class="col-sm-9">
+                                                            
+                                                             <select class="selectpicker form-control" 
+                                                                name="company_id" 
+                                                                data-style="form-control btn-default btn-outline"
+                                                                required>
+
+                                                                @foreach ($companies as $company)
+                                                                <li class="mb-10">
+                                                                <option value="{{ $company->id }}"
+
+                                                          @if ($company->id == old('company_id', $user->company->id))
+                                                              selected="selected"
+                                                          @endif
+                                                                    >
+                                                                      {{ $company->name }}
+                                                                    </option>
+                                                                </li>
+                                                                @endforeach
+                                                                
+                                                             </select>
+
+                                                             @if ($errors->has('company_name'))
+                                                                  <span class="help-block">
+                                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                                  </span>
+                                                             @endif
+                                                          
+                                                          </div>
+
+                                                       </div>
+                                                       @else
+
+                                                          <div class="form-group">
+                                                            <label class="control-label col-md-3">Company Name</label>
+                                                            <div class="col-md-9">
+                                                            
+                                                              @if ($user->company)
+                                                                <p class="form-control-static"> {{ $user->company->name }} </p>
+                                                                <input 
+                                                                    type="hidden" 
+                                                                    name="company_id"
+                                                                    value="{{ $user->company->id }}">
+                                                              @endif
+
+                                                            </div>
+                                                          </div>
+
+                                                       @endif
+
                                                       <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
                                               
                                                         <label for="account_number" class="col-sm-3 control-label">
@@ -160,7 +228,34 @@
 
                                                        </div>
 
-                                                       <div  class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                                       @if (Auth::user()->hasRole('superadministrator'))
+                                                         <div  class="form-group{{ $errors->has('sms_user_name') ? ' has-error' : '' }}">
+                                                                
+                                                            <label for="sms_user_name" class="col-sm-3 control-label">
+                                                               SMS User Name
+                                                               <span class="text-danger"> *</span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                               <div class="input-group">
+                                                                  <input 
+                                                                      type="text" 
+                                                                      class="form-control" 
+                                                                      id="sms_user_name" 
+                                                                      name="sms_user_name"
+                                                                      value="{{ $user->sms_user_name }}" required>
+                                                                  <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                                               </div>
+                                                               @if ($errors->has('sms_user_name'))
+                                                                    <span class="help-block">
+                                                                        <strong>{{ $errors->first('sms_user_name') }}</strong>
+                                                                    </span>
+                                                               @endif
+                                                            </div>
+
+                                                         </div>
+                                                       @endif
+
+                                                       <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                                               
                                                           <label for="email" class="col-sm-3 control-label">
                                                              Email Address
@@ -219,13 +314,25 @@
                                                           <div class="col-sm-9">
                                                              <div class="col-sm-6">
                                                                 <div class="radio">
-                                                                   <input type="radio" name="gender" id="gender" value="m" checked="">
+                                                                   <input type="radio" 
+                                                                   name="gender" 
+                                                                   id="gender" value="m" 
+                                                                   @if ($user->gender == 'm')
+                                                                    checked
+                                                                   @endif
+                                                                   >
                                                                    <label for="m">Male</label>
                                                                 </div>
                                                              </div>
                                                              <div class="col-sm-6">
                                                                 <div class="radio">
-                                                                   <input type="radio" name="gender" id="gender" value="f">
+                                                                   <input type="radio" 
+                                                                   name="gender" 
+                                                                   id="gender" value="f"
+                                                                   @if ($user->gender == 'f')
+                                                                    checked
+                                                                   @endif
+                                                                   >
                                                                    <label for="f">Female</label>
                                                                 </div>
                                                              </div>
@@ -245,17 +352,17 @@
                                                                    <input type="radio" 
                                                                       name="change_password" 
                                                                       id="change_password" 
-                                                                      v-model='password_option'
-                                                                      value="keep" checked>
+                                                                      v-model="password_option"
+                                                                      value="keep">
                                                                    <label for="keep">Don't change Password</label>
                                                                 </div>
                                                              </div>
                                                              <div class="col-sm-12">
                                                                 <div class="radio">
                                                                    <input type="radio" 
-                                                                      name="change_password" 
-                                                                      id="change_password" 
-                                                                      v-model='password_option'
+                                                                      name="password_option" 
+                                                                      id="password_option" 
+                                                                      v-model="password_option"
                                                                       value="auto">
                                                                    <label for="auto">AutoGenerate New Password</label>
                                                                 </div>
@@ -263,9 +370,9 @@
                                                              <div class="col-sm-12">
                                                                 <div class="radio">
                                                                    <input type="radio" 
-                                                                      name="change_password" 
-                                                                      id="change_password" 
-                                                                      v-model='password_option'
+                                                                      name="password_option" 
+                                                                      id="password_option" 
+                                                                      v-model="password_option"
                                                                       value="manual">
                                                                    <label for="manual">Manually Set New Password</label>
                                                                 </div>
@@ -276,7 +383,7 @@
                                                                         class="form-control" 
                                                                         id="password" 
                                                                         name="password"
-                                                                        required>
+                                                                        >
                                                                     <div class="input-group-addon"><i class="icon-lock"></i></div>
                                                                  </div>
                                                              </div>
@@ -334,18 +441,21 @@
                                                                   </option>
                                                               </li>
 
+                                                              <?php //var_dump($companies) ?>
+
                                                               @foreach ($companies as $company)
                                                               <li class="mb-10">
                                                                   <option value="{{ $company->id }}"
-                          @if ($user->company) {
-                              {{ $company_field = $user->company->id }}
-                          }
-                          @else
-                              {{ $company_field = '' }}
-                          @endif
 
-                          @if ($company->id == old('company_id', $company_field))
-                              selected="selected"
+
+                          @if ($user->company) 
+                              @if (($company->id == old('company_id')) || ($company->id == $user->company->id))
+                                  selected="selected"
+                              @endif
+                          @else
+                              @if ($company->id == old('company_id'))
+                                selected="selected"
+                              @endif
                           @endif
                                                                   >
                                                                     {{ $company->name }}
@@ -358,7 +468,9 @@
 
                                                            @if ($errors->has('company_name'))
                                                                 <span class="help-block">
-                                                                    <strong>{{ $errors->first('company_name') }}</strong>
+                                                                    <strong>
+                                                                      {{ $errors->first('company_name') }}
+                                                                    </strong>
                                                                 </span>
                                                            @endif
                                                         
@@ -500,27 +612,12 @@
         
         data() {
             return {
-              password_option: 'auto',
+              password_option: 'keep',
               rolesSelected: {!!$user->roles->pluck('id')!!},
-              groupsSelected: {!!$user->groups->pluck('id')!!},
+              groupsSelected: {!!$user->groups->pluck('id')!!}
             }
-        },
-        
-        methods : {
-
-            checkPasswordOption() {
-                password_option = this.password_option
-                if (password_option == 'manual'){
-                    console.log('manual')
-                } else if (password_option == 'auto'){
-                    console.log('auto')
-                } else {
-                    console.log('keep')
-                }
-            }
-            
         }
-
+        
       });
   </script>
   

@@ -24,6 +24,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'company_id' => $faker->numberBetween(1,50),
         'password' => $password ?: $password = bcrypt('123'),
         'remember_token' => str_random(10),
+        'sms_user_name' => '',
         'account_number' => $faker->numberBetween(1000,99999),
         'api_token' => str_random(60),
         'created_by' => 5,

@@ -60,29 +60,7 @@
 
                                        {{ csrf_field() }}
 
-                                       <div  class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                              
-                                          <label for="name" class="col-sm-3 control-label">
-                                             Group Name
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                            <input 
-                                                type="text" 
-                                                class="form-control" 
-                                                id="name" 
-                                                name="name"
-                                                value="{{ old('name') }}" required autofocus>
-
-                                             @if ($errors->has('name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('name') }}</strong>
-                                                  </span>
-                                             @endif
-                                          </div>
-
-                                       </div>
-
+                                       @if (Auth::user()->hasRole('superadministrator'))
                                        <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
                                               
                                           <label for="company_id" class="col-sm-3 control-label">
@@ -116,6 +94,47 @@
                                                   </span>
                                              @endif
                                           
+                                          </div>
+
+                                       </div>
+                                       @else
+
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3">Company Name</label>
+                                            <div class="col-md-9">
+                                            
+                                              @if ($user->company)
+                                                <p class="form-control-static"> {{ $user->company->name }} </p>
+                                                <input 
+                                                    type="hidden" 
+                                                    name="company_id"
+                                                    value="{{ $user->company->id }}">
+                                              @endif
+
+                                            </div>
+                                          </div>
+
+                                       @endif
+
+                                       <div  class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                                              
+                                          <label for="name" class="col-sm-3 control-label">
+                                             Group Name
+                                             <span class="text-danger"> *</span>
+                                          </label>
+                                          <div class="col-sm-9">
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="name" 
+                                                name="name"
+                                                value="{{ old('name') }}" required autofocus>
+
+                                             @if ($errors->has('name'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('name') }}</strong>
+                                                  </span>
+                                             @endif
                                           </div>
 
                                        </div>
@@ -252,4 +271,11 @@
     </div>
          
 
+@endsection
+
+
+@section('page_scripts')
+  
+  <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+  
 @endsection

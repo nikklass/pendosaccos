@@ -57,6 +57,64 @@
 
                                        {{ csrf_field() }}
 
+                                       @if (Auth::user()->hasRole('superadministrator'))
+                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
+                                              
+                                          <label for="company_id" class="col-sm-3 control-label">
+                                             Company Name
+                                             <span class="text-danger"> *</span>
+                                          </label>
+                                          <div class="col-sm-9">
+                                            
+                                             <select class="selectpicker form-control" 
+                                                name="company_id" 
+                                                data-style="form-control btn-default btn-outline"
+                                                required>
+
+                                                @foreach ($companies as $company)
+                                                <li class="mb-10">
+                                                <option value="{{ $company->id }}"
+
+                                          @if ($company->id == old('company_id', $company->id))
+                                              selected="selected"
+                                          @endif
+                                                    >
+                                                      {{ $company->name }}
+                                                    </option>
+                                                </li>
+                                                @endforeach
+                                                
+                                             </select>
+
+                                             @if ($errors->has('company_name'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                  </span>
+                                             @endif
+                                          
+                                          </div>
+
+                                       </div>
+                                       @else
+
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3">Company Name</label>
+                                            <div class="col-md-9">
+                                            
+                                              @if ($user->company)
+                                                <p class="form-control-static"> {{ $user->company->name }} </p>
+                                                <input 
+                                                    type="hidden" 
+                                                    name="company_id"
+                                                    value="{{ $user->company->id }}">
+                                              @endif
+
+                                            </div>
+                                          </div>
+
+                                       @endif
+
+                                       
                                        <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
                                               
                                           <label for="account_number" class="col-sm-3 control-label">
@@ -155,45 +213,7 @@
                                              @endif
                                           </div>
 
-                                       </div>
-
-                                       
-                                       <div  
-                                          class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
-                                          v-show="{{ (Auth::user()->hasRole('superadministrator')) }}">
-                                              
-                                          <label for="company_id" class="col-sm-3 control-label">
-                                             Company Name
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                            
-                                             <select class="selectpicker form-control" 
-                                                name="company_id" 
-                                                data-style="form-control btn-default btn-outline"
-                                                required>
-                                           
-                                                @foreach ($companies as $company)
-                                                <li class="mb-10">
-                                                    <option value="{{ $company->id }}">
-                                                      {{ $company->name }}
-                                                    </option>
-                                                </li>
-                                                @endforeach
-
-                                                
-                                             </select>
-
-                                             @if ($errors->has('company_name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('company_name') }}</strong>
-                                                  </span>
-                                             @endif
-                                          
-                                          </div>
-
-                                       </div>
-
+                                       </div>                                                                             
                                        <div  class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
                                               
                                           <label for="phone_number" class="col-sm-3 control-label">
@@ -214,6 +234,31 @@
                                              @if ($errors->has('phone_number'))
                                                   <span class="help-block">
                                                       <strong>{{ $errors->first('phone_number') }}</strong>
+                                                  </span>
+                                             @endif
+                                          </div>
+
+                                       </div>
+
+                                       <div  class="form-group{{ $errors->has('sms_user_name') ? ' has-error' : '' }}">
+                                              
+                                          <label for="sms_user_name" class="col-sm-3 control-label">
+                                             SMS User Name
+                                          </label>
+                                          <div class="col-sm-9">
+                                             <div class="input-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="sms_user_name" 
+                                                    name="sms_user_name"
+                                                    maxlength="13" 
+                                                    value="{{ old('sms_user_name') }}" required>
+                                                <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                             </div>
+                                             @if ($errors->has('sms_user_name'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('sms_user_name') }}</strong>
                                                   </span>
                                              @endif
                                           </div>

@@ -11,7 +11,17 @@
     
 
     <div class="container-fluid pt-10">
-          
+              
+        @if (session('success'))
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="alert alert-success text-center">
+                  {{ session('success') }}
+              </div>
+            </div>
+          </div>
+        @endif
+
         <!-- Row -->
         <div class="row">
 
@@ -91,11 +101,27 @@
                                       <div class="clearfix"></div>
                                     </div>
 
+                                    @if (Auth::user()->hasRole('superadministrator'))
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
+                                            <strong>Sms User Name:</strong> 
+                                            {{ $user->sms_user_name }}
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
+                                    @endif
+
                                     <div class="follo-data">
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
                                            <strong>Gender:</strong> 
-                                           {{ $user->gender }}
+                                           @if ($user->gender == 'm')
+                                              Male
+                                           @else
+                                              Female
+                                           @endif
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>

@@ -43,44 +43,62 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('id', 'desc')
-                ->with('roles')
-                ->with('company')
-                ->paginate(10);
-        return view('users.index')->withUsers($users);
-    }
+        
+        $user = auth()->user();
 
-    public function showUserProfile($id)
-    {
-        if (!$id) {
-            $id = auth()->user()->id;
+        //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
+        if ($user->hasRole('superadministrator')){
+            $companies[] = Company::all()->pluck('id');
+        } else if ($user->hasRole('administrator')) {
+            if ($user->company) {
+                $companies[] = $user->company->id;
+            }
         }
 
-        dd($id);
+        //dd($user, $companies);
 
-        $user = User::where('id', $id)
-                ->with('roles')
-                ->with('company')
-                ->first();
-        return view('users.profile')->withUser($user);
+        //get company users
+        $users = [];
+
+        if ($companies) {
+
+            $users = User::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->paginate(10);
+
+        }
+
+        dd($users, $companies);
+
+        return view('users.index')
+                ->withUser($user)
+                ->withUsers($users);
 
     }
 
     /*show user create form*/
     public function create()
     {
+        
         $user = auth()->user();
+        $userCompany = User::where('id', $user->id)
+            ->with('company')
+            ->first();
         //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
+            $companies[] = Company::all();
         } else {
-            $companies = $user->company;
+            $companies[] = $user->company;
         }
-        if (!count($companies)) {
-            $companies = [];
-        }
-        //dd($companies);
-        return view('users.create')->withCompanies($companies);
+        //dd($userCompany);
+
+        return view('users.create')
+            ->withCompanies($companies)
+            ->withUser($userCompany);
+
     }
 
     /**
@@ -118,6 +136,7 @@ class UserController extends Controller
         $userData = [
             'first_name' => request()->first_name,
             'last_name' => request()->last_name,
+            'sms_user_name' => request()->sms_user_name,
             'email' => request()->email,
             'company_id' => request()->company_id,
             'account_number' => request()->account_number,
@@ -150,8 +169,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        /*$bulk_sms_data = getBulkSMSData($id);
+        dd($bulk_sms_data);*/
+
         $user = User::where('id', $id)->with('roles')->first();
         return view("users.show")->withUser($user);
+
     }
 
     /**
@@ -170,34 +193,29 @@ class UserController extends Controller
             ->first();
 
         //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
         if (auth()->user()->hasRole('superadministrator')){
             $companies = Company::all();
         } else {
             $companies = $user->company;
         }
-        if (count($companies) < 1) {
-            $companies = [];
-        }
-        //dd($user, $companies);
         
         $groups = [];
         if ($user->company) {
             //get groups
             $groups = $user->company->groups;
         }
-        
-        if (count($groups) < 1) {
-            $groups = [];
-        }
 
         //get all roles
         $roles = Role::all();
 
+        //dd($user, $companies);
+
         return view("users.edit")
-                ->withUser($user)
-                ->withRoles($roles)
-                ->withGroups($groups)
-                ->withCompanies($companies);
+            ->withUser($user)
+            ->withRoles($roles)
+            ->withGroups($groups)
+            ->withCompanies($companies);
 
     }
 
@@ -218,12 +236,17 @@ class UserController extends Controller
             'phone_number' => 'required'
         ]);
 
-        dd($request);
+        //dd($request);
+
+        $remove_spaces_regex = "/\s+/";
+        //remove all spaces
+        $sms_user_name = preg_replace($remove_spaces_regex, '', $request->sms_user_name);
 
         $user = User::findOrFail($id);
 
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
+        $user->sms_user_name = $sms_user_name;
         $user->email = $request->email;
         $user->company_id = $request->company_id;
         $user->phone_number = $request->phone_number;
@@ -233,15 +256,16 @@ class UserController extends Controller
         if ($request->password_option == 'auto'){
             /*auto generate new password*/
             $password = generateCode(6);
-            $user->password = Hash::make($password);
+            $user->password = bcrypt($password);
             //send the user a link to change password
 
         } else if ($request->password_option == 'manual'){
             /*set to entered password*/
-            $user->password = Hash::make($request->password);
+            $user->password = bcrypt($request->password);
         }
 
         if ($user->save()) {
+
             if ($request->rolesSelected) {
                 //sync roles
                 $user->syncRoles(explode(',', $request->rolesSelected));
@@ -251,10 +275,15 @@ class UserController extends Controller
                 $groups = explode(',', $request->groupsSelected);
                 $user->groups()->sync($groups);
             }
+
+            Session::flash('success', 'User was edited successfully');
             return redirect()->route('users.show', $id);
+
         } else {
+
             Session::flash('error', 'There ws an error saving the update');
             return redirect()->route('users.edit', $id);
+
         }
     }
 

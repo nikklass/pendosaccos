@@ -1,23 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-//send all routes to the home blade
-
-/*Route::any('{all}', function () {
-    return view('home');
-})
-->where(['all' => '.*']);*/
-
 
 View::share('passport_client_id', \Config::get('constants.passport.client_id'));
 View::share('passport_client_secret', \Config::get('constants.passport.client_secret'));
@@ -33,7 +15,7 @@ View::share('create_message_url', \Config::get('constants.routes.create_message_
 
 
 
-Route::group(['middleware' => 'role:superadministrator|administrator|editor|author|contributor'], function() {
+Route::group(['middleware' => 'role:superadministrator|administrator|companyadministrator'], function() {
 
 	Route::get('/', 'HomeController@index')->name('home');
 

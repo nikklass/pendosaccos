@@ -13,11 +13,16 @@
         
 		<!-- Title -->
        <div class="row heading-bg">
-          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h5 class="txt-dark">Manage Users</h5>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <h5 class="txt-dark">
+                Manage Users 
+                @if ((!Auth::user()->hasRole('superadministrator')) && $user->company)
+                  &nbsp; - &nbsp; ({{ $user->company->name }})</th>
+                @endif
+            </h5>
           </div>
           <!-- Breadcrumb -->
-          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <div class="col-sm-6 col-md-6 col-xs-12">
 	            <a href="{{ route('users.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
 	            	<span>Create New User</span> 
 	            	<i class="zmdi zmdi-account-add"></i> 
@@ -79,6 +84,7 @@
                                       
                                       @if (Auth::user()->hasRole('superadministrator'))
                                       <th>Company</th>
+                                      <th>SMS User Name</th>
                                       @endif
                                       
                                       <th>Phone</th>
@@ -114,6 +120,14 @@
                                           @if ($user->company)
                                           <span class="txt-dark weight-500">
                                               {{ $user->company->name }}
+                                          </span>
+                                          @endif
+                                        </td>
+
+                                        <td>
+                                          @if ($user->sms_user_name)
+                                          <span class="txt-dark weight-500">
+                                              {{ $user->sms_user_name }}
                                           </span>
                                           @endif
                                         </td>

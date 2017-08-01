@@ -32,9 +32,37 @@ class SmsOutboxController extends Controller
      */
     public function index()
     {
-        $smsoutboxes = SmsOutbox::orderBy('id', 'desc')->paginate(10);
+        
+        //get logged in user
+        $user = auth()->user();
+
+        //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
+        if ($user->hasRole('superadministrator')){
+            $companies = Company::all()->pluck('id');
+        } else if ($user->hasRole('administrator')) {
+            if ($user->company) {
+                $companies = $user->company->pluck('id');
+            }
+        }
+
+        //get company smsoutbox
+        $users = [];
+        $groups = [];
+
+        if ($companies) {
+        
+            $smsoutboxes = SmsOutbox::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->with('user')
+                    ->paginate(10);
+
+        }
+
         //dd($smsoutboxes);
         return view('smsoutbox.index', compact('smsoutboxes'));
+
     }
 
     /**
@@ -44,14 +72,46 @@ class SmsOutboxController extends Controller
      */
     public function create()
     {
+
+        //get logged in user
         $user = auth()->user();
+
         //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
         if ($user->hasRole('superadministrator')){
-            $groups = Group::all();
-            $users = User::all();
-        } else {
-            $groups = Group::all();
-            $users = User::all();
+            $companies[] = Company::all()->pluck('id');
+        } else if ($user->hasRole('administrator')) {
+            if ($user->company) {
+                $companies[] = $user->company->id;
+            }
+        }
+
+        //dump('companies: ');
+        //dd($companies);
+        
+
+        //get company smsoutbox
+        $users = [];
+        $groups = [];
+
+        if ($companies) {
+        
+            $smsoutboxes = SmsOutbox::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->with('user')
+                    ->get();
+
+            $groups = Group::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->get();
+
+            $users = User::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->get();
+
         }
         //get account sms balance
         /*$src = \Config::get('constants.bulk_sms.src');
@@ -59,9 +119,11 @@ class SmsOutboxController extends Controller
         $pass = \Config::get('constants.bulk_sms.pass');
 
         $response = getBulkSMSData($usr);*/
-        //dd($response);
+        
+        //dd($users);
 
         return view('smsoutbox.create')
+               ->withSmsOutboxes($smsoutboxes)
                ->withGroups($groups)
                ->withUsers($users);
 
@@ -83,9 +145,9 @@ class SmsOutboxController extends Controller
             'sms_message' => 'required'        
         ]);
 
-        $src = \Config::get('constants.bulk_sms.src');
-        $usr = \Config::get('constants.bulk_sms.usr');
-        $pass = \Config::get('constants.bulk_sms.pass');
+        $bulk_sms_data = getBulkSMSData($user_id);
+        $src = $bulk_sms_data['default_source'];
+        $pass = $bulk_sms_data['alphanumeric_id'];
 
         $usersSelected = explode(',', $request->usersSelected);
         $sms_message = trim($request->sms_message);

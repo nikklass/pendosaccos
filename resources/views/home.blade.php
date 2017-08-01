@@ -97,7 +97,7 @@
                     <div class="panel panel-default card-view">
                  <div class="panel-heading">
                     <div class="pull-left">
-                       <h6 class="panel-title txt-dark">SMS Outbox Statistics</h6>
+                       <h6 class="panel-title txt-dark">SMS Outbox Stats</h6>
                     </div>
                     <div class="pull-right">
                        <span class="no-margin-switcher">
@@ -137,7 +137,7 @@
                  </div>
                  <div class="panel-heading">
                     <div class="pull-left">
-                       <h6 class="panel-title txt-dark">Traffic Stats</h6>
+                       <h6 class="panel-title txt-dark">SMS Inbox Stats</h6>
                     </div>
                     <div class="pull-right">
                        <a href="#" class="pull-left inline-block refresh mr-15">

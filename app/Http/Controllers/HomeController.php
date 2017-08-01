@@ -14,16 +14,6 @@ use Session;
 
 class HomeController extends Controller
 {
-    
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Show the application home.
@@ -41,20 +31,29 @@ class HomeController extends Controller
         if ($user->hasRole('superadministrator')){
             $companies = Company::all()->pluck('id');
         } else if ($user->hasRole('administrator')) {
-            $companies = $user->company->pluck('id');
+            if ($user->company) {
+                $companies = $user->company->pluck('id');
+            }
         }
 
         //get company users
-        $users = User::whereIn('company_id', $companies)
-                ->orderBy('id', 'desc')
-                ->with('company')
-                ->paginate(10);
+        $users = [];
+        $groups = [];
 
-        //get company groups
-        $groups = Group::whereIn('company_id', $companies)
-                ->orderBy('id', 'desc')
-                ->with('company')
-                ->paginate(10);
+        if ($companies) {
+        
+            $users = User::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->paginate(10);
+
+            //get company groups
+            $groups = Group::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->with('company')
+                    ->paginate(10);
+
+        }
 
         //dd($groups);
         
