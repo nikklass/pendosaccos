@@ -76,10 +76,12 @@ class GroupController extends Controller
             'company_id' => 'required'
         ]);
 
-        if (!isValidPhoneNumber($request->phone_number)){
-            $message = \Config::get('constants.error.invalid_phone_number');
-            Session::flash('error', $message);
-            return redirect()->back()->withInput();
+        if ($request->phone_number) {
+            if (!isValidPhoneNumber($request->phone_number)){
+                $message = \Config::get('constants.error.invalid_phone_number');
+                Session::flash('error', $message);
+                return redirect()->back()->withInput();
+            }
         }
 
         $group = new Group();
