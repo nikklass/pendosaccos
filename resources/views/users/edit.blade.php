@@ -99,7 +99,7 @@
                                                        <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
                                                               
                                                           <label for="company_id" class="col-sm-3 control-label">
-                                                             Company Name
+                                                             Company
                                                              <span class="text-danger"> *</span>
                                                           </label>
                                                           <div class="col-sm-9">
