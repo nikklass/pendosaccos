@@ -178,7 +178,7 @@ function getBulkSMSData($user_id) {
 		    $result = json_decode($resp->getBody());
 					
 			// get results
-			if  (!$result->error) {
+			if  ($result->default_source) {
 				
 				$sms_balance = 0;
 				if ($result->sms_balance) {
