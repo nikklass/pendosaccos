@@ -78,11 +78,14 @@ class SmsOutboxController extends Controller
 
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
+        $company_ids = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all()->pluck('id');
+            $company_ids = Company::all()->pluck('id');
+            $companies = Company::all();
         } else if ($user->hasRole('administrator')) {
             if ($user->company) {
-                $companies[] = $user->company->id;
+                $company_ids[] = $user->company->id;
+                $companies[] = $user->company;
             }
         }
 
@@ -90,20 +93,20 @@ class SmsOutboxController extends Controller
         $users = [];
         $groups = [];
 
-        if ($companies) {
+        if ($company_ids) {
         
-            $smsoutboxes = SmsOutbox::whereIn('company_id', $companies)
+            $smsoutboxes = SmsOutbox::whereIn('company_id', $company_ids)
                     ->orderBy('id', 'desc')
                     ->with('company')
                     ->with('user')
                     ->get();
 
-            $groups = Group::whereIn('company_id', $companies)
+            $groups = Group::whereIn('company_id', $company_ids)
                     ->orderBy('id', 'desc')
                     ->with('company')
                     ->get();
 
-            $users = User::whereIn('company_id', $companies)
+            $users = User::whereIn('company_id', $company_ids)
                     ->orderBy('id', 'desc')
                     ->with('company')
                     ->get();
@@ -125,6 +128,7 @@ class SmsOutboxController extends Controller
 
         return view('smsoutbox.create')
                ->withSmsOutboxes($smsoutboxes)
+               ->withCompanies($companies)
                ->withGroups($groups)
                ->withUser($user)
                ->withUsers($users);
