@@ -180,6 +180,10 @@ function getBulkSMSData($user_id) {
 			// get results
 			if  (!$result->error) {
 				
+				$sms_balance = 0;
+				if ($result->sms_balance) {
+					$sms_balance = $result->sms_balance;
+				}
 				//show data
 				$response["error"] = false;
 				$response["sms_user_name"] = $sms_user_name;
@@ -196,7 +200,7 @@ function getBulkSMSData($user_id) {
 				$response["default_priority"] = $result->default_priority;
 				$response["default_dest"] = $result->default_dest;
 				$response["default_msg"] = $result->default_msg;
-				$response["sms_balance"] = $result->sms_balance;
+				$response["sms_balance"] = $sms_balance;
 				$response["sms_expiry"] = $result->sms_expiry;
 				$response["routes"] = $result->routes;
 				$response["last_updated"] = $result->last_updated;			
