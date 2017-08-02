@@ -76,6 +76,10 @@ class SmsOutboxController extends Controller
         //get logged in user
         $user = auth()->user();
 
+        $userCompany = User::where('id', $user->id)
+            ->with('company')
+            ->first();
+
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
         $company_ids = [];
@@ -123,14 +127,14 @@ class SmsOutboxController extends Controller
             $sms_balance = $bulk_sms_data['sms_balance'];
         }
 
-        $user->sms_balance = format_num($sms_balance, 0);
+        $userCompany->sms_balance = format_num($sms_balance, 0);
         //dd($bulk_sms_data, $user);
 
         return view('smsoutbox.create')
                ->withSmsOutboxes($smsoutboxes)
                ->withCompanies($companies)
                ->withGroups($groups)
-               ->withUser($user)
+               ->withUser($userCompany)
                ->withUsers($users);
 
     }
