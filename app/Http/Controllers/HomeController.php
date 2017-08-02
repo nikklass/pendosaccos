@@ -35,7 +35,7 @@ class HomeController extends Controller
                 $companies[] = $user->company->id;
             }
         }
-        //dd($companies);
+        //dd($user);
 
         //get company users/ groups
         $users = [];

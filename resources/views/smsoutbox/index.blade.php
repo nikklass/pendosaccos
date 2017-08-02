@@ -73,12 +73,12 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th>id</th>
-                                      <th>Message</th>
-                                      <th>Phone</th>
-                                      <th>Status</th>
-                                      <th>Created</th>
-                                      <th>Actions</th>
+                                      <th width="5%">id</th>
+                                      <th width="40%">Message</th>
+                                      <th width="15%">Phone</th>
+                                      <th width="10%">Status</th>
+                                      <th width="15%">Created</th>
+                                      <th width="15%">Actions</th>
                                    </tr>
                                 </thead>
                                 <tbody>

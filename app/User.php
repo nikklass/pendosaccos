@@ -26,6 +26,10 @@ class User extends Authenticatable
         'first_name', 'last_name', 'email', 'sms_user_name',  'password', 'gender', 'company_id', 'phone_number', 'api_token', 'account_number', 'created_by', 'updated_by'
     ];
 
+    /*protected $appends = [
+        'user_company'
+    ];*/
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -62,7 +66,7 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
-    public function smsoutboxes()
+    public function smsOutboxes()
     {
         return $this->hasMany(SmsOutbox::class);
     }
@@ -72,6 +76,12 @@ class User extends Authenticatable
         $user_id = auth()->user();
         return static::find($user_id);
     }
+
+    /*public function getUserCompanyAttribute()
+    {
+        $company = Company::findOrFail($this->company_id)->first();
+        return $company;
+    }*/
 
     /*public function getProfileImageAttribute()
     {

@@ -35,7 +35,7 @@ class SmsOutbox extends Model
     }
 
     /*one to one relationship*/
-    public function schedulesmsoutbox()
+    public function scheduleSmsOutbox()
     {
         return $this->belongsTo(ScheduleSmsOutbox::class);
     }
