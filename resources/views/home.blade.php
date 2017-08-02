@@ -84,7 +84,7 @@
                                     </span>
                                 </div>
                                 <div class="col-xs-4 text-center  pl-0 pr-0 data-wrap-right">
-                                   <i class="zmdi zmdi-file txt-light data-right-rep-icon"></i>
+                                   <i class="zmdi zmdi-accounts txt-light data-right-rep-icon"></i>
                                 </div>
                              </div>   
                           </div>
