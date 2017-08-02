@@ -78,11 +78,11 @@
 
                                                        <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
                                                               
-                                                          <label for="company_id" class="col-sm-3 control-label">
+                                                          <label for="company_id" class="col-sm-12 control-label text-left">
                                                              Company
                                                              <span class="text-danger"> *</span>
                                                           </label>
-                                                          <div class="col-sm-9">
+                                                          <div class="col-sm-12">
                                                             
                                                              <select class="selectpicker form-control" 
                                                                 name="company_id" 

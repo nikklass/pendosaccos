@@ -23,32 +23,31 @@ class HomeController extends Controller
     public function index()
     {
         
-        //get logged in user
         $user = auth()->user();
 
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
         if ($user->hasRole('superadministrator')){
             $companies = Company::all()->pluck('id');
-        } else if ($user->hasRole('administrator')) {
+        } else {
             if ($user->company) {
-                $companies = $user->company->pluck('id');
+                $companies[] = $user->company->id;
             }
         }
+        //dd($companies);
 
-        //get company users
+        //get company users/ groups
         $users = [];
         $groups = [];
 
         if ($companies) {
+
+            $groups = Group::whereIn('company_id', $companies)
+                     ->orderBy('id', 'desc')
+                     ->with('company')
+                     ->paginate(10);
         
             $users = User::whereIn('company_id', $companies)
-                    ->orderBy('id', 'desc')
-                    ->with('company')
-                    ->paginate(10);
-
-            //get company groups
-            $groups = Group::whereIn('company_id', $companies)
                     ->orderBy('id', 'desc')
                     ->with('company')
                     ->paginate(10);
