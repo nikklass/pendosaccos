@@ -110,7 +110,7 @@ class SmsOutboxController extends Controller
 
         }
 
-        //get bulk sms info
+        //get bulk sms data
         $bulk_sms_data = getBulkSMSData($user->id);
         $sms_balance = $bulk_sms_data['sms_balance'];
 

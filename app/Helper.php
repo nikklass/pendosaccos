@@ -161,55 +161,64 @@ function getBulkSMSData($user_id) {
 
 	//dd($sms_username);
 
-	//get bulk sms data for this client
-	$get_sms_data_url_main = \Config::get('constants.bulk_sms.get_sms_data_url');
-	$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_user_name;
-	//dd($get_sms_data_url);
+	if ($sms_user_name) {
+		
+		//get bulk sms data for this client
+		$get_sms_data_url_main = \Config::get('constants.bulk_sms.get_sms_data_url');
+		$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_user_name;
+		//dd($get_sms_data_url);
 
-	//get sms data
-    $client = new \GuzzleHttp\Client();
+		//get sms data
+	    $client = new \GuzzleHttp\Client();
 
-    $resp = $client->request('GET', $get_sms_data_url);
+	    $resp = $client->request('GET', $get_sms_data_url);
 
-    if ($resp->getBody()) {
-	    
-	    $result = json_decode($resp->getBody());
+	    if ($resp->getBody()) {
+		    
+		    $result = json_decode($resp->getBody());
+					
+			// get results
+			if  (!$result->error) {
 				
-		// get results
-		if  (!$result->error) {
-			
-			//show data
-			$response["error"] = false;
-			$response["sms_user_name"] = $sms_user_name;
-			$response["passwd"] = $result->passwd;
-			$response["alphanumeric_id"] = $result->alphanumeric_id;
-			$response["fullname"] = $result->fullname;
-			$response["rights"] = $result->rights;
-			$response["active"] = $result->active;
-			$response["default_sid"] = $result->default_sid;
-			$response["default_source"] = $result->default_source;
-			$response["paybill"] = $result->paybill;
-			$response["relationship"] = $result->relationship;
-			$response["home_ip"] = $result->home_ip;
-			$response["default_priority"] = $result->default_priority;
-			$response["default_dest"] = $result->default_dest;
-			$response["default_msg"] = $result->default_msg;
-			$response["sms_balance"] = $result->sms_balance;
-			$response["sms_expiry"] = $result->sms_expiry;
-			$response["routes"] = $result->routes;
-			$response["last_updated"] = $result->last_updated;			
-	        
-	    } else {
-			
+				//show data
+				$response["error"] = false;
+				$response["sms_user_name"] = $sms_user_name;
+				$response["passwd"] = $result->passwd;
+				$response["alphanumeric_id"] = $result->alphanumeric_id;
+				$response["fullname"] = $result->fullname;
+				$response["rights"] = $result->rights;
+				$response["active"] = $result->active;
+				$response["default_sid"] = $result->default_sid;
+				$response["default_source"] = $result->default_source;
+				$response["paybill"] = $result->paybill;
+				$response["relationship"] = $result->relationship;
+				$response["home_ip"] = $result->home_ip;
+				$response["default_priority"] = $result->default_priority;
+				$response["default_dest"] = $result->default_dest;
+				$response["default_msg"] = $result->default_msg;
+				$response["sms_balance"] = $result->sms_balance;
+				$response["sms_expiry"] = $result->sms_expiry;
+				$response["routes"] = $result->routes;
+				$response["last_updated"] = $result->last_updated;			
+		        
+		    } else {
+				
+				$response["error"] = true;
+				$response["message"] = $result->message;
+				
+		    }
+
+		} else {
+				
 			$response["error"] = true;
-			$response["message"] = $result->message;
+			$response["message"] = "An error occured fetching bulk sms data";
 			
 	    }
 
 	} else {
-			
+				
 		$response["error"] = true;
-		$response["message"] = "An error occured fetching bulk sms data";
+		$response["message"] = "No SMS account exists";
 		
     }
 	
