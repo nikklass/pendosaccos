@@ -93,7 +93,7 @@
                                                                 <li class="mb-10">
                                                                 <option value="{{ $company->id }}"
 
-                                                          @if ($company->id == old('company_id', $user->company->id))
+                                                          @if ($company->id == old('company_id', $company->id))
                                                               selected="selected"
                                                           @endif
                                                                     >
@@ -104,9 +104,9 @@
                                                                 
                                                              </select>
 
-                                                             @if ($errors->has('company_name'))
+                                                             @if ($errors->has('company_id'))
                                                                   <span class="help-block">
-                                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                                      <strong>{{ $errors->first('company_id') }}</strong>
                                                                   </span>
                                                              @endif
                                                           
