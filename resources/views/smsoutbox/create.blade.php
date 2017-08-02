@@ -54,7 +54,7 @@
                                                   <strong class="pull-left">Send SMS</strong>
                                                   <span class="pull-right">
                                                       SMS Bal: 
-                                                      <span class="text-success">3,000</span>
+                                                      <span class="text-success">{{ $user->sms_balance }}</span>
                                                   </span>
                                                 </h5>
                                              </div>
@@ -73,6 +73,64 @@
                                                       </div>
                                                     @endif
                                                     
+
+                                                       @if (Auth::user()->hasRole('superadministrator'))
+
+                                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
+                                                              
+                                                          <label for="company_id" class="col-sm-3 control-label">
+                                                             Company
+                                                             <span class="text-danger"> *</span>
+                                                          </label>
+                                                          <div class="col-sm-9">
+                                                            
+                                                             <select class="selectpicker form-control" 
+                                                                name="company_id" 
+                                                                data-style="form-control btn-default btn-outline"
+                                                                required>  
+
+                                                                @foreach ($companies as $company)
+                                                                <li class="mb-10">
+                                                                <option value="{{ $company->id }}"
+
+                                                          @if ($company->id == old('company_id', $user->company->id))
+                                                              selected="selected"
+                                                          @endif
+                                                                    >
+                                                                      {{ $company->name }}
+                                                                    </option>
+                                                                </li>
+                                                                @endforeach
+                                                                
+                                                             </select>
+
+                                                             @if ($errors->has('company_name'))
+                                                                  <span class="help-block">
+                                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                                  </span>
+                                                             @endif
+                                                          
+                                                          </div>
+
+                                                       </div>
+
+                                                       @else
+
+                                                          <div class="form-group hidden">
+                                                            <div class="col-md-9">
+                                                            
+                                                              @if ($user->company)
+                                                                <input 
+                                                                    type="hidden" 
+                                                                    name="company_id"
+                                                                    value="{{ $user->company->id }}">
+                                                              @endif
+
+                                                            </div>
+                                                          </div>
+
+                                                       @endif
+
 
                                                        <div  class="form-group{{ $errors->has('sms_message') ? ' has-error' : '' }}">
                                                               

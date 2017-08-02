@@ -117,7 +117,8 @@ class UserController extends Controller
             'last_name' => 'required',
             'account_number' => 'required',
             'email' => 'email|unique:users',
-            'phone_number' => 'required|unique:users'
+            'sms_user_name' => 'unique:users',
+            'phone_number' => 'required'
         ]);
 
 
@@ -196,7 +197,7 @@ class UserController extends Controller
         if (auth()->user()->hasRole('superadministrator')){
             $companies = Company::all();
         } else {
-            $companies = $user->company;
+            $companies[] = $user->company;
         }
         
         $groups = [];
@@ -227,15 +228,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $this->validate(request(), [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'email|unique:users,email,'.$id,
             'account_number' => 'required',
+            'sms_user_name' => 'unique:users,sms_user_name,'.$id,
             'phone_number' => 'required'
         ]);
-
-        //dd($request);
 
         $remove_spaces_regex = "/\s+/";
         //remove all spaces
@@ -284,6 +285,7 @@ class UserController extends Controller
             return redirect()->route('users.edit', $id);
 
         }
+
     }
 
     /**

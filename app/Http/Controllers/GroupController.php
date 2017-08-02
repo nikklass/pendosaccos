@@ -28,9 +28,29 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::orderBy('id', 'desc')->paginate(10);
-        //dd($groups);
-        return view('groups.index')->withGroups($groups);
+
+        $user = auth()->user();
+
+        //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
+        if ($user->hasRole('superadministrator')){
+            $companies = Company::all()->pluck('id');
+        } else {
+            if ($user->company) {
+                $companies[] = $user->company->id;
+            }
+        }
+
+        $groups = Group::whereIn('company_id', $companies)
+                 ->orderBy('id', 'desc')
+                 ->with('company')
+                 ->paginate(10);
+        //dd($groups, $user);
+
+        return view('groups.index')
+            ->withUser($user)
+            ->withGroups($groups);
+
     }
 
     /**
@@ -129,19 +149,27 @@ class GroupController extends Controller
     public function edit($id)
     {
         
-        $group = Group::where('id', $id)
-                 ->with('company')
-                 ->first();
-
         $user = auth()->user();
+        $userCompany = User::where('id', $user->id)
+            ->with('company')
+            ->first();
         //if user is superadmin, show all companies, else show a user's companies
+        $companies = [];
         if ($user->hasRole('superadministrator')){
             $companies = Company::all();
         } else {
-            $companies = $user->company;
+            $companies[] = $user->company;
         }
+        //dd($companies);
+
+        $group = Group::where('id', $id)
+                 ->with('company')
+                 ->first();
         
-        return view('groups.edit')->withGroup($group)->withCompanies($companies);
+        return view('groups.edit')
+            ->withGroup($group)
+            ->withCompanies($companies)
+            ->withUser($user);
 
     }
 

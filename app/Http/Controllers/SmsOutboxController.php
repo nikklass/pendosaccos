@@ -79,16 +79,12 @@ class SmsOutboxController extends Controller
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies[] = Company::all()->pluck('id');
+            $companies = Company::all()->pluck('id');
         } else if ($user->hasRole('administrator')) {
             if ($user->company) {
                 $companies[] = $user->company->id;
             }
         }
-
-        //dump('companies: ');
-        //dd($companies);
-        
 
         //get company smsoutbox
         $users = [];
@@ -113,18 +109,17 @@ class SmsOutboxController extends Controller
                     ->get();
 
         }
-        //get account sms balance
-        /*$src = \Config::get('constants.bulk_sms.src');
-        $usr = \Config::get('constants.bulk_sms.usr');
-        $pass = \Config::get('constants.bulk_sms.pass');
 
-        $response = getBulkSMSData($usr);*/
-        
-        //dd($users);
+        //get bulk sms info
+        $bulk_sms_data = getBulkSMSData($user->id);
+        $sms_balance = $bulk_sms_data['sms_balance'];
+
+        $user->sms_balance = format_num($sms_balance, 0);
 
         return view('smsoutbox.create')
                ->withSmsOutboxes($smsoutboxes)
                ->withGroups($groups)
+               ->withUser($user)
                ->withUsers($users);
 
     }
@@ -146,8 +141,10 @@ class SmsOutboxController extends Controller
         ]);
 
         $bulk_sms_data = getBulkSMSData($user_id);
+        //dd($bulk_sms_data);
+        $usr = $bulk_sms_data['sms_user_name'];
         $src = $bulk_sms_data['default_source'];
-        $pass = $bulk_sms_data['alphanumeric_id'];
+        $pass = $bulk_sms_data['passwd'];
 
         $usersSelected = explode(',', $request->usersSelected);
         $sms_message = trim($request->sms_message);
@@ -244,6 +241,7 @@ class SmsOutboxController extends Controller
                             $smsoutbox->short_message = reducelength($local_sms_message, 45);
                             $smsoutbox->user_id = $local_user_id;
                             $smsoutbox->phone_number = $local_phone_number;
+                            $smsoutbox->company_id = $request->company_id;
                             $smsoutbox->user_agent = getUserAgent();
                             $smsoutbox->src_ip = getIp();
                             $smsoutbox->src_host = getHost();
@@ -264,6 +262,7 @@ class SmsOutboxController extends Controller
                         $schedulesmsoutbox->message = $local_sms_message;
                         $schedulesmsoutbox->user_id = $local_user_id;
                         $schedulesmsoutbox->phone_number = $local_phone_number;
+                        $schedulesmsoutbox->company_id = $request->company_id;
                         $schedulesmsoutbox->user_agent = getUserAgent();
                         $schedulesmsoutbox->src_ip = getIp();
                         $schedulesmsoutbox->src_host = getHost();
@@ -302,6 +301,7 @@ class SmsOutboxController extends Controller
                     $params['src'] = $src;
                     $params['phone_number'] = $user->phone_number;
                     $params['sms_message'] = $request->sms_message;
+                    //dd($params);
 
                     $response = sendSms($params);
 
@@ -314,6 +314,7 @@ class SmsOutboxController extends Controller
                         $smsoutbox->message = $request->sms_message;
                         $smsoutbox->short_message = reducelength($request->sms_message,45);
                         $smsoutbox->user_id = $x;
+                        $smsoutbox->company_id = $request->company_id;
                         $smsoutbox->phone_number = $user->phone_number;
                         $smsoutbox->user_agent = getUserAgent();
                         $smsoutbox->src_ip = getIp();
@@ -338,6 +339,7 @@ class SmsOutboxController extends Controller
                     $schedulesmsoutbox = new ScheduleSmsOutbox();
                     $schedulesmsoutbox->message = $request->sms_message;
                     $schedulesmsoutbox->user_id = $x;
+                    $schedulesmsoutbox->company_id = $request->company_id;
                     $schedulesmsoutbox->phone_number = $user->phone_number;
                     $schedulesmsoutbox->user_agent = getUserAgent();
                     $schedulesmsoutbox->src_ip = getIp();

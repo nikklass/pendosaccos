@@ -119,6 +119,11 @@ function generateCode($length = 5, $add_dashes = false, $available_sets = 'ud')
 } 
 // end of generate random number function
 
+//format number 
+function format_num($num, $decimals=2) {
+	return number_format($num,$decimals, '.', ',');
+}
+
 function getUserAgent(){
 	return @$_SERVER["HTTP_USER_AGENT"]?$_SERVER["HTTP_USER_AGENT"]: "" ;
 }
@@ -152,13 +157,13 @@ function getBulkSMSData($user_id) {
 		
 	$user = User::where('id', $user_id)->first();
 	//dd($user);
-	$sms_username = $user->sms_user_name;
+	$sms_user_name = $user->sms_user_name;
 
 	//dd($sms_username);
 
 	//get bulk sms data for this client
 	$get_sms_data_url_main = \Config::get('constants.bulk_sms.get_sms_data_url');
-	$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_username;
+	$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_user_name;
 	//dd($get_sms_data_url);
 
 	//get sms data
@@ -175,6 +180,7 @@ function getBulkSMSData($user_id) {
 			
 			//show data
 			$response["error"] = false;
+			$response["sms_user_name"] = $sms_user_name;
 			$response["passwd"] = $result->passwd;
 			$response["alphanumeric_id"] = $result->alphanumeric_id;
 			$response["fullname"] = $result->fullname;

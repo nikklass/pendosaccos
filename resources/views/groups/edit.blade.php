@@ -63,10 +63,12 @@
                                        {{ method_field('PUT') }}
                                        {{ csrf_field() }}
 
-                                       <div  class="form-group{{ $errors->has('company_name') ? ' has-error' : '' }}">
+                                       @if (Auth::user()->hasRole('superadministrator'))
+
+                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
                                               
-                                          <label for="company_name" class="col-sm-3 control-label">
-                                             Company Name
+                                          <label for="company_id" class="col-sm-3 control-label">
+                                             Company
                                              <span class="text-danger"> *</span>
                                           </label>
                                           <div class="col-sm-9">
@@ -74,14 +76,15 @@
                                              <select class="selectpicker form-control" 
                                                 name="company_id" 
                                                 data-style="form-control btn-default btn-outline"
-                                                required>
+                                                required>  
 
                                                 @foreach ($companies as $company)
                                                 <li class="mb-10">
-                                                    <option value="{{ $company->id }}"
-                                                    @if ($company->id == old('company_id', $company->id))
-                                                        selected="selected"
-                                                    @endif
+                                                <option value="{{ $company->id }}"
+
+                                          @if ($company->id == old('company_id', $user->company->id))
+                                              selected="selected"
+                                          @endif
                                                     >
                                                       {{ $company->name }}
                                                     </option>
@@ -99,6 +102,26 @@
                                           </div>
 
                                        </div>
+
+                                       @else
+
+                                          <div class="form-group">
+                                            <label class="control-label col-md-3">Company</label>
+                                            <div class="col-md-9">
+                                            
+                                              @if ($user->company)
+                                                <p class="form-control-static"> {{ $user->company->name }} </p>
+                                                <input 
+                                                    type="hidden" 
+                                                    name="company_id"
+                                                    value="{{ $user->company->id }}">
+                                              @endif
+
+                                            </div>
+                                          </div>
+
+                                       @endif
+
 
                                        <div  class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                               

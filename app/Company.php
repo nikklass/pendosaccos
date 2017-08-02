@@ -16,6 +16,8 @@ class Company extends Model
         'name', 'description', 'physical_address', 'box', 'phone', 'email', 'latitude', 'longitude'
     ];
 
+    protected $appends = ['groups'];
+
     /*one to many relationship*/
     public function groups()
     {
@@ -32,5 +34,13 @@ class Company extends Model
     {
         return $this->hasMany(SmsOutbox::class);
     }
+
+    public function getGroupsAttribute()
+    {
+        $groups = Group::where('company_id', $this->id)
+                 ->get();        
+        return $groups;
+    }
+
 
 }

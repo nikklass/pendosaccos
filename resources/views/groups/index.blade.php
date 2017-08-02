@@ -13,11 +13,16 @@
         
 		<!-- Title -->
        <div class="row heading-bg">
-          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h5 class="txt-dark">Manage Groups</h5>
+          <div class="ol-md-6 col-sm-6 col-xs-12">
+          <h5 class="txt-dark">
+                Manage Groups 
+                @if ((!Auth::user()->hasRole('superadministrator')) && $user->company)
+                  &nbsp; - &nbsp; ({{ $user->company->name }})</th>
+                @endif
+            </h5>
           </div>
           <!-- Breadcrumb -->
-          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <div class="ol-md-6 col-sm-6 col-xs-12">
 	            <a href="{{ route('groups.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
 	            	<span>Create New Group</span> 
 	            	<i class="zmdi zmdi-account-add"></i> 

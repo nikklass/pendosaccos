@@ -19,7 +19,7 @@ class CreateUsersGroupsTable extends Migration
             $table->increments('id');
             $table->string('first_name', 50);
             $table->string('last_name', 50);
-            $table->string('sms_user_name', 50);
+            $table->string('sms_user_name', 50)->nullable();
             $table->string('account_number', 50);
             $table->enum('gender', ['m', 'f']);
             $table->string('email', 50)->nullable();
