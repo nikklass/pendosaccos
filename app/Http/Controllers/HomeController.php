@@ -6,6 +6,7 @@ use App\Company;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
+use App\SmsOutbox;
 use App\User;
 use Hash;
 use Illuminate\Http\Request;
@@ -52,12 +53,31 @@ class HomeController extends Controller
                     ->with('company')
                     ->paginate(10);
 
+            $smsoutboxes = SmsOutbox::whereIn('company_id', $companies)
+                    ->orderBy('id', 'desc')
+                    ->get();
+                    //->paginate(10);
+
+            $groups_all = Group::whereIn('company_id', $companies)
+                     ->orderBy('id', 'desc')
+                     ->get();
+
+            //sms outbox count
+            $count_smsoutbox = count($smsoutboxes);
+            $user->sms_outbox_count = $count_smsoutbox;
+            
+            //groups count
+            $count_groups = count($groups_all);
+            $user->count_groups = $count_groups;
+
         }
 
-        //dd($groups);
+        //dd($user, $smsoutboxes);
         
-        return view('home')
+        return view('home', compact('smsoutboxes'))
+            ->withUser($user)
             ->withUsers($users)
+            ->withSmsOutboxes($smsoutboxes)
             ->withGroups($groups);
 
     }
