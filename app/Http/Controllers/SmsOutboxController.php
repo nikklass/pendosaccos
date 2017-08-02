@@ -121,7 +121,7 @@ class SmsOutboxController extends Controller
         }
 
         $user->sms_balance = format_num($sms_balance, 0);
-        dd($bulk_sms_data, $user);
+        //dd($bulk_sms_data, $user);
 
         return view('smsoutbox.create')
                ->withSmsOutboxes($smsoutboxes)
