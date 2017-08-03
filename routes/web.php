@@ -21,10 +21,7 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 
 	Route::post('logout', 'Auth\LoginController@logout')->name('logout'); 
 
-	// Password Reset Routes...
-	Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.store');
-	Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-
+	
 	//handle bulk import user...
 	Route::get('users/create-bulk', 'UserImportController@create')->name('bulk-users.create');
 	Route::post('users/create-bulk', 'UserImportController@store')->name('bulk-users.store');
@@ -68,6 +65,9 @@ Route::group(['middleware' => 'guest'], function() {
 	Route::post('login', 'Auth\LoginController@login')->name('login.store');
 
 	// Password Reset Routes...
+	Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.store');
+	Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+
 	Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 	Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
 

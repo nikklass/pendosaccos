@@ -45,7 +45,7 @@
 
                                  <div class="form-wrap">
                                     
-                                    @if (session('message'))
+                                    <!-- @if (session('message'))
                                       <div class="alert alert-success text-center">
                                           {{ session('message') }}
                                       </div>
@@ -55,7 +55,7 @@
                                       <div class="alert alert-danger text-center">
                                           {{ session('error') }}
                                       </div>
-                                    @endif
+                                    @endif -->
 
                                     <form class="form-horizontal" method="POST" 
                                         action="{{ route('groups.update', $group->id) }}"> 
@@ -285,5 +285,7 @@
 @section('page_scripts')
 
   <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+
+  @include('layouts.partials.error_messages')
   
 @endsection

@@ -15,7 +15,7 @@ return [
         'option_textarea' => '17',
     ],
     'error' => [
-        'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br> 7XXXXXXXX  <br> or 07XXXXXXXX <br> or 2547XXXXXXXX <br> or +2547XXXXXXXX'
+        'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br>7XXXXXXXX,  <br>07XXXXXXXX, <br>2547XXXXXXXX, <br>+2547XXXXXXXX'
     ],
     'routes' => [
         'get_users_url' => $api_path_url . 'users/index',

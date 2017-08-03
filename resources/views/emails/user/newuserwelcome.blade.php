@@ -1,12 +1,17 @@
 @component('mail::message')
-# Welcone to Pendo admin
+# Welcone {{ $user->first_name }},
 
-Thanks for signing up. Click on the link below to set your password:
+Your account has just been added on pendo admin. <br>
+You can login to your account by clicking the link below: <br>
 <br>
-url here
 
-@component('mail::button', ['url' => ''])
-Button Text
+@component('mail::panel')
+Your email address: {{ $user->email }} <br>
+Your password: {{ $user->password }} <br>
+@endcomponent
+
+@component('mail::button', ['url' => 'http://41.215.126.10/public'])
+View Website
 @endcomponent
 
 Thanks,<br>

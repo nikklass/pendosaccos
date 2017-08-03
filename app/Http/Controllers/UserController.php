@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Events\AccountAdded;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
@@ -121,8 +122,6 @@ class UserController extends Controller
             'phone_number' => 'required'
         ]);
 
-
-
         if (!isValidPhoneNumber($request->phone_number)){
             $message = \Config::get('constants.error.invalid_phone_number');
             Session::flash('error', $message);
@@ -151,9 +150,9 @@ class UserController extends Controller
         $user = User::create($userData);
         
         //add generated password to returned data
-        $user['password'] = $password;
+        //$user['password'] = $password;
 
-        event(new Registered($user));
+        //event(new Registered($user));
 
         session()->flash("success", "User successfully created");
         return $this->registered(request(), $user)
@@ -232,10 +231,11 @@ class UserController extends Controller
         $this->validate(request(), [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'email|unique:users,email,'.$id,
+            'email' => 'sometimes|email|unique:users,email,'.$id,
             'account_number' => 'required',
-            'sms_user_name' => 'unique:users,sms_user_name,'.$id,
-            'phone_number' => 'required'
+            'sms_user_name' => 'sometimes|unique:users',
+            'phone_number' => 'required',
+                //'required|unique:users,phone_number|unique:users,company_id,id,'.$id,
         ]);
 
         $remove_spaces_regex = "/\s+/";
@@ -275,6 +275,8 @@ class UserController extends Controller
                 $groups = explode(',', $request->groupsSelected);
                 $user->groups()->sync($groups);
             }
+            
+            //dd($user);
 
             Session::flash('success', 'User was edited successfully');
             return redirect()->route('users.show', $id);

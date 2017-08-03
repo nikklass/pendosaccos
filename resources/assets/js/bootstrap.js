@@ -33,6 +33,12 @@ import './../css/mycss/awesome-bootstrap-checkbox.css';
 import './../css/mycss/fancy-buttons.css';
 import './../css/mycss/style.css'; 
 
+/*alert js*/
+/*import './../css/mycss/alertify.min.css'; 
+import './../css/mycss/themes/default.min.css'; 
+import './../css/mycss/themes/bootstrap.min.css'; */
+/*alert js*/ 
+
 /*require('./assets/myjs/bootstrap.min.js');
 require('jquery-toast-plugin');
 require('owl.carousel');

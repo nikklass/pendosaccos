@@ -67,12 +67,11 @@
 
                                                  <div class="form-wrap">
                                                     
-                                                    @if (session('message'))
-                                                      <div class="alert alert-success text-center">
-                                                          {{ session('message') }}
-                                                      </div>
-                                                    @endif
-                                                    
+                                                       <!-- @if (session('message'))
+                                                        <div class="alert alert-success text-center">
+                                                            {{ session('message') }}
+                                                        </div>
+                                                       @endif -->
 
                                                        @if (Auth::user()->hasRole('superadministrator'))
 
@@ -783,5 +782,7 @@
       });
 
   </script>
+
+  @include('layouts.partials.error_messages')
   
 @endsection

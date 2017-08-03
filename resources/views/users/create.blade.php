@@ -41,7 +41,7 @@
 
                                  <div class="form-wrap">
                                     
-                                    @if (session('error'))
+                                    <!-- @if (session('error'))
                                       <div class="alert alert-danger text-center">
                                           {{ session('error') }}
                                       </div>
@@ -51,7 +51,7 @@
                                       <div class="alert alert-success text-center">
                                           {{ session('success') }}
                                       </div>
-                                    @endif
+                                    @endif -->
 
                                     <form class="form-horizontal" method="POST" action="{{ route('users.store') }}"> 
 
@@ -342,6 +342,8 @@
 @section('page_scripts')
 
   <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+
+  @include('layouts.partials.error_messages')
   
 @endsection
 

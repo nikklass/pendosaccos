@@ -26,9 +26,10 @@ class User extends Authenticatable
         'first_name', 'last_name', 'email', 'sms_user_name',  'password', 'gender', 'company_id', 'phone_number', 'api_token', 'account_number', 'created_by', 'updated_by'
     ];
 
-    /*protected $appends = [
-        'user_company'
-    ];*/
+    /*object events*/
+    protected $events = [
+        'updated' => Events\AccountAdded::class,
+    ];
 
     /**
      * The attributes that should be hidden for arrays.

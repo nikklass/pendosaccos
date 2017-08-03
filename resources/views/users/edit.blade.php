@@ -294,7 +294,7 @@
                                                                     id="phone_number" 
                                                                     name="phone_number"
                                                                     maxlength="13" 
-                                                                    value="{{ $user->phone_number }}" required>
+                                                                    value="{{ old('phone_number', $user->phone_number)}}" required>
                                                                 <div class="input-group-addon"><i class="icon-phone"></i></div>
                                                              </div>
                                                              @if ($errors->has('phone_number'))

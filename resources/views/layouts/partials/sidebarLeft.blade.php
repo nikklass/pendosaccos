@@ -335,7 +335,7 @@
                </a>
             </li>
             <li>
-               <a href="#">Change Password</a>
+               <a href="#" data-toggle="modal" data-target="#password-modal">Change Password</a>
             </li>
             
          </ul>
@@ -360,3 +360,40 @@
 
    </ul>
 </div>
+
+
+
+<!-- /.modal -->
+<div id="password-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h5 class="modal-title">Change Password</h5>
+         </div>
+         <div class="modal-body">
+            <form method="POST"> 
+               {{ csrf_field() }}
+               <div class="form-group">
+                  <label for="old_password" class="control-label mb-10">Old Password:</label>
+                  <input type="text" class="form-control" id="old_password" name="old_password">
+               </div>
+               <hr>
+               <div class="form-group">
+                  <label for="new_password1" class="control-label mb-10">New Password:</label>
+                  <input type="text" class="form-control" id="new_password1" name="new_password1">
+               </div>
+               <div class="form-group">
+                  <label for="new_password2" class="control-label mb-10">New Password Repeat:</label>
+                  <input type="text" class="form-control" id="new_password2" name="new_password2">
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Save changes</button>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Button trigger modal -->

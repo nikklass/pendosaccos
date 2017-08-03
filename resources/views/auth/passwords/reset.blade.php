@@ -35,7 +35,7 @@
                                <div class="mb-30">
                                   <h3 class="text-center txt-dark mb-10">Forgot Your Password?</h3>
                                   <h6 class="text-center nonecase-font txt-grey">
-                                     Enter your email address below, and we’ll help you create a new password.
+                                     Enter your email address and new password below
                                   </h6>
                                </div>   
 

@@ -343,8 +343,8 @@ class SmsOutboxController extends Controller
 
                     } else {
 
-                        $errors['sms'] = $response->message;
-                        return redirect()->back()->withErrors($errors);
+                        Session::flash('error', $response->message);
+                        return redirect()->back();
 
                     }
 

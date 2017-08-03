@@ -184,6 +184,11 @@ return [
         Laratrust\LaratrustServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        /*
+         * Custom service providers...
+         */
+        App\Providers\ValidationServiceProvider::class,
+
     ],
 
     /*
