@@ -14,7 +14,7 @@ class CreateUsersGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::defaultStringLength(191);
+        /*Schema::defaultStringLength(191);
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name', 50);
@@ -35,7 +35,7 @@ class CreateUsersGroupsTable extends Migration
             $table->unique(array('phone_number', 'company_id'));
             $table->rememberToken();
             $table->timestamps();
-        });
+        });*/
 
         
         /*create groups table*/
@@ -97,12 +97,12 @@ class CreateUsersGroupsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('users');
+        //DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        //Schema::dropIfExists('users');
         /*Schema::dropIfExists('groups');
         Schema::dropIfExists('companies');
         Schema::dropIfExists('group_user');*/
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        //DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
     

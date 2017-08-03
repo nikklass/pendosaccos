@@ -20,7 +20,7 @@ class CreateBulkSmsOutboxesTable extends Migration
         Schema::defaultStringLength(191);
         Schema::create('sms_outboxes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('message');
+            $table->text('message');
             $table->string('short_message', 50);
             $table->string('user_agent');
             $table->string('src_ip');
@@ -41,7 +41,7 @@ class CreateBulkSmsOutboxesTable extends Migration
         Schema::defaultStringLength(191);
         Schema::create('schedule_sms_outboxes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('message');
+            $table->text('message');
             $table->string('short_message', 50);
             $table->string('user_agent');
             $table->string('src_ip');

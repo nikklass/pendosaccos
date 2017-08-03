@@ -233,7 +233,7 @@ class UserController extends Controller
             'last_name' => 'required',
             'email' => 'sometimes|email|unique:users,email,'.$id,
             'account_number' => 'required',
-            'sms_user_name' => 'sometimes|unique:users',
+            'sms_user_name' => 'sometimes|unique:users,sms_user_name,'.$id,
             'phone_number' => 'required',
                 //'required|unique:users,phone_number|unique:users,company_id,id,'.$id,
         ]);

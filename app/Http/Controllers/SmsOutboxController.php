@@ -118,14 +118,14 @@ class SmsOutboxController extends Controller
         }
 
         //get bulk sms data
-        $bulk_sms_data = getBulkSMSData($user->id);
-        $sms_error = $bulk_sms_data['error'];
+        /*$bulk_sms_data = getBulkSMSData($user->id);
+        $sms_error = $bulk_sms_data['error'];*/
 
         $sms_balance = 0;
 
-        if (!$sms_error) {
+        /*if (!$sms_error) {
             $sms_balance = $bulk_sms_data['sms_balance'];
-        }
+        }*/
 
         $userCompany->sms_balance = format_num($sms_balance, 0);
         //dd($bulk_sms_data, $user);
@@ -173,6 +173,7 @@ class SmsOutboxController extends Controller
 
             //remove all spaces
             $regex_message = preg_replace($remove_spaces_regex, ' ', $sms_message);
+            $regex_message = strtolower($regex_message);
 
             //get the replaceable matches
             $hits = preg_match_all($matches_regex, $regex_message, $match_results, PREG_PATTERN_ORDER);
@@ -197,6 +198,8 @@ class SmsOutboxController extends Controller
                 //get column titles/ headers
                 $line0 = $data[0];
                 $headers = $line0->keys();
+
+                $sent_sms_count = 0;
                 
                 //insert sms outbox data
                 foreach ($data as $key => $value) {
@@ -210,6 +213,8 @@ class SmsOutboxController extends Controller
                     //generate the message
                     foreach ($headers as $key => $header) {
                         
+                        $header = strtolower($header);
+
                         //get the phone number
                         if ($header == "phone_number") {
                             $local_phone_number = $value[$header];
@@ -220,13 +225,16 @@ class SmsOutboxController extends Controller
                         if (in_array($header, $match_results)) {
                             //get the items value from excel file
                             $item_value = $value[$header];
-                            $item_value_regex = "/\[\[$header\]\]/";
+                            $item_value_regex = "/\[\[$header\]\]/i";
+                            //dump($item_value_regex);
                             //replace sms_message placeholder with this value
                             $local_sms_message = preg_replace($item_value_regex, $item_value, $local_sms_message);
                         }
 
                     }
                     //end generate the message
+
+                    //dump($local_sms_message);
 
                     // send sms
                     if ($request->sendSmsCheckBox == 'now') {
@@ -275,6 +283,7 @@ class SmsOutboxController extends Controller
                         //create new scheduled sms outbox
                         $schedulesmsoutbox = new ScheduleSmsOutbox();
                         $schedulesmsoutbox->message = $local_sms_message;
+                        $schedulesmsoutbox->short_message = reducelength($local_sms_message, 45);
                         $schedulesmsoutbox->user_id = $local_user_id;
                         $schedulesmsoutbox->phone_number = formatPhoneNumber($local_phone_number);
                         $schedulesmsoutbox->company_id = $request->company_id;
@@ -286,10 +295,12 @@ class SmsOutboxController extends Controller
                         $schedulesmsoutbox->save();
 
                     }
+
+                    $sent_sms_count++;
                     
                 }
 
-                Session::flash('success', 'SMS successfully sent/ scheduled');
+                Session::flash('success', "<strong>$sent_sms_count</strong> SMS successfully sent/ scheduled");
                 return redirect()->back();
 
             } else {
@@ -298,6 +309,8 @@ class SmsOutboxController extends Controller
             }
 
         }
+
+        //dd("ello");
 
 
         //if users is selected and not attach content selected
