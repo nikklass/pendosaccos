@@ -159,7 +159,7 @@
 
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-                                          {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y G:i') }}
+                                          {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y, G:i') }}
 	                                         </span>
 	                                      </td>
 	                                      <td>
