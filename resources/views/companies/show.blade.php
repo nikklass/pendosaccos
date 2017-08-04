@@ -25,7 +25,9 @@
                         <span class="btn-text">edit</span>
                         <input class="upload" type="file">
                       </div>
-                      <div class="profile-image-overlay"></div>
+                      <div class="profile-image-overlay">
+                        <img src="{{ asset('images/mock6.jpg') }}" width="100%" height="100%">
+                      </div>
                     </div>
                     <div class="profile-info text-center">
                        
