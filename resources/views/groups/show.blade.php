@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Group - {{ $group->name }}
+    Displaying Group - {{ $group->name }}
 
 @endsection
 
@@ -12,6 +12,21 @@
 
     <div class="container-fluid pt-10">
           
+        <!-- Title -->
+       <div class="row heading-bg">
+          <div class="col-sm-6 col-xs-12">
+            <h5 class="txt-dark">Displaying Group - {{ $group->name }}</h5>
+          </div>
+          <!-- Breadcrumb -->
+          <div class="col-sm-6 col-xs-12">
+              
+              {!! Breadcrumbs::render('groups.show', $group->id) !!}
+
+          </div>
+          <!-- /Breadcrumb -->
+       </div>
+       <!-- /Title -->
+
         <!-- Row -->
         <div class="row">
 

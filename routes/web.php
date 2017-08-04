@@ -38,24 +38,30 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	Route::get('/profile/{id}', 'ProfileController@indexId')->name('user.profile.id');
 	Route::get('/profile', 'ProfileController@index')->name('user.profile'); 
 
-	//permission routes...
-	Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
-
 	//role routes...
 	Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
 
 	//group routes...
 	Route::resource('/groups', 'GroupController');
 
-	//companies routes...
-	Route::resource('/companies', 'CompanyController');
-
 	//smsoutbox routes...
-	Route::resource('/smsoutbox', 'SmsOutboxController', ['except' => 'destroy']);
+	Route::resource('/smsoutbox', 'SmsOutboxController', ['except' => ['edit', 'destroy']]);
 
 	//schedule smsoutbox routes...
 	Route::resource('/scheduled-smsoutbox', 'ScheduleSmsOutboxController');
 
+});
+
+//superadmin routes
+Route::group(['middleware' => 'role:superadministrator'], function() {
+	//permission routes...
+	Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
+});
+
+//superadmin and admin routes
+Route::group(['middleware' => 'role:superadministrator|administrator'], function() {
+	//companies routes...
+	Route::resource('/companies', 'CompanyController');
 });
 
 Route::group(['middleware' => 'guest'], function() {

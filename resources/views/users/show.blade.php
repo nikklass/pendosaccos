@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Showing {{ $user->first_name }}
+    Displaying User - {{ $user->first_name }} {{ $user->last_name }}
 
 @endsection
 
@@ -10,8 +10,24 @@
 @section('content')
     
 
-    <div class="container-fluid pt-10">
+    <div class="container-fluid">
+        
+       <!-- Title -->
+       <div class="row heading-bg">
+          <div class="col-sm-6 col-xs-12">
+            <h5 class="txt-dark">Displaying User - {{ $user->first_name }} {{ $user->last_name }}</h5>
+          </div>
+          <!-- Breadcrumb -->
+          <div class="col-sm-6 col-xs-12">
               
+              {!! Breadcrumbs::render('users.show', $user->id) !!}
+
+          </div>
+          <!-- /Breadcrumb -->
+       </div>
+       <!-- /Title -->
+
+      
         @if (session('success'))
           <div class="row">
             <div class="col-xs-12">

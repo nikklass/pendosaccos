@@ -10,7 +10,7 @@
 @section('content')
     
     <div class="container-fluid">
-       
+
        <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6 col-xs-12">
@@ -18,10 +18,7 @@
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-xs-12">
-              <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-primary btn-icon right-icon pull-right">
-                <span>Edit Role</span> 
-                <i class="zmdi zmdi-edit"></i> 
-              </a>
+              {!! Breadcrumbs::render('roles.show', $role->id) !!}
           </div>
           <!-- /Breadcrumb -->
        </div>

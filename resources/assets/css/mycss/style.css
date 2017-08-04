@@ -3045,9 +3045,9 @@ a#toggle_mobile_nav {
           content: "\f16c"; }
 
 .heading-bg {
-  height: 67px;
+  /*height: 67px;*/
   margin: 0 -39px;
-  padding: 13px 15px; }
+  padding: 10px 15px; }
   .heading-bg h5 { 
     padding-top: 6px; }
 

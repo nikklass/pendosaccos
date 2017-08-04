@@ -17,10 +17,7 @@
             <h5 class="txt-dark">Edit Role - {{ $role->display_name }}</h5>
           </div>
           <div class="col-sm-6 col-xs-12">
-              <a href="{{ route('roles.show', $role->id) }}" class="btn btn-primary btn-icon right-icon pull-right">
-                <span>View Role</span> 
-                <i class="zmdi zmdi-eye"></i> 
-              </a>
+              {!! Breadcrumbs::render('roles.edit', $role->id) !!}
           </div>
        </div>
        <!-- /Title -->

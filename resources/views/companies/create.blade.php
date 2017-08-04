@@ -3,7 +3,7 @@
 
 @section('title')
 
-    Create Company
+    Create New Company
 
 @endsection
 
@@ -11,6 +11,21 @@
 @section('content')
     
     <div class="container-fluid">
+
+      <!-- Title -->
+       <div class="row heading-bg">
+          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h5 class="txt-dark">Create New Company</h5>
+          </div>
+          <!-- Breadcrumb -->
+          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+              
+              {!! Breadcrumbs::render('companies.create') !!}
+
+          </div>
+          <!-- /Breadcrumb -->
+       </div>
+       <!-- /Title -->
 
       <!-- Row -->
        <div class="table-struct full-width full-height">

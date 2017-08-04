@@ -11,17 +11,16 @@
     
     <div class="container-fluid">
 
-		<!-- Title -->
+		   <!-- Title -->
        <div class="row heading-bg">
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
             <h5 class="txt-dark">Manage SMS Outbox</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-	            <!-- <a href="{{ route('smsoutbox.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
-	            	<span>Create New SMS</span> 
-	            	<i class="zmdi zmdi-account-add"></i> 
-	            </a> -->
+	            
+              {!! Breadcrumbs::render('smsoutbox') !!}
+
           </div>
           <!-- /Breadcrumb -->
        </div>

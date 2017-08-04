@@ -12,6 +12,19 @@
     
     <div class="container-fluid">
 
+      <!-- Title -->
+       <div class="row heading-bg">
+          <div class="col-sm-6 col-xs-12">
+            <h5 class="txt-dark">Edit Company - {{ $company->name }}</h5>
+          </div>
+          <!-- Breadcrumb -->
+          <div class="col-sm-6 col-xs-12">
+              {!! Breadcrumbs::render('companies.edit', $company->id) !!}
+          </div>
+          <!-- /Breadcrumb -->
+       </div>
+       <!-- /Title -->
+
       <!-- Row -->
        <div class="table-struct full-width full-height">
           <div class="table-cell vertical-align-middle auth-form-wrap-inner">

@@ -23,9 +23,22 @@
     
     <div class="container-fluid">
 
+      <!-- Title -->
+       <div class="row heading-bg">
+          <div class="col-sm-6 col-xs-12">
+            <h5 class="txt-dark">Create Bulk User Accounts</h5>
+          </div>
+          <!-- Breadcrumb -->
+          <div class="col-sm-6 col-xs-12">
+              {!! Breadcrumbs::render('bulk-users.create') !!}
+          </div>
+          <!-- /Breadcrumb -->
+       </div>
+       <!-- /Title -->
+
       <!-- Row -->
        <div class="table-struct full-width full-height">
-          <div class="table-cell auth-form-wrap-inner">
+          <div class="table-cell">
              <div class="ml-auto mr-auto no-float">
                 
                 <div  class="col-sm-12">
@@ -51,8 +64,6 @@
                                         enctype="multipart/form-data" action="{{ route('bulk-users.store') }}">
                                        
                                        {{ csrf_field() }}
-
-                             
                                        
                                        <div  
                                           class="form-group {{ $errors->has('company_id') ? ' has-error' : '' }}"
@@ -72,7 +83,7 @@
                                                 @foreach ($companies as $company)
                                                   <li class="mb-10">
                                                   <option value="{{ $company->id }}"
-                                            @if ($company->id == old('company_id', $user->company->id))
+                                            @if ($company->id == old('company_id', $company->id))
                                                 selected="selected"
                                             @endif
                                                       >

@@ -23,14 +23,14 @@
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-md-6 col-xs-12">
-	            <a href="{{ route('users.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
-	            	<span>Create New User</span> 
-	            	<i class="zmdi zmdi-account-add"></i> 
-	            </a>
+	            
+              {!! Breadcrumbs::render('users') !!}
+
           </div>
           <!-- /Breadcrumb -->
        </div>
        <!-- /Title --> 
+
       
       @if (session('success'))
         <div class="row">
@@ -51,7 +51,32 @@
                  </div>
                  <div class="panel-heading panel-heading-dark">
                     <div class="pull-left">
-                       <h6 class="panel-title txt-dark"></h6>
+                                                   
+                        <a 
+                          href="{{ route('users.create') }}" 
+                          class="btn btn-sm btn-primary btn-icon right-icon mr-5">
+                          <span>New</span>
+                          <i class="fa fa-plus"></i>
+                        </a>
+
+                        <div class="btn-group">
+                            <div class="dropdown">
+                               <button 
+                                  aria-expanded="false" 
+                                  data-toggle="dropdown" 
+                                  class="btn btn-sm btn-success dropdown-toggle " 
+                                  type="button">
+                                  Download 
+                                  <span class="caret ml-10"></span>
+                               </button>
+                               <ul role="menu" class="dropdown-menu">
+                                  <li><a href="#">As Excel</a></li>
+                                  <li><a href="#">As CSV</a></li>
+                                  <li><a href="#">As PDF</a></li>
+                               </ul>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="pull-right">
                        <a href="#" class="pull-left inline-block refresh mr-15">

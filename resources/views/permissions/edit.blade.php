@@ -17,12 +17,7 @@
             <h5 class="txt-dark">Edit Permission - {{ $permission->display_name }}</h5>
           </div>
           <div class="col-sm-6 col-xs-12">
-              <a 
-                  href="{{ route('permissions.show', $permission->id) }}" 
-                  class="btn btn-primary btn-icon right-icon pull-right">
-                <span>View Permission</span> 
-                <i class="zmdi zmdi-eye"></i> 
-              </a>
+              {!! Breadcrumbs::render('permissions.edit', $permission->id) !!}
           </div>
        </div>
        <!-- /Title -->

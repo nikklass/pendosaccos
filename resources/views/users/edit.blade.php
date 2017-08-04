@@ -25,10 +25,7 @@
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6">
-              <a href="{{ route('users.index') }}" class="btn btn-primary btn-icon right-icon pull-right">
-                <span>View Users</span> 
-                <i class="zmdi zmdi-accounts"></i> 
-              </a>
+              {!! Breadcrumbs::render('users.edit', $user->id) !!}
           </div>
           <!-- /Breadcrumb -->
        </div>

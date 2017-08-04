@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Permission - {{ $permission->display_name }}
+    Showing Permission - {{ $permission->display_name }}
 
 @endsection
 
@@ -14,16 +14,11 @@
       <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6 col-xs-12">
-            <h5 class="txt-dark">Permission - {{ $permission->display_name }}</h5>
+            <h5 class="txt-dark">Showing Permission - {{ $permission->display_name }}</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-xs-12">
-              <a 
-                  href="{{ route('permissions.edit', $permission->id) }}" 
-                  class="btn btn-primary btn-icon right-icon pull-right">
-                <span>Edit Permission</span> 
-                <i class="zmdi zmdi-edit"></i> 
-              </a>
+              {!! Breadcrumbs::render('permissions.show', $permission->id) !!}
           </div>
           <!-- /Breadcrumb -->
        </div>

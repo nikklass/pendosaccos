@@ -11,9 +11,22 @@
     
     <div class="container-fluid">
 
+      <!-- Title -->
+       <div class="row heading-bg">
+          <div class="col-sm-6 col-xs-12">
+            <h5 class="txt-dark">Create New Permission</h5>
+          </div>
+          <!-- Breadcrumb -->
+          <div class="col-sm-6 col-xs-12">
+              {!! Breadcrumbs::render('permissions.create') !!}
+          </div>
+          <!-- /Breadcrumb -->
+       </div>
+       <!-- /Title -->
+
       <!-- Row -->
        <div class="table-struct full-width full-height">
-          <div class="table-cell auth-form-wrap-inner">
+          <div class="table-cell">
              <div class="ml-auto mr-auto no-float">
                 <div class="row">
                    <div class="col-sm-12 col-xs-12">
