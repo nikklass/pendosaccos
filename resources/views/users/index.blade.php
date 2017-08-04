@@ -84,7 +84,6 @@
                                       
                                       @if (Auth::user()->hasRole('superadministrator'))
                                       <th>Company</th>
-                                      <th>SMS User Name</th>
                                       @endif
                                       
                                       <th>Phone</th>
@@ -123,14 +122,7 @@
                                           </span>
                                           @endif
                                         </td>
-
-                                        <td>
-                                          @if ($user->sms_user_name)
-                                          <span class="txt-dark weight-500">
-                                              {{ $user->sms_user_name }}
-                                          </span>
-                                          @endif
-                                        </td>
+                                        
                                         @endif
 
 	                                      <td>
@@ -145,8 +137,8 @@
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-	                                         	{{ $user->created_at->toFormattedDateString() }}
-	                                         </span>
+                                          {{ Carbon\Carbon::parse($user->created_at)->format('d-M-Y') }}
+                                           </span>
 	                                      </td>
 	                                      <td>
 	                                         <!-- <span class="label label-primary">Active</span> -->

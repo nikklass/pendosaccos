@@ -6,8 +6,16 @@
             &nbsp; 
             {{ Auth::user()->last_name }}
          </span> 
-         <i class="zmdi zmdi-more"></i>
       </li>
+
+      @if ((!Auth::user()->hasRole('superadministrator')) && ($user->company))
+      <li class="navigation-header">
+            <span class="pb-0">{{ $user->company->name }}</span>
+      </li>
+
+      <li><hr class="light-grey-hr mb-10 mt-10"/></li>
+      @endif
+
       <li>
          <a href="{{ route('home') }}" class="active">
             <div class="pull-left">

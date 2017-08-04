@@ -44,19 +44,7 @@
                                  <hr>
 
                                  <div class="form-wrap">
-                                    
-                                    <!-- @if (session('message'))
-                                      <div class="alert alert-success text-center">
-                                          {{ session('message') }}
-                                      </div>
-                                    @endif
-
-                                    @if (session('error'))
-                                      <div class="alert alert-danger text-center">
-                                          {{ session('error') }}
-                                      </div>
-                                    @endif -->
-
+                                   
                                     <form class="form-horizontal" method="POST" 
                                         action="{{ route('groups.update', $group->id) }}"> 
 
@@ -82,7 +70,7 @@
                                                 <li class="mb-10">
                                                 <option value="{{ $company->id }}"
 
-                                          @if ($company->id == old('company_id', $company->id))
+                                          @if ($company->id == old('company_id', $group->company->id))
                                               selected="selected"
                                           @endif
                                                     >
@@ -109,12 +97,12 @@
                                             <label class="control-label col-md-3">Company</label>
                                             <div class="col-md-9">
                                             
-                                              @if ($user->company)
-                                                <p class="form-control-static"> {{ $user->company->name }} </p>
+                                              @if ($group->company)
+                                                <p class="form-control-static"> {{ $group->company->name }} </p>
                                                 <input 
                                                     type="hidden" 
                                                     name="company_id"
-                                                    value="{{ $user->company->id }}">
+                                                    value="{{ old('company_id', $group->company->id)}}">
                                               @endif
 
                                             </div>
@@ -135,7 +123,7 @@
                                                 class="form-control" 
                                                 id="name" 
                                                 name="name"
-                                                value="{{ $group->name }}" 
+                                                value="{{ old('name', $group->name)}}"
                                                 required 
                                                 autofocus>
 
@@ -144,6 +132,30 @@
                                                       <strong>{{ $errors->first('first_name') }}</strong>
                                                   </span>
                                              @endif
+                                          </div>
+
+                                       </div>
+
+                                       <div  class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                                              
+                                          <label for="description" class="col-sm-3 control-label">
+                                             Group Description
+                                          </label>
+
+                                          <div class="col-sm-9">
+
+                                            <textarea 
+                                                class="form-control" 
+                                                rows="5"
+                                                id="description" 
+                                                name="description">{{ old('description', $group->description)}}</textarea>
+
+                                             @if ($errors->has('description'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('description') }}</strong>
+                                                  </span>
+                                             @endif
+
                                           </div>
 
                                        </div>
@@ -161,7 +173,7 @@
                                                 id="phone_number" 
                                                 name="phone_number"
                                                 maxlength="13" 
-                                                value="{{ $group->phone_number }}">
+                                                value="{{ old('phone_number', $group->phone_number)}}">
 
                                              @if ($errors->has('phone_number'))
                                                   <span class="help-block">
@@ -183,7 +195,7 @@
                                                 class="form-control" 
                                                 id="email" 
                                                 name="email"
-                                                value="{{ $group->email }}">
+                                                value="{{ old('email', $group->email)}}">
 
                                              @if ($errors->has('email'))
                                                   <span class="help-block">
@@ -206,7 +218,7 @@
                                                 class="form-control" 
                                                 id="physical_address" 
                                                 name="physical_address"
-                                                value="{{ $group->physical_address }}">
+                                                value="{{ old('physical_address', $group->physical_address)}}">
 
                                              @if ($errors->has('physical_address'))
                                                   <span class="help-block">
@@ -229,7 +241,7 @@
                                                 class="form-control" 
                                                 id="box" 
                                                 name="box"
-                                                value="{{ $group->box }}">
+                                                value="{{ old('box', $group->box)}}">
 
                                              @if ($errors->has('box'))
                                                   <span class="help-block">

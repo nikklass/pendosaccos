@@ -38,7 +38,7 @@
                                 <li class="follow-list">
                                   <div class="follo-body">
 
-                                    <div class="follo-data">
+                                    <div class="follo-data mb-10">
                                       <div class="user-data">
                                         <div class="name block capitalize-font mb-20">
                                             <strong>Message:</strong> 
@@ -51,7 +51,7 @@
                                       <div class="clearfix"></div>
                                     </div>
 
-                                    <div class="follo-data">
+                                    <div class="follo-data mb-10">
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Status:</strong>  
@@ -63,11 +63,11 @@
                                       <div class="clearfix"></div>
                                     </div>
 
-                                    <div class="follo-data">
+                                    <div class="follo-data mb-10">
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Sent at:</strong> 
-                                            {{ $smsoutbox->created_at }}
+                                        {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y, G:i') }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -94,7 +94,7 @@
                 <div  class="panel-body pb-0 ml-20 mr-20">
                     
                     <p class="mb-20">
-                        <h5>Sms Stats</h5>
+                        <h5>Sms Info</h5>
                     </p>
 
                     <hr>
@@ -103,15 +103,24 @@
                       <div class="col-sm-12">
                           
                           <ul class="list-icons">
-                              <li class="mb-10">
-                                  <strong>Status: </strong> 
-                                  <span class="text-success">
-                                      {{ $smsoutbox->status->name }}
-                                  </span>
+                              
+                                  <li class="mb-20">
+                                      <strong>Company: </strong> {{ $smsoutbox->company->name }}
+                                  </li>
+
+                                  @if (Auth::user()->hasRole('superadministrator'))
+
+                                      <li class="mb-20">
+                                          <strong>Bulk SMS Name: </strong> {{ $smsoutbox->sms_user_name }}
+                                      </li>
+
+                                  @endif
+
+                              <li class="mb-20">
+                                  <strong>Sent at: </strong> 
+                                  {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y, G:i') }}
                               </li>
-                              <li class="mb-10">
-                                  <strong>Sent at: </strong> {{ $smsoutbox->created_at }}
-                              </li>
+
                           </ul>
 
                       </div>

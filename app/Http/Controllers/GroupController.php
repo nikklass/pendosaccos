@@ -67,11 +67,11 @@ class GroupController extends Controller
         //if user is superadmin, show all companies, else show a user's companies
         $companies = [];
         if ($user->hasRole('superadministrator')){
-            $companies[] = Company::all();
+            $companies = Company::all();
         } else {
             $companies[] = $user->company;
         }
-        //dd($userCompany);
+        //dd($userCompany, $companies);
 
         return view('groups.create')
             ->withCompanies($companies)
@@ -93,6 +93,7 @@ class GroupController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
+            'phone_number' => 'sometimes|max:13',
             'company_id' => 'required'
         ]);
 
@@ -110,8 +111,9 @@ class GroupController extends Controller
         $group->name = $request->name;
         $group->company_id = $request->company_id;
         $group->phone_number = $phone_number;
+        $group->description = trim($request->description);
         $group->email = $request->email;
-        $group->physical_address = $request->physical_address;
+        $group->physical_address = trim($request->physical_address);
         $group->box = $request->box;
         $group->created_by = $user_id;
         $group->updated_by = $user_id;
@@ -135,8 +137,14 @@ class GroupController extends Controller
         $group = Group::where('id', $id)
                  ->with('company')
                  ->first();
+
+        //get group members
+        $users = $group->users()->paginate(10);
+        //dd($users);
         
-        return view('groups.show')->withGroup($group);
+        return view('groups.show')
+            ->withUsers($users)
+            ->withGroup($group);
 
     }
 
@@ -187,9 +195,10 @@ class GroupController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'phone_number' => 'required|max:255',
+            'phone_number' => 'sometimes|max:13,phone_number,'.$id,
             'company_id' => 'required|max:255'
         ]);
+        //dd($request);
 
         $phone_number = '';
         if ($request->phone_number) {
@@ -205,8 +214,9 @@ class GroupController extends Controller
         $group->name = $request->name;
         $group->company_id = $request->company_id;
         $group->phone_number = $phone_number;
+        $group->description = trim($request->description);
         $group->email = $request->email;
-        $group->physical_address = $request->physical_address;
+        $group->physical_address = trim($request->physical_address);
         $group->box = $request->box;
         $group->updated_by = $user_id;
         $group->save();

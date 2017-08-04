@@ -118,14 +118,17 @@ class SmsOutboxController extends Controller
         }
 
         //get bulk sms data
-        /*$bulk_sms_data = getBulkSMSData($user->id);
-        $sms_error = $bulk_sms_data['error'];*/
-
-        $sms_balance = 0;
-
-        /*if (!$sms_error) {
-            $sms_balance = $bulk_sms_data['sms_balance'];
-        }*/
+        $bulk_sms_data = getBulkSMSData($user->id); 
+        //dd($bulk_sms_data);
+        
+        if (!$bulk_sms_data['error']) {
+            $default_source = $bulk_sms_data['default_source'];
+            if ($default_source) {
+                $sms_balance = $bulk_sms_data['sms_balance'];
+            }
+        } else {
+            $sms_balance = 0;
+        }
 
         $userCompany->sms_balance = format_num($sms_balance, 0);
         //dd($bulk_sms_data, $user);
@@ -156,115 +159,204 @@ class SmsOutboxController extends Controller
         ]);
 
         $bulk_sms_data = getBulkSMSData($user_id);
-        //dd($bulk_sms_data);
-        $usr = $bulk_sms_data['sms_user_name'];
-        $src = $bulk_sms_data['default_source'];
-        $pass = $bulk_sms_data['passwd'];
 
-        $usersSelected = explode(',', $request->usersSelected);
-        $sms_message = trim($request->sms_message);
+        if (!$bulk_sms_data['error']) {
+
+            //dd($bulk_sms_data);
+            $usr = $bulk_sms_data['sms_user_name'];
+            $src = $bulk_sms_data['default_source'];
+            $pass = $bulk_sms_data['passwd'];
+
+            $usersSelected = explode(',', $request->usersSelected);
+            $sms_message = trim($request->sms_message);
+                
+            //formulate sms message if excel file was loaded
+            if ($request->attachContent) {
+
+                //read sms and check for delimiters in sms box
+                $matches_regex = "/\[\[(\w+)\]\]/";
+                $remove_spaces_regex = "/\s+/";
+
+                //remove all spaces
+                $regex_message = preg_replace($remove_spaces_regex, ' ', $sms_message);
+                $regex_message = strtolower($regex_message);
+
+                //get the replaceable matches
+                $hits = preg_match_all($matches_regex, $regex_message, $match_results, PREG_PATTERN_ORDER);
+
+                //dump($match_results[0]); //match full pattern
+                //dd($match_results[1]); //match in brackets
+                $match_results_full = $match_results[0];
+                $match_results = $match_results[1];
+
+                //read excel file if it exists
+                if ($request->hasFile('import_file') && count($match_results)) {
             
-        //formulate sms message if excel file was loaded
-        if ($request->attachContent) {
-
-            //read sms and check for delimiters in sms box
-            $matches_regex = "/\[\[(\w+)\]\]/";
-            $remove_spaces_regex = "/\s+/";
-
-            //remove all spaces
-            $regex_message = preg_replace($remove_spaces_regex, ' ', $sms_message);
-            $regex_message = strtolower($regex_message);
-
-            //get the replaceable matches
-            $hits = preg_match_all($matches_regex, $regex_message, $match_results, PREG_PATTERN_ORDER);
-
-            //dump($match_results[0]); //match full pattern
-            //dd($match_results[1]); //match in brackets
-            $match_results_full = $match_results[0];
-            $match_results = $match_results[1];
-
-            //read excel file if it exists
-            if ($request->hasFile('import_file') && count($match_results)) {
-        
-                $company_id = null;
-                if ($auth_user->company) {
-                    $company_id = $auth_user->company->id;
-                }
-                //dump($company_id);
-                $path = $request->file('import_file')->getRealPath();
-                $data = Excel::load($path, function($reader) {
-                })->get();
-                
-                //get column titles/ headers
-                $line0 = $data[0];
-                $headers = $line0->keys();
-
-                $sent_sms_count = 0;
-                
-                //insert sms outbox data
-                foreach ($data as $key => $value) {
-                    
-                    //init sms_message in each loop
-                    $local_sms_message = $sms_message;
-                    $local_phone_number = null;
-                    
-                    //get values from excel and map to sms_message
-                    //loop thru headers and get values assigned in $data array
-                    //generate the message
-                    foreach ($headers as $key => $header) {
-                        
-                        $header = strtolower($header);
-
-                        //get the phone number
-                        if ($header == "phone_number") {
-                            $local_phone_number = $value[$header];
-                        }
-
-                        //check if $header is in sms_message, 
-                        //assign to markers present in sms
-                        if (in_array($header, $match_results)) {
-                            //get the items value from excel file
-                            $item_value = $value[$header];
-                            $item_value_regex = "/\[\[$header\]\]/i";
-                            //dump($item_value_regex);
-                            //replace sms_message placeholder with this value
-                            $local_sms_message = preg_replace($item_value_regex, $item_value, $local_sms_message);
-                        }
-
+                    $company_id = null;
+                    if ($auth_user->company) {
+                        $company_id = $auth_user->company->id;
                     }
-                    //end generate the message
+                    //dump($company_id);
+                    $path = $request->file('import_file')->getRealPath();
+                    $data = Excel::load($path, function($reader) {
+                    })->get();
+                    
+                    //get column titles/ headers
+                    $line0 = $data[0];
+                    $headers = $line0->keys();
 
-                    //dump($local_sms_message);
+                    $sent_sms_count = 0;
+                    
+                    //insert sms outbox data
+                    foreach ($data as $key => $value) {
+                        
+                        //init sms_message in each loop
+                        $local_sms_message = $sms_message;
+                        $local_phone_number = null;
+                        
+                        //get values from excel and map to sms_message
+                        //loop thru headers and get values assigned in $data array
+                        //generate the message
+                        foreach ($headers as $key => $header) {
+                            
+                            $header = strtolower($header);
 
-                    // send sms
+                            //get the phone number
+                            if ($header == "phone_number") {
+                                $local_phone_number = $value[$header];
+                            }
+
+                            //check if $header is in sms_message, 
+                            //assign to markers present in sms
+                            if (in_array($header, $match_results)) {
+                                //get the items value from excel file
+                                $item_value = $value[$header];
+                                $item_value_regex = "/\[\[$header\]\]/i";
+                                //dump($item_value_regex);
+                                //replace sms_message placeholder with this value
+                                $local_sms_message = preg_replace($item_value_regex, $item_value, $local_sms_message);
+                            }
+
+                        }
+                        //end generate the message
+
+                        //dump($local_sms_message);
+
+                        // send sms
+                        if ($request->sendSmsCheckBox == 'now') {
+
+                            $params['usr'] = $usr;
+                            $params['pass'] = $pass;
+                            $params['src'] = $src;
+                            $params['phone_number'] = $local_phone_number;
+                            $params['sms_message'] = $local_sms_message;
+
+                            $response = sendSms($params);
+
+                            //format local phone number
+                            $local_phone_number = formatPhoneNumber($local_phone_number);
+
+                            //find user who owns phone number 
+                            $local_user_id = null;
+                            if ($local_phone_number) {
+                                $local_user = User::where('phone_number', $local_phone_number)
+                                                    ->where('company_id', $company_id)
+                                                    ->first();
+                                if ($local_user) {
+                                    $local_user_id = $local_user->id;
+                                }
+                            }                        
+
+                            if ($response['mobile']) {
+
+                                //create new outbox
+                                $smsoutbox = new SmsOutbox();
+                                $smsoutbox->message = $local_sms_message;
+                                $smsoutbox->short_message = reducelength($local_sms_message, 45);
+                                $smsoutbox->user_id = $local_user_id;
+                                $smsoutbox->phone_number = $local_phone_number;
+                                $smsoutbox->company_id = $request->company_id;
+                                $smsoutbox->sms_user_name = $usr;
+                                $smsoutbox->user_agent = getUserAgent();
+                                $smsoutbox->src_ip = getIp();
+                                $smsoutbox->src_host = getHost();
+                                $smsoutbox->created_by = $user_id;
+                                $smsoutbox->updated_by = $user_id;
+                                $smsoutbox->save();
+
+                            } else {
+
+                                //$errors['sms'] = $response->message;
+
+                            }
+
+                        } else {
+                            
+                            //create new scheduled sms outbox
+                            $schedulesmsoutbox = new ScheduleSmsOutbox();
+                            $schedulesmsoutbox->message = $local_sms_message;
+                            $schedulesmsoutbox->short_message = reducelength($local_sms_message, 45);
+                            $schedulesmsoutbox->user_id = $local_user_id;
+                            $schedulesmsoutbox->phone_number = $local_phone_number;
+                            $schedulesmsoutbox->company_id = $request->company_id;
+                            $schedulesmsoutbox->sms_user_name = $usr;
+                            $schedulesmsoutbox->user_agent = getUserAgent();
+                            $schedulesmsoutbox->src_ip = getIp();
+                            $schedulesmsoutbox->src_host = getHost();
+                            $schedulesmsoutbox->created_by = $user_id;
+                            $schedulesmsoutbox->updated_by = $user_id;
+                            $schedulesmsoutbox->save();
+
+                        }
+
+                        $sent_sms_count++;
+                        
+                    }
+
+                    Session::flash('success', "<strong>$sent_sms_count</strong> SMS successfully sent/ scheduled");
+                    return redirect()->back();
+
+                } else {
+                    //throw an error msg here
+                    //send back
+                    Session::flash('error', "Please select excel file and have [[markers]] in your sms message");
+                    return redirect()->back()->withInput();
+                }
+
+            }
+
+            //if users is selected and not attach content selected
+            if ((count($usersSelected) > 0) && (!$request->attachContent)){
+                
+                //send message(s)
+                foreach ($usersSelected as $x) {
+                    
+                    //get the recipient user details
+                    $user = User::where('id', $x)->first();
+
                     if ($request->sendSmsCheckBox == 'now') {
 
                         $params['usr'] = $usr;
                         $params['pass'] = $pass;
                         $params['src'] = $src;
-                        $params['phone_number'] = $local_phone_number;
-                        $params['sms_message'] = $local_sms_message;
+                        $params['phone_number'] = $user->phone_number;
+                        $params['sms_message'] = $request->sms_message;
+                        //dd($params);
 
                         $response = sendSms($params);
 
-                        //find user who owns phone number 
-                        $local_user_id = null;
-                        if ($local_phone_number) {
-                            $local_user = User::where('phone_number', $local_phone_number)->first();
-                            if ($local_user) {
-                                $local_user_id = $local_user->id;
-                            }
-                        }                        
+                        //dd($response);
 
-                        if ($response['mobile']) {
-
+                        if (!$response['error']) {
+                            
                             //create new outbox
                             $smsoutbox = new SmsOutbox();
-                            $smsoutbox->message = $local_sms_message;
-                            $smsoutbox->short_message = reducelength($local_sms_message, 45);
-                            $smsoutbox->user_id = $local_user_id;
-                            $smsoutbox->phone_number = formatPhoneNumber($local_phone_number);
+                            $smsoutbox->message = $request->sms_message;
+                            $smsoutbox->short_message = reducelength($request->sms_message,45);
+                            $smsoutbox->user_id = $x;
                             $smsoutbox->company_id = $request->company_id;
+                            $smsoutbox->sms_user_name = $usr;
+                            $smsoutbox->phone_number = formatPhoneNumber($user->phone_number);
                             $smsoutbox->user_agent = getUserAgent();
                             $smsoutbox->src_ip = getIp();
                             $smsoutbox->src_host = getHost();
@@ -272,9 +364,13 @@ class SmsOutboxController extends Controller
                             $smsoutbox->updated_by = $user_id;
                             $smsoutbox->save();
 
+                            Session::flash('success', 'SMS successfully sent');
+                            return redirect()->route('smsoutbox.index');
+
                         } else {
 
-                            //$errors['sms'] = $response->message;
+                            Session::flash('error', $response->message);
+                            return redirect()->back();
 
                         }
 
@@ -282,108 +378,32 @@ class SmsOutboxController extends Controller
                         
                         //create new scheduled sms outbox
                         $schedulesmsoutbox = new ScheduleSmsOutbox();
-                        $schedulesmsoutbox->message = $local_sms_message;
-                        $schedulesmsoutbox->short_message = reducelength($local_sms_message, 45);
-                        $schedulesmsoutbox->user_id = $local_user_id;
-                        $schedulesmsoutbox->phone_number = formatPhoneNumber($local_phone_number);
+                        $schedulesmsoutbox->message = $request->sms_message;
+                        $schedulesmsoutbox->user_id = $x;
                         $schedulesmsoutbox->company_id = $request->company_id;
+                        $schedulesmsoutbox->sms_user_name = $usr;
+                        $schedulesmsoutbox->phone_number = formatPhoneNumber($user->phone_number);
                         $schedulesmsoutbox->user_agent = getUserAgent();
                         $schedulesmsoutbox->src_ip = getIp();
                         $schedulesmsoutbox->src_host = getHost();
                         $schedulesmsoutbox->created_by = $user_id;
                         $schedulesmsoutbox->updated_by = $user_id;
-                        $schedulesmsoutbox->save();
+                        $schedulesmsoutbox->save();                    
 
                     }
 
-                    $sent_sms_count++;
-                    
-                }
-
-                Session::flash('success', "<strong>$sent_sms_count</strong> SMS successfully sent/ scheduled");
+                } 
+                
+                Session::flash('success', 'SMS successfully sent/ scheduled');
                 return redirect()->back();
-
-            } else {
-                //throw an error msg here
-                //please select excel file and create markers in your sms message with [[]] tags
+            
             }
 
         }
 
-        //dd("ello");
-
-
-        //if users is selected and not attach content selected
-        if ((count($usersSelected) > 0) && (!$request->attachContent)){
-            
-            //send message(s)
-            foreach ($usersSelected as $x) {
-                
-                //get the recipient user details
-                $user = User::where('id', $x)->first();
-
-                if ($request->sendSmsCheckBox == 'now') {
-
-                    $params['usr'] = $usr;
-                    $params['pass'] = $pass;
-                    $params['src'] = $src;
-                    $params['phone_number'] = $user->phone_number;
-                    $params['sms_message'] = $request->sms_message;
-                    //dd($params);
-
-                    $response = sendSms($params);
-
-                    //dd($response);
-
-                    if (!$response['error']) {
-                        
-                        //create new outbox
-                        $smsoutbox = new SmsOutbox();
-                        $smsoutbox->message = $request->sms_message;
-                        $smsoutbox->short_message = reducelength($request->sms_message,45);
-                        $smsoutbox->user_id = $x;
-                        $smsoutbox->company_id = $request->company_id;
-                        $smsoutbox->phone_number = formatPhoneNumber($user->phone_number);
-                        $smsoutbox->user_agent = getUserAgent();
-                        $smsoutbox->src_ip = getIp();
-                        $smsoutbox->src_host = getHost();
-                        $smsoutbox->created_by = $user_id;
-                        $smsoutbox->updated_by = $user_id;
-                        $smsoutbox->save();
-
-                        Session::flash('success', 'SMS successfully sent');
-                        return redirect()->route('smsoutbox.index');
-
-                    } else {
-
-                        Session::flash('error', $response->message);
-                        return redirect()->back();
-
-                    }
-
-                } else {
-                    
-                    //create new scheduled sms outbox
-                    $schedulesmsoutbox = new ScheduleSmsOutbox();
-                    $schedulesmsoutbox->message = $request->sms_message;
-                    $schedulesmsoutbox->user_id = $x;
-                    $schedulesmsoutbox->company_id = $request->company_id;
-                    $schedulesmsoutbox->phone_number = formatPhoneNumber($user->phone_number);
-                    $schedulesmsoutbox->user_agent = getUserAgent();
-                    $schedulesmsoutbox->src_ip = getIp();
-                    $schedulesmsoutbox->src_host = getHost();
-                    $schedulesmsoutbox->created_by = $user_id;
-                    $schedulesmsoutbox->updated_by = $user_id;
-                    $schedulesmsoutbox->save();                    
-
-                }
-
-            } 
-            
-            Session::flash('success', 'SMS successfully sent/ scheduled');
-            return redirect()->back();
-        
-        }
+        //send back
+        Session::flash('error', "You dont have an active SMS account. Please contact pendomedia.");
+        return redirect()->back()->withInput();
 
     }
 

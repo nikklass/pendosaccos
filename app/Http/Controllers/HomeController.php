@@ -46,11 +46,13 @@ class HomeController extends Controller
             $groups = Group::whereIn('company_id', $companies)
                      ->orderBy('id', 'desc')
                      ->with('company')
+                     ->with('users')
                      ->paginate(10);
         
             $users = User::whereIn('company_id', $companies)
                     ->orderBy('id', 'desc')
                     ->with('company')
+                    ->with('groups')
                     ->paginate(10);
 
             $smsoutboxes = SmsOutbox::whereIn('company_id', $companies)

@@ -40,13 +40,13 @@
                                     
                                     @if (session('message'))
                                       <div class="alert alert-success text-center">
-                                          {{ session('message') }}
+                                          {!! session('message') !!}
                                       </div>
                                     @endif
 
                                     @if (session('error'))
                                       <div class="alert alert-danger text-center">
-                                          {{ session('error') }}
+                                          {!! session('error') !!}
                                       </div>
                                     @endif
 
@@ -80,6 +80,32 @@
                                           </div>
 
                                        </div>
+
+                                       @if (Auth::user()->hasRole('superadministrator'))
+                                         <div  class="form-group{{ $errors->has('sms_user_name') ? ' has-error' : '' }}">
+                                                
+                                            <label for="sms_user_name" class="col-sm-3 control-label">
+                                               SMS User Name
+                                            </label>
+                                            <div class="col-sm-9">
+                                               <div class="input-group">
+                                                  <input 
+                                                      type="text" 
+                                                      class="form-control" 
+                                                      id="sms_user_name" 
+                                                      name="sms_user_name"
+                                                      value="{{ $company->sms_user_name }}" required>
+                                                  <div class="input-group-addon"><i class="icon-lock"></i></div>
+                                               </div>
+                                               @if ($errors->has('sms_user_name'))
+                                                    <span class="help-block">
+                                                        <strong>{{ $errors->first('sms_user_name') }}</strong>
+                                                    </span>
+                                               @endif
+                                            </div>
+
+                                         </div>
+                                       @endif
 
                                        <div  class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
                                               

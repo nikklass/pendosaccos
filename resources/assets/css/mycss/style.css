@@ -7317,3 +7317,9 @@ ul.inbox-nav li a:hover, ul.inbox-nav li.active a, ul.inbox-nav li a:focus {
 em{ font-style: italic; }
 .user_options{ max-height: 350px; overflow: scroll;max-width: 100%;
     overflow-x: hidden;}
+.user_options_tall{ max-height: 450px; overflow: scroll;max-width: 100%;
+    overflow-x: hidden;}
+.card-view.panel > .panel-heading {
+    padding: 15px;
+}
+.text-white{ color: #fff; }

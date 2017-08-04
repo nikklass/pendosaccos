@@ -22,10 +22,10 @@ class GroupsTableSeeder extends Seeder
 
     public function truncateGroupTables()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('groups')->truncate();
         \App\Group::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
     }
 
 }

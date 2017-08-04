@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Loans'),
+    'name' => env('APP_NAME', 'Pendo Admin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -183,11 +183,13 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Laratrust\LaratrustServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        DaveJamesMiller\Breadcrumbs\ServiceProvider::class,
 
         /*
          * Custom service providers...
          */
         App\Providers\ValidationServiceProvider::class,
+
 
     ],
 
@@ -241,7 +243,7 @@ return [
         'Laratrust'   => Laratrust\LaratrustFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
-
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
 
     ],
 

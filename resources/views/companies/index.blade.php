@@ -65,6 +65,7 @@
                                    <tr>
                                       <th>id</th>
                                       <th>Company Name</th>
+                                      <th>Bulk SMS Name</th>
                                       <th>Phone</th>
                                       <th>Email</th>
                                       <th>Created</th>
@@ -85,6 +86,11 @@
                                             {{ $company->name }}
                                           </span>
                                         </td>
+                                        <td>
+                                          <span class="txt-dark weight-500">
+                                            {{ $company->sms_user_name }}
+                                          </span>
+                                        </td>
 	                                      <td>
                                            <span class="txt-dark weight-500">
                                             {{ $company->phone_number }}
@@ -97,7 +103,7 @@
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-	                                         	{{ $company->created_at->toFormattedDateString() }}
+                                           {{ Carbon\Carbon::parse($company->created_at)->format('d-M-Y') }}
 	                                         </span>
 	                                      </td>
 	                                      <td>

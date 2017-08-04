@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Showing Company - {{ $company->name }}
+    Company - {{ $company->name }}
 
 @endsection
 
@@ -56,6 +56,16 @@
                                     <div class="follo-data">
                                       <div class="user-data">
                                         <span class="name block">
+                                            <strong>Bulk SMS Name:</strong> 
+                                            {{ $company->sms_user_name }}
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
                                             <strong>Email:</strong>  
                                             {{ $company->email }}
                                         </span>
@@ -92,6 +102,16 @@
                                       </div>
                                       <div class="clearfix"></div>
                                     </div>
+
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
+                                           <strong>Created:</strong> 
+                                           {{ Carbon\Carbon::parse($company->created_at)->format('d-M-Y') }}
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>  
                                  
                                   </div>
                                 </li>

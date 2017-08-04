@@ -15,7 +15,7 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         
-        $faker = Faker::create();
+        /*$faker = Faker::create();
 
         $this->command->info('Truncating User, Role and Permission tables');
         $this->truncateLaratrustTables();
@@ -107,7 +107,9 @@ class LaratrustSeeder extends Seeder
                     }
                 }
             }
-        }
+        }*/
+
+        
     }
 
     public function truncateLaratrustTables()

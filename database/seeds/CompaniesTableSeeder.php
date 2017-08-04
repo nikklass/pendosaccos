@@ -25,10 +25,10 @@ class CompaniesTableSeeder extends Seeder
 
     public function truncateCompaniesTables()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('companies')->truncate();
         \App\Company::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
     }
 
 }

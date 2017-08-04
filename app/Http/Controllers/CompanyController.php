@@ -52,19 +52,29 @@ class CompanyController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'phone_number' => 'required'
+            'phone_number' => 'required|max:13',
+            'sms_user_name' => 'sometimes|unique:companies'
         ]);
 
-        if (!isValidPhoneNumber($request->phone_number)){
-            $message = \Config::get('constants.error.invalid_phone_number');
-            Session::flash('error', $message);
-            return redirect()->back()->withInput();
+        $phone_number = '';
+        if ($request->phone_number) {
+            if (!isValidPhoneNumber($request->phone_number)){
+                $message = \Config::get('constants.error.invalid_phone_number');
+                Session::flash('error', $message);
+                return redirect()->back()->withInput();
+            }
+            $phone_number = formatPhoneNumber($request->phone_number);
         }
+
+        $remove_spaces_regex = "/\s+/";
+        //remove all spaces
+        $sms_user_name = preg_replace($remove_spaces_regex, '', $request->sms_user_name);
 
         $company = new Company();
         $company->name = $request->name;
-        $company->phone_number = formatPhoneNumber($request->phone_number);
+        $company->phone_number = $phone_number;
         $company->email = $request->email;
+        $company->sms_user_name = $sms_user_name;
         $company->physical_address = $request->physical_address;
         $company->box = $request->box;
         $company->created_by = $user_id;
@@ -125,13 +135,29 @@ class CompanyController extends Controller
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'phone_number' => 'required|max:255',
+            'phone_number' => 'required|max:13',
+            'sms_user_name' => 'sometimes|unique:companies,sms_user_name,'.$id
         ]);
+
+        $phone_number = '';
+        if ($request->phone_number) {
+            if (!isValidPhoneNumber($request->phone_number)){
+                $message = \Config::get('constants.error.invalid_phone_number');
+                Session::flash('error', $message);
+                return redirect()->back()->withInput();
+            }
+            $phone_number = formatPhoneNumber($request->phone_number);
+        }
+
+        $remove_spaces_regex = "/\s+/";
+        //remove all spaces
+        $sms_user_name = preg_replace($remove_spaces_regex, '', $request->sms_user_name);
 
         $company = Company::findOrFail($id);
         $company->name = $request->name;
-        $company->phone_number = $request->phone_number;
+        $company->phone_number = $phone_number;
         $company->email = $request->email;
+        $company->sms_user_name = $sms_user_name;
         $company->physical_address = $request->physical_address;
         $company->box = $request->box;
         $company->updated_by = $user_id;

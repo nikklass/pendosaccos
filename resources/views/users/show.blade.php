@@ -101,18 +101,6 @@
                                       <div class="clearfix"></div>
                                     </div>
 
-                                    @if (Auth::user()->hasRole('superadministrator'))
-                                    <div class="follo-data">
-                                      <div class="user-data">
-                                        <span class="name block">
-                                            <strong>Sms User Name:</strong> 
-                                            {{ $user->sms_user_name }}
-                                        </span>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                    </div>
-                                    @endif
-
                                     <div class="follo-data">
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
@@ -122,6 +110,16 @@
                                            @else
                                               Female
                                            @endif
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
+                                            <strong>Created:</strong> 
+                                            {{ Carbon\Carbon::parse($user->created_at)->format('d-M-Y') }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>

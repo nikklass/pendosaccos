@@ -119,13 +119,17 @@ class UserController extends Controller
             'account_number' => 'required',
             'email' => 'email|unique:users',
             'sms_user_name' => 'unique:users',
-            'phone_number' => 'required'
+            'phone_number' => 'required|max:13'
         ]);
 
-        if (!isValidPhoneNumber($request->phone_number)){
-            $message = \Config::get('constants.error.invalid_phone_number');
-            Session::flash('error', $message);
-            return redirect()->back()->withInput();
+        $phone_number = '';
+        if ($request->phone_number) {
+            if (!isValidPhoneNumber($request->phone_number)){
+                $message = \Config::get('constants.error.invalid_phone_number');
+                Session::flash('error', $message);
+                return redirect()->back()->withInput();
+            }
+            $phone_number = formatPhoneNumber($request->phone_number);
         }
 
         //generate random password
@@ -140,7 +144,7 @@ class UserController extends Controller
             'company_id' => request()->company_id,
             'account_number' => request()->account_number,
             'gender' => request()->gender,
-            'phone_number' => formatPhoneNumber(request()->phone_number),
+            'phone_number' => $phone_number,
             'password' => bcrypt($password),
             'api_token' => str_random(60),
             'created_by' => request()->user()->id,
@@ -233,23 +237,28 @@ class UserController extends Controller
             'last_name' => 'required',
             'email' => 'sometimes|email|unique:users,email,'.$id,
             'account_number' => 'required',
-            'sms_user_name' => 'sometimes|unique:users,sms_user_name,'.$id,
-            'phone_number' => 'required',
+            //'sms_user_name' => 'sometimes|unique:users,sms_user_name,'.$id,
+            'phone_number' => 'required|max:13'
                 //'required|unique:users,phone_number|unique:users,company_id,id,'.$id,
         ]);
 
-        $remove_spaces_regex = "/\s+/";
-        //remove all spaces
-        $sms_user_name = preg_replace($remove_spaces_regex, '', $request->sms_user_name);
+        $phone_number = '';
+        if ($request->phone_number) {
+            if (!isValidPhoneNumber($request->phone_number)){
+                $message = \Config::get('constants.error.invalid_phone_number');
+                Session::flash('error', $message);
+                return redirect()->back()->withInput();
+            }
+            $phone_number = formatPhoneNumber($request->phone_number);
+        }
 
         $user = User::findOrFail($id);
 
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
-        $user->sms_user_name = $sms_user_name;
         $user->email = $request->email;
         $user->company_id = $request->company_id;
-        $user->phone_number = $request->phone_number;
+        $user->phone_number = $phone_number;
         $user->account_number = $request->account_number;
         $user->gender = $request->gender;
 

@@ -139,6 +139,30 @@
 
                                        </div>
 
+                                       <div  class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                                              
+                                          <label for="description" class="col-sm-3 control-label">
+                                             Group Description
+                                          </label>
+
+                                          <div class="col-sm-9">
+
+                                            <textarea 
+                                                class="form-control" 
+                                                rows="5"
+                                                id="description" 
+                                                name="description">{{ old('description') }}</textarea>
+
+                                             @if ($errors->has('description'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('description') }}</strong>
+                                                  </span>
+                                             @endif
+
+                                          </div>
+
+                                       </div>
+
                                        <div  class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
                                               
                                           <label for="phone_number" class="col-sm-3 control-label">

@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Showing - {{ $permission->display_name }}
+    Permission - {{ $permission->display_name }}
 
 @endsection
 
@@ -14,12 +14,12 @@
       <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6 col-xs-12">
-            <h5 class="txt-dark">Showing Permission - {{ $permission->display_name }}</h5>
+            <h5 class="txt-dark">Permission - {{ $permission->display_name }}</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-xs-12">
               <a 
-                  href="{{ route('permissions.edit', $role->id) }}" 
+                  href="{{ route('permissions.edit', $permission->id) }}" 
                   class="btn btn-primary btn-icon right-icon pull-right">
                 <span>Edit Permission</span> 
                 <i class="zmdi zmdi-edit"></i> 
@@ -30,83 +30,84 @@
        <!-- /Title -->
 
       <!-- Row -->
-       <div class="table-struct full-width full-height">
-          <div class="table-cell vertical-align-middle auth-form-wrap-inner">
-             <div class="auth-form  ml-auto mr-auto no-float">
-                <div class="row">
-                   <div class="col-sm-12 col-xs-12">
-                      
-                      <div class="panel panel-default card-view">
-                         
-                         <div class="panel-wrapper collapse in">
-                            
-                            <div class="panel-body">               
+        <div class="row">
 
-                               <div class="mb-30">
-                                  <h3 class="text-center txt-dark mb-10">
+          <div class="col-lg-6 col-xs-12">
+            <div class="panel panel-default card-view  pa-0">
+              <div class="panel-wrapper collapse in">
+                <div class="panel-body  pa-0">
+                  <div class="profile-box">
+                    <div class="profile-cover-pic">
+                      <div class="fileupload btn btn-default">
+                        <span class="btn-text">edit</span>
+                        <input class="upload" type="file">
+                      </div>
+                      <div class="profile-image-overlay"></div>
+                    </div>
+                    <div class="profile-info text-center">
+                       
+                      <h5 class="block mt-10 mb-5 weight-500 capitalize-font">
+                          Permission Name: <span class="txt-danger">{{ $permission->display_name }}</span>
+                      </h5>
+                      <!-- <h6 class="block capitalize-font pb-20">Developer Geek</h6> -->
+                    </div>  
+                    <div class="social-info">
+                      <div class="row">
+                        
+                          <div class="col-lg-12">
+                            <div class="followers-wrap">
+                              <ul class="followers-list-wrap">
+                                <li class="follow-list">
+                                  <div class="follo-body">
 
-                                    {{ $permission->display_name }}
-  
-                                  </h3>
-                               </div>   
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block capitalize-font">
+                                            <strong>Display Name:</strong> 
+                                            {{ $permission->display_name }}
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
 
-                               <hr>
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
+                                            <strong>Slug:</strong> 
+                                            {{ $permission->name }}
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
 
-                               <div class="form-wrap">
+                                    <div class="follo-data">
+                                      <div class="user-data">
+                                        <span class="name block">
+                                            <strong>Description:</strong> 
+                                            {{ $permission->description }}
+                                        </span>
+                                      </div>
+                                      <div class="clearfix"></div>
+                                    </div>
                                  
-                                  <form > 
-
-                                     <div class="form-group">
-                                            
-                                        <label for="first_name" class="col-sm-3 control-label">
-                                           Display Name
-                                        </label>
-                                        <div class="col-sm-9">
-                                           <pre>{{ $permission->display_name }}</pre>
-                                        </div>
-
-                                     </div>
-
-                                     <div class="form-group">
-                                            
-                                        <label for="last_name" class="col-sm-3 control-label">
-                                           Slug
-                                        </label>
-                                        <div class="col-sm-9">
-                                           <pre>{{ $permission->name }}</pre>
-                                        </div>
-
-                                     </div>
-
-                                     <div  class="form-group">
-                                            
-                                        <label for="email" class="col-sm-3 control-label">
-                                           Description
-                                        </label>
-                                        <div class="col-sm-9">
-                                           <pre>{{ $permission->description }}</pre>
-                                        </div>
-
-                                     </div>
-
-
-                                     <hr>
-                                     
-                                  </form>
-
-                               </div>
-
+                                  </div>
+                                </li>
+                              </ul>
                             </div>
+                          </div>
 
-                         </div>
+                      </div>
 
-                      </div>   
-                   </div>
+                    </div>
+                  </div>
                 </div>
-             </div>
+              </div>
+            </div>
           </div>
-       </div>
-       <!-- /Row --> 
+
+          
+        </div>
+        <!-- /Row -->
 
     </div>
          

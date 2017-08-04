@@ -72,14 +72,24 @@
                           <div class="table-responsive">
                              <table class="table table-hover mb-0">
                                 <thead>
+
                                    <tr>
+
                                       <th width="5%">id</th>
                                       <th width="40%">Message</th>
                                       <th width="15%">Phone</th>
                                       <th width="10%">Status</th>
+
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                        <th width="10%">Company</th>
+                                        <th width="10%">SMS Name</th>
+                                      @endif
+
                                       <th width="15%">Created</th>
                                       <th width="15%">Actions</th>
+
                                    </tr>
+
                                 </thead>
                                 <tbody>
 
@@ -105,9 +115,23 @@
                                             {{ $smsoutbox->status->name }}
                                            </span>
                                         </td>
+
+                                        @if (Auth::user()->hasRole('superadministrator'))
+                                            <td>
+                                              <span class="txt-dark weight-500">
+                                                {{ $smsoutbox->company->name }}
+                                              </span>
+                                            </td>
+                                            <td>
+                                              <span class="txt-dark weight-500">
+                                                {{ $smsoutbox->sms_user_name }}
+                                              </span>
+                                            </td>
+                                        @endif
+
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-	                                         	{{ $smsoutbox->created_at->toFormattedDateString() }}
+                                          {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y') }}
 	                                         </span>
 	                                      </td>
 	                                      <td>

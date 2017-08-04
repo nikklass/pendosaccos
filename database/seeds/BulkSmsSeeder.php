@@ -135,12 +135,12 @@ class BulkSmsSeeder extends Seeder
 
     public function truncateBulkSmsTables()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('statuses')->truncate();
         DB::table('sms_types')->truncate();
         \App\Status::truncate();
         \App\SmsType::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
     }
 
 }

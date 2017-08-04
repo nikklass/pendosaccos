@@ -3,7 +3,7 @@
 
 @section('title')
 
-    Send SMS
+    Send Bulk SMS
 
 @endsection
 
@@ -446,7 +446,6 @@
 
                                             <div  class="panel-wrapper collapse in">
                                                <div  class="panel-body pt-0">
-                                                  
 
                                                   <!-- Row -->
                                                   <div class="row">
@@ -505,7 +504,6 @@
                                                                   </a>
                                                                 </div>
                                                               </div>
-  
                                                           
                                                         </div>
 
@@ -513,9 +511,6 @@
                                                     
                                                   </div>
                                                   <!-- /Row -->
-
-
-
                                                   
                                                </div>
                                             </div>

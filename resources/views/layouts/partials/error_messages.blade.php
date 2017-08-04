@@ -13,7 +13,7 @@
 		            position: 'top-right',
 		            loaderBg:'#fec107',
 		            icon: 'success',
-		            hideAfter: 7500, 
+		            hideAfter: 10500, 
 		            stack: 6
 		        });
 				return false;
@@ -38,7 +38,7 @@
 		            position: 'top-right',
 		            loaderBg:'#fec107',
 		            icon: 'error',
-		            hideAfter: 7500, 
+		            hideAfter: 10500, 
 		            stack: 6
 		        });
 				return false;

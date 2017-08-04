@@ -155,9 +155,15 @@ function getHost() {
 // fetching bulk sms data
 function getBulkSMSData($user_id) {
 		
-	$user = User::where('id', $user_id)->first();
-	//dd($user);
-	$sms_user_name = $user->sms_user_name;
+	$user = User::where('id', $user_id)
+		->with('company')
+		->first();
+	
+	$sms_user_name = "";
+	if ($user->company) {
+		$sms_user_name = $user->company->sms_user_name;
+	}
+	//dd($user, $sms_user_name);
 
 	//dd($sms_username);
 

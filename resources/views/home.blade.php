@@ -99,7 +99,7 @@
         
         <!-- Row -->
         <div class="row">
-              <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <div class="panel panel-default card-view">
                  <div class="panel-heading">
                     <div class="pull-left">
@@ -136,7 +136,7 @@
                     </div>
                 </div>
               
-           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                    <div class="panel panel-default card-view panel-refresh">
                  <div class="refresh-container">
                     <div class="la-anim-1"></div>
@@ -235,10 +235,15 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th>Name</th>
-                                      <th>Phone Number</th>
-                                      <th>Company</th>
-                                      <th>Created</th>
+                                      <th width="30%">Name</th>
+                                      <th width="25%">Phone Number</th>
+                                      <th width="20%">Groups</th>
+
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                      <th width="10%">Company</th>
+                                      @endif
+
+                                      <th width="20%">Created</th>
                                    </tr>
                                 </thead>
                                 <tbody>
@@ -247,19 +252,31 @@
                                    <tr>
                                       <td>
                                         <span class="txt-dark weight-500">
-                                            {{ $user->first_name }}
-                                            &nbsp;
-                                            {{ $user->last_name }}
+                                          {{ $user->first_name }}
+                                          &nbsp;
+                                          {{ $user->last_name }}
                                         </span>
                                       </td>
                                       <td>
                                         {{ $user->phone_number }}
                                       </td>
+
                                       <td>
-                                        @if ($user->company)
-                                          {{ $user->company_name }}
-                                        @endif
+                                        @foreach ($user->groups as $user_group) 
+                                          <span>{{ $user_group->name }}</span> &nbsp;
+                                        @endforeach
                                       </td>
+                                      
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                        <td>
+                                          @if ($user->company)
+                                          <span class="txt-dark weight-500">
+                                              {{ $user->company->name }}
+                                          </span>
+                                          @endif
+                                        </td>
+                                        
+                                      @endif
                                       
                                       <td>
                                          <span class="txt-dark weight-500">
@@ -312,29 +329,45 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th>Name</th>
-                                      <th>Members</th>
-                                      <th>Company</th>
-                                      <th>Created</th>
+                                      <th width="35%">Name</th>
+                                      <th width="25%">Phone Number</th>
+                                      <th width="20%">Members</th>
+
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                        <th width="20%">Company</th>
+                                      @endif
+
+                                      <th width="20%">Created</th>
                                    </tr>
                                 </thead>
                                 <tbody>
                                    
                                    @foreach ($groups as $group) 
                                    <tr>
+
                                       <td>
                                         <span class="txt-dark weight-500">
-                                            {{ $group->name }}
+                                          {{ $group->name }}
                                         </span>
                                       </td>
+
                                       <td>
-                                        {{ $group->phone_number }}
+                                        <span class="txt-dark weight-500">
+                                          {{ $group->phone_number }}
+                                        </span>
                                       </td>
+
                                       <td>
-                                        @if ($group->company)
-                                          {{ $group->company_name }}
-                                        @endif
+                                        {{ count($group->users) }}
                                       </td>
+
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                        <td>
+                                          @if ($group->company)
+                                            {{ $group->company_name }}
+                                          @endif
+                                        </td>
+                                      @endif
                                       
                                       <td>
                                          <span class="txt-dark weight-500">

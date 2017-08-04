@@ -17,7 +17,7 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
     use LaratrustUserTrait; 
     
-    //protected $appends = ['profile_image'];
+    protected $appends = ['company'];
 
     /**
      * The attributes that are mass assignable
@@ -75,14 +75,15 @@ class User extends Authenticatable
     public static function getUser()
     {
         $user_id = auth()->user();
-        return static::find($user_id);
+        $userCompany = User::where('id', auth()->user()->id)->with('company')->first();
+        return $userCompany;
     }
 
-    /*public function getUserCompanyAttribute()
+    public function getUserCompanyAttribute()
     {
         $company = Company::findOrFail($this->company_id)->first();
         return $company;
-    }*/
+    }
 
     /*public function getProfileImageAttribute()
     {

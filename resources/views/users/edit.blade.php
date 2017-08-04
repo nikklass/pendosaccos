@@ -228,33 +228,6 @@
 
                                                        </div>
 
-                                                       @if (Auth::user()->hasRole('superadministrator'))
-                                                         <div  class="form-group{{ $errors->has('sms_user_name') ? ' has-error' : '' }}">
-                                                                
-                                                            <label for="sms_user_name" class="col-sm-3 control-label">
-                                                               SMS User Name
-                                                               <span class="text-danger"> *</span>
-                                                            </label>
-                                                            <div class="col-sm-9">
-                                                               <div class="input-group">
-                                                                  <input 
-                                                                      type="text" 
-                                                                      class="form-control" 
-                                                                      id="sms_user_name" 
-                                                                      name="sms_user_name"
-                                                                      value="{{ $user->sms_user_name }}" required>
-                                                                  <div class="input-group-addon"><i class="icon-lock"></i></div>
-                                                               </div>
-                                                               @if ($errors->has('sms_user_name'))
-                                                                    <span class="help-block">
-                                                                        <strong>{{ $errors->first('sms_user_name') }}</strong>
-                                                                    </span>
-                                                               @endif
-                                                            </div>
-
-                                                         </div>
-                                                       @endif
-
                                                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                                               
                                                           <label for="email" class="col-sm-3 control-label">
@@ -523,7 +496,7 @@
 
                                                  <div class="pull-left">
                                                     <h5 class="panel-title txt-dark">
-                                                      <strong>User Groups</strong>
+                                                      <strong>User Group</strong>
                                                     </h5>
                                                  </div>
                                                  <div class="clearfix"></div>
@@ -533,28 +506,32 @@
                                                     
                                                     <input type="hidden" name="groupsSelected" :value="groupsSelected">
 
-                                                    <p>
-                                                        <ul>
-                                                            @foreach ($groups as $group)
-                                                            <li>
-                                                               <div class="checkbox">
-                                                                  <input 
-                                                                      id="{{ $group->id }}" 
-                                                                      type="checkbox"
-                                                                      :value="{{ $group->id }}"
-                                                                      v-model="groupsSelected">
-                                                                  <label for="{{ $group->id }}"> 
-                                                                      {{ $group->name }} 
-                                                                      &nbsp;&nbsp;
-                                                                      <em class="ml-15"> 
-                                                                          ({{ $group->description }})
-                                                                      </em>
-                                                                  </label>
-                                                               </div>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </p>
+                                                    <div class="user_options_tall nicescroll-bar">
+
+                                                      <p>
+                                                          <ul>
+                                                              @foreach ($groups as $group)
+                                                              <li>
+                                                                 <div class="checkbox">
+                                                                    <input 
+                                                                        id="{{ $group->id }}" 
+                                                                        type="checkbox"
+                                                                        :value="{{ $group->id }}"
+                                                                        v-model="groupsSelected">
+                                                                    <label for="{{ $group->id }}"> 
+                                                                        {{ $group->name }} 
+                                                                        &nbsp;&nbsp;
+                                                                        <em class="ml-15"> 
+                                                                            ({{ $group->description }})
+                                                                        </em>
+                                                                    </label>
+                                                                 </div>
+                                                              </li>
+                                                              @endforeach
+                                                          </ul>
+                                                      </p>
+
+                                                    </div>
 
                                                  </div>
                                               </div>

@@ -23,10 +23,10 @@
           </div>
           <!-- Breadcrumb -->
           <div class="ol-md-6 col-sm-6 col-xs-12">
-	            <a href="{{ route('groups.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
+	            <!-- <a href="{{ route('groups.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
 	            	<span>Create New Group</span> 
 	            	<i class="zmdi zmdi-account-add"></i> 
-	            </a>
+	            </a> -->
           </div>
           <!-- /Breadcrumb -->
        </div>
@@ -41,7 +41,42 @@
                  </div>
                  <div class="panel-heading panel-heading-dark">
                     <div class="pull-left">
-                       <h6 class="panel-title txt-dark"></h6>
+                                                   
+                        <a 
+                          href="{{ route('groups.create') }}" 
+                          class="btn btn-sm btn-primary btn-outline btn-icon right-icon mr-5">
+                          <span>New</span>
+                          <i class="fa fa-plus"></i>
+                        </a>
+
+                        <!-- <a 
+                          href="{{ route('groups.create') }}" 
+                          class="btn btn-sm btn-success btn-outline btn-icon right-icon mr-5">
+                          <span>Download</span>
+                          <i class="fa fa-file-excel-o"></i>
+                        </a>  -->
+
+                        <div class="btn-group">
+                            <div class="dropdown">
+                               <button 
+                                  aria-expanded="false" 
+                                  data-toggle="dropdown" 
+                                  class="btn btn-sm btn-success btn-outline dropdown-toggle " 
+                                  type="button">
+                                  Download 
+                                  <span class="caret ml-10"></span>
+                               </button>
+                               <ul role="menu" class="dropdown-menu">
+                                  <li><a href="#">As Excel</a></li>
+                                  <li><a href="#">As CSV</a></li>
+                                  <li><a href="#">As PDF</a></li>
+                                  <!-- <li class="divider"></li>
+                                  <li><a href="#">Separated link</a></li> -->
+                               </ul>
+                            </div>
+                         </div>
+
+
                     </div>
                     <div class="pull-right">
                        <a href="#" class="pull-left inline-block refresh mr-15">
@@ -51,11 +86,32 @@
                           <i class="zmdi zmdi-fullscreen"></i>
                        </a>
                        <div class="pull-left inline-block dropdown">
-                          <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" role="button"><i class="zmdi zmdi-more-vert"></i></a>
+                          
+                          <a 
+                            class="dropdown-toggle" 
+                            data-toggle="dropdown" 
+                            href="#" 
+                            aria-expanded="false" 
+                            role="button">
+                            <i class="zmdi zmdi-more-vert"></i>
+                          </a>
+
                           <ul class="dropdown-menu bullet dropdown-menu-right"  role="menu">
-                             <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-reply" aria-hidden="true"></i>Edit</a></li>
-                             <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-share" aria-hidden="true"></i>Delete</a></li>
-                             <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i class="icon wb-trash" aria-hidden="true"></i>New</a></li>
+                             
+                             <li role="presentation">
+                                <a href="{{ route('groups.create') }}" role="menuitem">
+                                  <i class="icon wb-reply" aria-hidden="true"></i>
+                                  New
+                                </a>
+                             </li>
+
+                             <li role="presentation">
+                                <a href="{{ route('groups.create') }}" role="menuitem">
+                                  <i class="icon wb-share" aria-hidden="true"></i>
+                                  Download
+                                </a>
+                             </li>
+
                           </ul>
                        </div>
                     </div>
@@ -70,7 +126,11 @@
                                    <tr>
                                       <th>id</th>
                                       <th>Group Name</th>
-                                      <th>Company Name</th>
+
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                        <th>Company</th>
+                                      @endif
+
                                       <th>Phone</th>
                                       <th>Email</th>
                                       <th>Created</th>
@@ -91,11 +151,15 @@
                                             {{ $group->name }}
                                           </span>
                                         </td>
-                                        <td>
-                                          <span class="txt-dark weight-500">
-                                            {{ $group->company->name }}
-                                          </span>
-                                        </td>
+                                        
+                                        @if (Auth::user()->hasRole('superadministrator'))
+                                            <td>
+                                              <span class="txt-dark weight-500">
+                                                {{ $group->company->name }}
+                                              </span>
+                                            </td>
+                                        @endif
+                                        
 	                                      <td>
                                            <span class="txt-dark weight-500">
                                             {{ $group->phone_number }}
@@ -108,7 +172,7 @@
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-	                                         	{{ $group->created_at->toFormattedDateString() }}
+                                           {{ Carbon\Carbon::parse($group->created_at)->format('d-M-Y') }}
 	                                         </span>
 	                                      </td>
 	                                      <td>

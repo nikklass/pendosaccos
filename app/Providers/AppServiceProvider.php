@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('layouts.partials.sidebarLeft', function($view){
             $view->with('user', \App\User::getUser());
         });
+
     }
 
     /**
