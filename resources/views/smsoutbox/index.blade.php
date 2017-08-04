@@ -18,10 +18,10 @@
           </div>
           <!-- Breadcrumb -->
           <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-	            <a href="{{ route('smsoutbox.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
+	            <!-- <a href="{{ route('smsoutbox.create') }}" class="btn btn-primary btn-icon right-icon pull-right">
 	            	<span>Create New SMS</span> 
 	            	<i class="zmdi zmdi-account-add"></i> 
-	            </a>
+	            </a> -->
           </div>
           <!-- /Breadcrumb -->
        </div>
@@ -45,9 +45,38 @@
                     <div class="la-anim-1"></div>
                  </div>
                  <div class="panel-heading panel-heading-dark">
+                    
                     <div class="pull-left">
-                       <h6 class="panel-title txt-dark"></h6>
+                       
+                       <a 
+                          href="{{ route('smsoutbox.create') }}" 
+                          class="btn btn-sm btn-primary  btn-icon right-icon mr-5">
+                          <span>New</span>
+                          <i class="fa fa-plus"></i>
+                        </a>
+
+                        <div class="btn-group">
+                            <div class="dropdown">
+                               <button 
+                                  aria-expanded="false" 
+                                  data-toggle="dropdown" 
+                                  class="btn btn-sm btn-success  dropdown-toggle " 
+                                  type="button">
+                                  Download 
+                                  <span class="caret ml-10"></span>
+                               </button>
+                               <ul role="menu" class="dropdown-menu">
+                                  <li><a href="#">As Excel</a></li>
+                                  <li><a href="#">As CSV</a></li>
+                                  <li><a href="#">As PDF</a></li>
+                                  <!-- <li class="divider"></li>
+                                  <li><a href="#">Separated link</a></li> -->
+                               </ul>
+                            </div>
+                        </div>
+
                     </div>
+
                     <div class="pull-right">
                        <a href="#" class="pull-left inline-block refresh mr-15">
                           <i class="zmdi zmdi-replay"></i>

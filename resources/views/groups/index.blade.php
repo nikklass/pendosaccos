@@ -44,7 +44,7 @@
                                                    
                         <a 
                           href="{{ route('groups.create') }}" 
-                          class="btn btn-sm btn-primary btn-outline btn-icon right-icon mr-5">
+                          class="btn btn-sm btn-primary btn-icon right-icon mr-5">
                           <span>New</span>
                           <i class="fa fa-plus"></i>
                         </a>
@@ -61,7 +61,7 @@
                                <button 
                                   aria-expanded="false" 
                                   data-toggle="dropdown" 
-                                  class="btn btn-sm btn-success btn-outline dropdown-toggle " 
+                                  class="btn btn-sm btn-success dropdown-toggle " 
                                   type="button">
                                   Download 
                                   <span class="caret ml-10"></span>
@@ -74,8 +74,7 @@
                                   <li><a href="#">Separated link</a></li> -->
                                </ul>
                             </div>
-                         </div>
-
+                        </div>
 
                     </div>
                     <div class="pull-right">
@@ -113,6 +112,7 @@
                              </li>
 
                           </ul>
+
                        </div>
                     </div>
                     <div class="clearfix"></div>
