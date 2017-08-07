@@ -68,8 +68,6 @@
                                   <li><a href="{{ route('excel.export-smsoutbox', 'xls') }}">As Excel</a></li>
                                   <li><a href="{{ route('excel.export-smsoutbox', 'csv') }}">As CSV</a></li>
                                   <li><a href="{{ route('excel.export-smsoutbox', 'pdf') }}">As PDF</a></li>
-                                  <!-- <li class="divider"></li>
-                                  <li><a href="#">Separated link</a></li> -->
                                </ul>
                             </div>
                         </div>

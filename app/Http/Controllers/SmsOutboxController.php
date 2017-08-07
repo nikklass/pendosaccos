@@ -153,6 +153,7 @@ class SmsOutboxController extends Controller
         
         $auth_user = auth()->user();
         $user_id = $auth_user->id;
+        $errors = [];
 
         $this->validate($request, [
             'sms_message' => 'required'        
@@ -341,8 +342,9 @@ class SmsOutboxController extends Controller
                         $params['src'] = $src;
                         $params['phone_number'] = $user->phone_number;
                         $params['sms_message'] = $request->sms_message;
-                        //dd($params);
+                        //dump($params);
 
+                        //$response['error'] = true;
                         $response = sendSms($params);
 
                         //dd($response);
@@ -364,13 +366,9 @@ class SmsOutboxController extends Controller
                             $smsoutbox->updated_by = $user_id;
                             $smsoutbox->save();
 
-                            Session::flash('success', 'SMS successfully sent');
-                            return redirect()->route('smsoutbox.index');
-
                         } else {
 
-                            Session::flash('error', $response->message);
-                            return redirect()->back();
+                            $errors[] = $response->message;
 
                         }
 
@@ -400,6 +398,7 @@ class SmsOutboxController extends Controller
             }
 
         }
+        //dd('hell');
 
         //send back
         Session::flash('error', "You dont have an active SMS account. Please contact pendomedia.");
