@@ -82,7 +82,7 @@
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Sent at:</strong> 
-                                        {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y, G:i') }}
+                                            {{ formatFriendlyDate($smsoutbox->created_at) }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -126,14 +126,17 @@
                                   @if (Auth::user()->hasRole('superadministrator'))
 
                                       <li class="mb-20">
-                                          <strong>Bulk SMS Name: </strong> {{ $smsoutbox->sms_user_name }}
+                                          <strong>Bulk SMS Name: </strong> 
+                                          @if ($smsoutbox->company)
+                                          {{ $smsoutbox->company->sms_user_name }}
+                                          @endif
                                       </li>
 
                                   @endif
 
                               <li class="mb-20">
                                   <strong>Sent at: </strong> 
-                                  {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y, G:i') }}
+                                  {{ formatFriendlyDate($smsoutbox->created_at) }}
                               </li>
 
                           </ul>

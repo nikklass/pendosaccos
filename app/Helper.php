@@ -1,7 +1,8 @@
 <?php
 
-use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use App\User;
+use GuzzleHttp\Psr7\Request as GuzzleRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
 * change plain number to formatted currency
@@ -69,6 +70,31 @@ function isValidPhoneNumber($phone_number) {
 function validateEmail($email) {
 
 	return preg_match("/^(((([^]<>()[\.,;:@\" ]|(\\\[\\x00-\\x7F]))\\.?)+)|(\"((\\\[\\x00-\\x7F])|[^\\x0D\\x0A\"\\\])+\"))@((([[:alnum:]]([[:alnum:]]|-)*[[:alnum:]]))(\\.([[:alnum:]]([[:alnum:]]|-)*[[:alnum:]]))*|(#[[:digit:]]+)|(\\[([[:digit:]]{1,3}(\\.[[:digit:]]{1,3}){3})]))$/", $email);
+
+}
+
+//format date
+function formatFriendlyDate($date) {
+	return Carbon\Carbon::parse($date)->format('d-M-Y, H:i');
+}
+
+function downloadExcelFile($excel_name, $excel_title, $excel_desc, $data_array, $data_type) {
+
+	Excel::create($excel_name, function($excel) use ($data_array) {
+
+        // Set the spreadsheet title, creator, and description
+        //$excel->setTitle($excel_title);
+        $excel->setCreator(config('app.name'))->setCompany(config('app.name'));
+        //$excel->setDescription($excel_desc);
+
+        // Build the spreadsheet, passing in the payments array
+        $excel->sheet('sheet1', function($sheet) use ($data_array) {
+            $sheet->fromArray($data_array, null, 'A1', false, false);
+            // Set auto size for sheet
+			$sheet->setAutoSize(true);
+        });
+
+    })->download($data_type);
 
 }
 

@@ -137,7 +137,7 @@
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Created:</strong> 
-                                            {{ Carbon\Carbon::parse($user->created_at)->format('d-M-Y') }}
+                                            {{ formatFriendlyDate($user->created_at) }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>

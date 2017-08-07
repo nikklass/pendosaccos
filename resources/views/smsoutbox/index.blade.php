@@ -65,9 +65,9 @@
                                   <span class="caret ml-10"></span>
                                </button>
                                <ul role="menu" class="dropdown-menu">
-                                  <li><a href="#">As Excel</a></li>
-                                  <li><a href="#">As CSV</a></li>
-                                  <li><a href="#">As PDF</a></li>
+                                  <li><a href="{{ route('excel.export-smsoutbox', 'xls') }}">As Excel</a></li>
+                                  <li><a href="{{ route('excel.export-smsoutbox', 'csv') }}">As CSV</a></li>
+                                  <li><a href="{{ route('excel.export-smsoutbox', 'pdf') }}">As PDF</a></li>
                                   <!-- <li class="divider"></li>
                                   <li><a href="#">Separated link</a></li> -->
                                </ul>
@@ -110,7 +110,7 @@
 
                                       @if (Auth::user()->hasRole('superadministrator'))
                                         <th width="10%">Company</th>
-                                        <th width="10%">SMS Name</th>
+                                        <th width="10%">Bulk SMS Name</th>
                                       @endif
 
                                       <th width="15%">Created</th>
@@ -152,14 +152,16 @@
                                             </td>
                                             <td>
                                               <span class="txt-dark weight-500">
-                                                {{ $smsoutbox->sms_user_name }}
+                                                @if ($smsoutbox->company)
+                                                {{ $smsoutbox->company->sms_user_name }}
+                                                @endif
                                               </span>
                                             </td>
                                         @endif
 
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-                                          {{ Carbon\Carbon::parse($smsoutbox->created_at)->format('d-M-Y, G:i') }}
+                                              {{ formatFriendlyDate($smsoutbox->created_at) }}
 	                                         </span>
 	                                      </td>
 	                                      <td>

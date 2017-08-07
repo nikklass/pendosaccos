@@ -42,7 +42,7 @@ class GroupController extends Controller
         }
 
         $groups = Group::whereIn('company_id', $companies)
-                 ->orderBy('id', 'desc')
+                 ->orderBy('name', 'asc')
                  ->with('company')
                  ->paginate(10);
         //dd($groups, $user);

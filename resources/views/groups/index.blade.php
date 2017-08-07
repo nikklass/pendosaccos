@@ -66,9 +66,9 @@
                                   <span class="caret ml-10"></span>
                                </button>
                                <ul role="menu" class="dropdown-menu">
-                                  <li><a href="#">As Excel</a></li>
-                                  <li><a href="#">As CSV</a></li>
-                                  <li><a href="#">As PDF</a></li>
+                                  <li><a href="{{ route('excel.export-groups', 'xls') }}">As Excel</a></li>
+                                  <li><a href="{{ route('excel.export-groups', 'csv') }}">As CSV</a></li>
+                                  <li><a href="{{ route('excel.export-groups', 'pdf') }}">As PDF</a></li>
                                   <!-- <li class="divider"></li>
                                   <li><a href="#">Separated link</a></li> -->
                                </ul>
@@ -123,7 +123,6 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th>id</th>
                                       <th>Group Name</th>
 
                                       @if (Auth::user()->hasRole('superadministrator'))
@@ -140,11 +139,7 @@
 
                                    @foreach ($groups as $group)                                   
 	                                   <tr>
-	                                      <td>
-	                                      	<span class="txt-dark weight-500">
-	                                      		{{ $group->id }}
-	                                      	</span>
-	                                      </td>
+	                                      
 	                                      <td>
                                           <span class="txt-dark weight-500">
                                             {{ $group->name }}
@@ -171,7 +166,7 @@
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-                                           {{ Carbon\Carbon::parse($group->created_at)->format('d-M-Y') }}
+                                           {{ formatFriendlyDate($group->created_at) }}
 	                                         </span>
 	                                      </td>
 	                                      <td>

@@ -162,7 +162,7 @@
                                         </td>
 	                                      <td>
 	                                         <span class="txt-dark weight-500">
-                                          {{ Carbon\Carbon::parse($user->created_at)->format('d-M-Y') }}
+                                           {{ formatFriendlyDate($user->created_at) }}
                                            </span>
 	                                      </td>
 	                                      <td>

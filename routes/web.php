@@ -22,6 +22,10 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	Route::post('logout', 'Auth\LoginController@logout')->name('logout'); 
 
 	
+	//export to excel data...
+	Route::get('excel/export-smsoutbox/{type}', 'ExcelController@exportOutboxSmsToExcel')->name('excel.export-smsoutbox');
+	Route::get('excel/export-groups/{type}', 'ExcelController@exportGroupsToExcel')->name('excel.export-groups');
+
 	//handle bulk import user...
 	Route::get('users/create-bulk', 'UserImportController@create')->name('bulk-users.create');
 	Route::post('users/create-bulk', 'UserImportController@store')->name('bulk-users.store');
