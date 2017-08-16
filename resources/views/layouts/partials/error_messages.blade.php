@@ -13,7 +13,7 @@
 		            position: 'top-right',
 		            loaderBg:'#fec107',
 		            icon: 'success',
-		            hideAfter: 10500, 
+		            hideAfter: 15500, 
 		            stack: 6
 		        });
 				return false;
@@ -23,8 +23,8 @@
 
 @endif
 
-@if (session('error'))
-	
+@if (session('errorz'))
+
 	<script>
 
 		$( document ).ready(function() {
@@ -34,11 +34,11 @@
 				$("body").removeAttr('class');
 				$.toast({
 		            heading: 'An Error Occured',
-		            text: '{!! session('error') !!}',
+		            text: "{!! $error_msg !!}",
 		            position: 'top-right',
 		            loaderBg:'#fec107',
 		            icon: 'error',
-		            hideAfter: 10500, 
+		            hideAfter: 15500, 
 		            stack: 6
 		        });
 				return false;

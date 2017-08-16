@@ -181,14 +181,16 @@ function getHost() {
 // fetching bulk sms data
 function getBulkSMSData($user_id) {
 		
-	$user = User::where('id', $user_id)
-		->with('company')
-		->first();
+	/*$user = User::where('id', $user_id)
+		->with('group')
+		->first();*/
 	
-	$sms_user_name = "";
-	if ($user->company) {
+	$sms_user_name = ENV('BULK_SMS_USR');
+	$sms_user_name = 'yehu';
+	//dd($sms_user_name);
+	/*if ($user->company) {
 		$sms_user_name = $user->company->sms_user_name;
-	}
+	}*/
 	//dd($user, $sms_user_name);
 
 	//dd($sms_username);
@@ -196,7 +198,7 @@ function getBulkSMSData($user_id) {
 	if ($sms_user_name) {
 		
 		//get bulk sms data for this client
-		$get_sms_data_url_main = \Config::get('constants.bulk_sms.get_sms_data_url');
+		$get_sms_data_url_main = config('constants.bulk_sms.get_sms_data_url');
 		$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_user_name;
 		//dd($get_sms_data_url);
 
@@ -208,6 +210,7 @@ function getBulkSMSData($user_id) {
 	    if ($resp->getBody()) {
 		    
 		    $result = json_decode($resp->getBody());
+		    //dd($result);
 					
 			// get results
 			if  ($result->default_source) {

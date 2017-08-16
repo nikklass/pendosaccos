@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
 use App\Group;
 use App\Http\Controllers\Controller;
+use App\Loan;
 use App\Role;
 use App\SmsOutbox;
 use App\User;
@@ -26,61 +26,86 @@ class HomeController extends Controller
         
         $user = auth()->user();
 
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
-        if ($user->hasRole('superadministrator')){
-            $companies = Company::all()->pluck('id');
-        } else {
-            if ($user->company) {
-                $companies[] = $user->company->id;
-            }
-        }
-        //dd($user);
-
-        //get company users/ groups
-        $users = [];
+        //if user is superadmin, show all groups, else show a user's groups
         $groups = [];
+        if ($user->hasRole('superadministrator')){
+            
+            $group_ids = Group::all()->pluck('id');
+            $groups = Group::all();
 
-        if ($companies) {
+            //get groups balance
+            $groups_balance = Group::selectRaw('sum(account_balance) account_balance')
+                ->first();
 
-            $groups = Group::whereIn('company_id', $companies)
-                     ->orderBy('id', 'desc')
-                     ->with('company')
-                     ->with('users')
-                     ->paginate(10);
+            //get groups loans
+            $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
+                ->first();
+
+        } else { 
+
+            if ($user->group) {
+                $group_ids[] = $user->group->id;
+                $groups[] = $user->group;
+            }
+
+            //get groups balance
+            $groups_balance = Group::select('account_balance')
+                ->where('id', $user->group->id)
+                ->first();
+
+            //get groups loans
+            $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
+                ->where('group_id', $user->group->id)
+                ->first();
+
+        }
+
+        //get users/ groups
+        $users = [];
+
+        if ($groups) {
         
-            $users = User::whereIn('company_id', $companies)
+            $users = User::whereIn('group_id', $group_ids)
                     ->orderBy('id', 'desc')
-                    ->with('company')
-                    ->with('groups')
+                    ->with('group')
                     ->paginate(10);
 
-            $smsoutboxes = SmsOutbox::whereIn('company_id', $companies)
+            $smsoutboxes = SmsOutbox::whereIn('group_id', $group_ids)
                     ->orderBy('id', 'desc')
                     ->get();
                     //->paginate(10);
 
-            $groups_all = Group::whereIn('company_id', $companies)
+            $groups_all = Group::whereIn('id', $group_ids)
                      ->orderBy('id', 'desc')
-                     ->get();
+                     ->paginate(10);
 
             //sms outbox count
             $count_smsoutbox = count($smsoutboxes);
             $user->sms_outbox_count = $count_smsoutbox;
             
             //groups count
-            $count_groups = count($groups_all);
+            $count_groups = count($groups);
             $user->count_groups = $count_groups;
 
         }
 
-        //dd($user, $smsoutboxes);
+        //get summary of group balances
+        $loans_amount = Loan::selectRaw('year(created_at) year, month(created_at) month, sum(loan_amount) loan_amount')
+                ->groupBy('year', 'month')
+                ->get();
         
-        return view('home', compact('smsoutboxes'))
-            ->withUser($user)
-            ->withUsers($users)
-            ->withSmsOutboxes($smsoutboxes)
-            ->withGroups($groups);
+
+        //$query = "Select count(*) account_balance from groups group by year, month";
+
+        //dd($user, $groups_all, $smsoutboxes);
+        
+        return view('home', compact(
+                                    'smsoutboxes', 
+                                    'user', 
+                                    'users', 
+                                    'groups_balance',
+                                    'groups_loans'
+                                    ))->withGroups($groups_all);
 
     }
 

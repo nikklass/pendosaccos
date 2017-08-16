@@ -2,6 +2,10 @@
 
 namespace App;
 
+use App\Account;
+use App\ScheduleSmsOutbox;
+use App\SmsOutbox;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
@@ -21,6 +25,21 @@ class Status extends Model
     public function schedulesmsoutboxes()
     {
         return $this->hasMany(ScheduleSmsOutbox::class);
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
+    public function accountTypes()
+    {
+        return $this->hasMany(AccountType::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 
 }

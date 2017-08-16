@@ -759,6 +759,10 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border-top: 1px solid rgba(33, 33, 33, 0.1);}
+  hr.small {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-top: 1px solid rgba(33, 33, 33, 0.1);}
   hr.green {
   border-top: 1px solid #01c853; }
   hr.light-grey-hr {
@@ -3045,7 +3049,7 @@ a#toggle_mobile_nav {
           content: "\f16c"; }
 
 .heading-bg {
-  /*height: 67px;*/
+  background-color: #f1f1f1;
   margin: 0 -39px;
   padding: 10px 15px; }
   .heading-bg h5 { 
@@ -7323,3 +7327,8 @@ em{ font-style: italic; }
     padding: 15px;
 }
 .text-white{ color: #fff; }
+.table-search{margin-bottom:0;}
+.table.table-search > tbody > tr > td, .table.table-search > tbody > tr > th,.table.table-search > tr > td{
+    border-top: 0 solid rgba(33, 33, 33, 0.1); padding: 0 5px;
+    vertical-align: middle;
+}

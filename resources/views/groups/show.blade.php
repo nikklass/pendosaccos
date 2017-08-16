@@ -28,7 +28,7 @@
        <!-- /Title -->
 
         <!-- Row -->
-        <div class="row">
+        <div class="row mt-15">
 
           <div class="col-lg-6 col-xs-12">
             <div class="panel panel-default card-view  pa-0">
@@ -61,31 +61,12 @@
                                 <li class="follow-list">
                                   <div class="follo-body">
                                     
-                                    <div class="follo-data">
-                                      <div class="user-data">
-                                        <span class="name block capitalize-font">
-                                            <strong>Group Name:</strong> 
-                                            {{ $group->name }}
-                                        </span>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                    </div>
-
+                                    
                                     <div class="follo-data">
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
                                             <strong>Group Description:</strong> 
                                             {{ $group->description }}
-                                        </span>
-                                      </div>
-                                      <div class="clearfix"></div>
-                                    </div>
-
-                                    <div class="follo-data">
-                                      <div class="user-data">
-                                        <span class="name block capitalize-font">
-                                            <strong>Company:</strong> 
-                                            {{ $group->company->name }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -164,42 +145,35 @@
           </div>
 
           <div class="col-lg-6 col-xs-12">
-            
+
             <div class="panel panel-default card-view pa-0">
-              <div class="panel-wrapper collapse in">
-                <div  class="panel-body pb-0 ml-20 mr-20">
+              
+              <div  class="panel-wrapper collapse in">
+                 
+                 <div  class="panel-body pb-0 ml-20 mr-20">
                     
-                    <p class="mb-20">
-                        <h5>Company</h5>
-                    </p>
+                      <p class="mb-20">
+                          <h5>Group Account Balance</h5>
+                      </p>
 
-                    <hr>
+                      <hr>
 
-                    <div class="row">
-                      <div class="col-sm-12">
-                          
-                          <ul class="list-icons">
-                              
-                              @if ($group->company) 
+                      <div class="row">
+                        <div class="col-sm-12">
+                            
+                            <div class="user_options_tall nicescroll-bar">
+                                
+                                <h3 class="text-left text-success mb-20">
+                                  Ksh {{ format_num($group->account_balance) }}
+                                </h3> 
 
-                                  <li class="mb-10">
-                                      <i class="fa fa-genderless text-success mr-5"></i>
-                                      {{ $group->company->name }} 
-                                  </li>
+                            </div>
 
-                              @else
-
-                                  <p class="mb-20">
-                                      No company set for user
-                                  </p>
-
-                              @endif
-                          </ul>
-
+                        </div>
                       </div>
-                    </div>
 
-                </div>
+                 </div>
+
               </div>
 
             </div>
@@ -207,8 +181,8 @@
             <div class="panel panel-default card-view pa-0">
               
               <div  class="panel-wrapper collapse in">
-                 
-                 <div  class="panel-body pb-0 ml-20 mr-20">
+
+                <div  class="panel-body pb-0 ml-20 mr-20">
                     
                       <p class="mb-20">
                           <h5>Group Members</h5>
@@ -253,6 +227,12 @@
                                     @endif
 
                                 </ul>
+
+                                <hr>
+
+                                <div class="text-center mb-15">
+                                   {{ $users->links() }}
+                                </div> 
 
                             </div>
 

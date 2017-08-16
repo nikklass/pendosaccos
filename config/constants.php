@@ -15,7 +15,16 @@ return [
         'option_textarea' => '17',
     ],
     'error' => [
-        'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br>7XXXXXXXX,  <br>07XXXXXXXX, <br>2547XXXXXXXX, <br>+2547XXXXXXXX'
+        'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br>7XXXXXXXX,  <br>07XXXXXXXX, <br>2547XXXXXXXX, <br>+2547XXXXXXXX',
+        'excess_withdrawal' => 'Withdrawal amount <strong>Ksh %s</strong> is more than your account balance: <strong>Ksh %s</strong>',
+        'excess_loan_repayment' => 'Repayment amount <strong>Ksh %s</strong> is more than your loan balance: <strong>Ksh %s</strong>',
+        'excess_loan' => 'Loan amount <strong>Ksh %s</strong> is more than <strong>%s</strong> group account balance: <strong>Ksh %s</strong>',
+        'invalid_access' => 'Invalid access',
+    ],
+    'success' => [
+        'insert' => '%s successfully added',
+        'update' => '%s successfully updated',
+        'delete' => '%s successfully deleted',
     ],
     'routes' => [
         'get_users_url' => $api_path_url . 'users/index',

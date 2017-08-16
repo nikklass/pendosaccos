@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Displaying SMS - {{ $smsoutbox->id }}
+    <!-- Displaying SMS - {{ $smsoutbox->id }} -->
 
 @endsection
 

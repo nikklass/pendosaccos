@@ -2,13 +2,13 @@
 
 @section('title')
 
-    Create Single Account
+    Create New User
 
 @endsection
 
 @section('css_header')
 
-<link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css">
 
 @endsection
 
@@ -49,61 +49,53 @@
                               <div class="panel-body">               
 
                                  <div class="mb-30">
-                                    <h3 class="text-center txt-dark mb-10">Create Single Account</h3>
+                                    <h3 class="text-center txt-dark mb-10">Create New User</h3>
                                  </div>   
 
                                  <hr>
 
                                  <div class="form-wrap">
                                     
-                                    <!-- @if (session('error'))
-                                      <div class="alert alert-danger text-center">
-                                          {{ session('error') }}
-                                      </div>
-                                    @endif
+                                    
+                                    @include('layouts.partials.error_text')
 
-                                    @if (session('success'))
-                                      <div class="alert alert-success text-center">
-                                          {{ session('success') }}
-                                      </div>
-                                    @endif -->
 
                                     <form class="form-horizontal" method="POST" action="{{ route('users.store') }}"> 
 
                                        {{ csrf_field() }}
 
                                        @if (Auth::user()->hasRole('superadministrator'))
-                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
+                                       <div  class="form-group{{ $errors->has('group_id') ? ' has-error' : '' }}">
                                               
-                                          <label for="company_id" class="col-sm-3 control-label">
-                                             Company
+                                          <label for="group_id" class="col-sm-3 control-label">
+                                             Group
                                              <span class="text-danger"> *</span>
                                           </label>
                                           <div class="col-sm-9">
                                             
                                              <select class="selectpicker form-control" 
-                                                name="company_id" 
+                                                name="group_id" 
                                                 data-style="form-control btn-default btn-outline"
                                                 required>  
 
-                                                @foreach ($companies as $company)
+                                                @foreach ($groups as $group)
                                                 <li class="mb-10">
-                                                <option value="{{ $company->id }}"
+                                                <option value="{{ $group->id }}"
 
-                                          @if ($company->id == old('company_id', $company->id))
+                                          @if ($group->id == old('group_id', $group->id))
                                               selected="selected"
                                           @endif
                                                     >
-                                                      {{ $company->name }}
+                                                      {{ $group->name }}
                                                     </option>
                                                 </li>
                                                 @endforeach
                                                 
                                              </select>
 
-                                             @if ($errors->has('company_name'))
+                                             @if ($errors->has('group_id'))
                                                   <span class="help-block">
-                                                      <strong>{{ $errors->first('company_name') }}</strong>
+                                                      <strong>{{ $errors->first('group_id') }}</strong>
                                                   </span>
                                              @endif
                                           
@@ -113,47 +105,22 @@
                                        @else
 
                                           <div class="form-group">
-                                            <label class="control-label col-md-3">Company</label>
+                                            <label class="control-label col-md-3">group</label>
                                             <div class="col-md-9">
                                             
-                                              @if ($user->company)
-                                                <p class="form-control-static"> {{ $user->company->name }} </p>
+                                              @if ($user->group)
+                                                <p class="form-control-static"> {{ $user->group->name }} </p>
                                                 <input 
                                                     type="hidden" 
-                                                    name="company_id"
-                                                    value="{{ $user->company->id }}">
+                                                    name="group_id"
+                                                    value="{{ $user->group->id }}">
                                               @endif
 
                                             </div>
                                           </div>
 
                                        @endif
-
                                        
-                                       <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
-                                              
-                                          <label for="account_number" class="col-sm-3 control-label">
-                                             Account Number
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                             <div class="input-group">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control" 
-                                                    id="account_number" 
-                                                    name="account_number"
-                                                    value="{{ old('account_number') }}" required autofocus>
-                                                <div class="input-group-addon"><i class="icon-plus"></i></div>
-                                             </div>
-                                             @if ($errors->has('account_number'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('account_number') }}</strong>
-                                                  </span>
-                                             @endif
-                                          </div>
-
-                                       </div>
 
                                        <div  class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                                               
@@ -199,6 +166,56 @@
                                              @if ($errors->has('last_name'))
                                                   <span class="help-block">
                                                       <strong>{{ $errors->first('last_name') }}</strong>
+                                                  </span>
+                                             @endif
+                                          </div>
+
+                                       </div>
+
+                                       <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
+                                              
+                                          <label for="account_number" class="col-sm-3 control-label">
+                                             Account Number
+                                             <span class="text-danger"> *</span>
+                                          </label>
+                                          <div class="col-sm-9">
+                                             <div class="input-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="account_number" 
+                                                    name="account_number"
+                                                    value="{{ old('account_number') }}" required autofocus>
+                                                <div class="input-group-addon"><i class="icon-plus"></i></div>
+                                             </div>
+                                             @if ($errors->has('account_number'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('account_number') }}</strong>
+                                                  </span>
+                                             @endif
+                                          </div>
+
+                                       </div>
+
+
+                                       <div  class="form-group{{ $errors->has('account_balance') ? ' has-error' : '' }}">
+                                              
+                                          <label for="account_balance" class="col-sm-3 control-label">
+                                             Account Balance
+                                          </label>
+                                          <div class="col-sm-9">
+                                             <div class="input-group">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    id="account_balance" 
+                                                    name="account_balance"
+                                                    value="{{ old('account_balance') }}">
+                                                <div class="input-group-addon"><i class="icon-plus"></i></div>
+                                             </div>
+                                             @if ($errors->has('account_balance'))
+                                                  <span class="help-block">
+                                                      <strong>{{ $errors->first('account_balance') }}</strong>
                                                   </span>
                                              @endif
                                           </div>
@@ -283,7 +300,7 @@
                                           <div class="col-sm-9">
                                               <button 
                                                 type="submit" 
-                                                class="btn btn-primary btn-block mr-10"
+                                                class="btn btn-lg btn-primary btn-block mr-10"
                                                  id="submit-btn"
                                                  @click="handleSubmit()">
                                                  Submit

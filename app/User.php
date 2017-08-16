@@ -2,10 +2,17 @@
 
 namespace App;
 
-use App\Company;
+use App\Account;
+use App\AccountType;
+use App\Deposit;
 use App\Image;
+use App\Loan;
+use App\Repayment;
+use App\RepaymentArchive;
 use App\Sacco;
 use App\SmsOutbox;
+use App\Withdrawal;
+use App\WithdrawalArchive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,20 +23,18 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     use LaratrustUserTrait; 
-    
-    protected $appends = ['company'];
 
     /**
      * The attributes that are mass assignable
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'sms_user_name',  'password', 'gender', 'company_id', 'phone_number', 'api_token', 'account_number', 'created_by', 'updated_by'
+        'first_name', 'last_name', 'account_number', 'account_balance', 'email', 'group_id', 'password', 'gender', 'phone_number', 'api_token', 'status_id','created_by', 'updated_by'
     ];
 
     /*object events*/
-    protected $events = [
+    /*protected $events = [
         'updated' => Events\AccountAdded::class,
-    ];
+    ];*/
 
     /**
      * The attributes that should be hidden for arrays.
@@ -55,16 +60,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id')->withTimeStamps();
     }
 
-    /*many to many relationship*/
-    public function groups()
-    {
-        return $this->belongsToMany(Group::class);
-    }
-
     /*one to many relationship*/
-    public function company()
+    public function group()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Group::class);
     }
 
     public function smsOutboxes()
@@ -72,17 +71,71 @@ class User extends Authenticatable
         return $this->hasMany(SmsOutbox::class);
     }
 
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
+    public function withdrawalArchives()
+    {
+        return $this->hasMany(WithdrawalArchive::class);
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
+    }
+
+    public function repayments()
+    {
+        return $this->hasMany(Repayment::class);
+    }
+
+    public function repaymentArchives()
+    {
+        return $this->hasMany(RepaymentArchive::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function accountType()
+    {
+        return $this->belongsTo(AccountType::class);
+    }
+
+    public function createdWithdrawals()
+    {
+        return $this->hasMany(Withdrawal::class, 'id');
+    }
+
+    public function updatedWithdrawals()
+    {
+        return $this->hasMany(Withdrawal::class, 'id');
+    }
+
+    public function createdDeposits()
+    {
+        return $this->hasMany(Deposit::class, 'id');
+    }
+
+    public function updatedDeposits()
+    {
+        return $this->hasMany(Deposit::class, 'id');
+    }
+
     public static function getUser()
     {
         $user_id = auth()->user();
-        $userCompany = User::where('id', auth()->user()->id)->with('company')->first();
-        return $userCompany;
-    }
-
-    public function getUserCompanyAttribute()
-    {
-        $company = Company::findOrFail($this->company_id)->first();
-        return $company;
+        $userGroup = User::where('id', auth()->user()->id)->with('group')->first();
+        return $userGroup;
     }
 
     /*public function getProfileImageAttribute()

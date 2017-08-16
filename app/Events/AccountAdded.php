@@ -24,7 +24,6 @@ class AccountAdded
      */
     public function __construct(User $user)
     {
-        //dd($user);
         $this->user = $user;
     }
 

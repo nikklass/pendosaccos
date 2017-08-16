@@ -792,7 +792,5 @@
       });
 
   </script>
-
-  @include('layouts.partials.error_messages')
   
 @endsection

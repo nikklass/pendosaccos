@@ -1,9 +1,9 @@
 <?php
 
+use App\AccountType;
 use App\SmsType;
 use App\Status;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
 
 class BulkSmsSeeder extends Seeder
@@ -16,7 +16,7 @@ class BulkSmsSeeder extends Seeder
     public function run()
     {
 
-        /*$this->command->info('Truncating statuses and sms_types tables');
+        $this->command->info('Truncating statuses and sms_types tables');
         $this->truncateBulkSmsTables();
 
         //sms types
@@ -66,81 +66,114 @@ class BulkSmsSeeder extends Seeder
 
         //statuses
         $status = new \App\Status([
-        	'id' => '1',
-        	'name' => 'Active',
-        	'section' => ''
+            'id' => '1',
+            'name' => 'Active',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '2',
-        	'name' => 'Disabled',
-        	'section' => ''
+            'id' => '2',
+            'name' => 'Disabled',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '3',
-        	'name' => 'Suspended',
-        	'section' => ''
+            'id' => '3',
+            'name' => 'Suspended',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '4',
-        	'name' => 'Expired',
-        	'section' => ''
+            'id' => '4',
+            'name' => 'Expired',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '5',
-        	'name' => 'Pending',
-        	'section' => ''
+            'id' => '5',
+            'name' => 'Pending',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '6',
-        	'name' => 'Confirmed',
-        	'section' => ''
+            'id' => '6',
+            'name' => 'Confirmed',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '7',
-        	'name' => 'Cancelled',
-        	'section' => ''
+            'id' => '7',
+            'name' => 'Cancelled',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '8',
-        	'name' => 'Sent',
-        	'section' => ''
+            'id' => '8',
+            'name' => 'Sent',
+            'section' => ''
         ]);
         $status->save();
 
         $status = new \App\Status([
-        	'id' => '99',
-        	'name' => 'Inactive',
-        	'section' => ''
+            'id' => '99',
+            'name' => 'Inactive',
+            'section' => ''
         ]);
         $status->save();
         //end statuses
-        */
+
+
+        //account types
+        $account_type = new \App\AccountType([
+            'id' => '1',
+            'name' => 'Regular'
+        ]);
+        $account_type->save();
+
+        $account_type = new \App\AccountType([
+            'id' => '2',
+            'name' => 'Executive'
+        ]);
+        $account_type->save();
+        //end account types
+
+        //loan types
+        $loan_type = new \App\LoanType([
+            'id' => '1',
+            'name' => 'Normal'
+        ]);
+        $loan_type->save();
+
+        $loan_type = new \App\LoanType([
+            'id' => '2',
+            'name' => 'Emergency'
+        ]);
+        $loan_type->save();
+        //end loan types
+        
 
     }
 
 
     public function truncateBulkSmsTables()
     {
-        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('statuses')->truncate();
         DB::table('sms_types')->truncate();
+        DB::table('account_types')->truncate();
+        DB::table('loan_types')->truncate();
         \App\Status::truncate();
         \App\SmsType::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
+        \App\AccountType::truncate();
+        \App\LoanType::truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
 }

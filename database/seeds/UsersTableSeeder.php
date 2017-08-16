@@ -16,16 +16,16 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
 
-        //factory(App\User::class, 50)->create();
+        factory(App\User::class, 10)->create();
 
     }
 
     public function truncateUserTables()
     {
-        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('users')->truncate();
         \App\User::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
 }

@@ -9,7 +9,7 @@
 
 @section('content')
     
-    <div class="container-fluid pt-25">
+    <div class="container-fluid pt-10">
         <!-- Row -->
         <div class="row"> 
            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -22,15 +22,15 @@
                                 <div class="col-xs-8 text-center pl-0 pr-0 data-wrap-left">
                                    <span class="txt-light block counter">
                                       <span class="counter-anim">
-                                        {{ $user->sms_outbox_count }}
+                                        Ksh {{ format_num($groups_balance->account_balance) }}
                                       </span>
                                    </span>
                                    <span class="weight-500 uppercase-font txt-light block font-13">
-                                        Outbox SMS
+                                        Account Balance
                                    </span>
                                 </div>
                                 <div class="col-xs-4 text-center  pl-0 pr-0 data-wrap-right">
-                                   <i class="zmdi zmdi-email txt-light data-right-rep-icon"></i>
+                                   <i class="zmdi zmdi-money txt-light data-right-rep-icon"></i>
                                 </div>
                              </div>   
                           </div>
@@ -49,15 +49,15 @@
                                 <div class="col-xs-8 text-center pl-0 pr-0 data-wrap-left">
                                    <span class="txt-light block counter">
                                       <span class="counter-anim">
-                                        0
+                                        Ksh {{ format_num($groups_loans->loan_balance) }}
                                       </span>
                                    </span>
                                    <span class="weight-500 uppercase-font txt-light block">
-                                      Inbox SMS
+                                      Pending Loans
                                    </span>
                                 </div>
                                 <div class="col-xs-4 text-center  pl-0 pr-0 data-wrap-right">
-                                   <i class="zmdi zmdi-email txt-light data-right-rep-icon"></i>
+                                   <i class="zmdi zmdi-grain txt-light data-right-rep-icon"></i>
                                 </div>
                              </div>   
                           </div>
@@ -80,11 +80,11 @@
                                       </span>
                                     </span>
                                     <span class="weight-500 uppercase-font txt-light block">
-                                      Groups
+                                      {{ date('M Y') }} Deposits
                                     </span>
                                 </div>
                                 <div class="col-xs-4 text-center  pl-0 pr-0 data-wrap-right">
-                                   <i class="zmdi zmdi-accounts txt-light data-right-rep-icon"></i>
+                                   <i class="zmdi zmdi-grain txt-light data-right-rep-icon"></i>
                                 </div>
                              </div>   
                           </div>
@@ -99,8 +99,8 @@
         
         <!-- Row -->
         <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    <div class="panel panel-default card-view">
+           <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+              <div class="panel panel-default card-view">
                  <div class="panel-heading">
                     <div class="pull-left">
                        <h6 class="panel-title txt-dark">SMS Outbox Stats</h6>
@@ -133,8 +133,8 @@
                        </ul>
                     </div>
                  </div>
-                    </div>
-                </div>
+              </div>
+           </div>
               
            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                    <div class="panel panel-default card-view panel-refresh">
@@ -235,14 +235,9 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th width="30%">Name</th>
+                                      <th width="35%">Name</th>
                                       <th width="25%">Phone Number</th>
-                                      <th width="20%">Groups</th>
-
-                                      @if (Auth::user()->hasRole('superadministrator'))
-                                      <th width="10%">Company</th>
-                                      @endif
-
+                                      <th width="20%">Group</th>
                                       <th width="20%">Created</th>
                                    </tr>
                                 </thead>
@@ -250,6 +245,7 @@
                                    
                                    @foreach ($users as $user) 
                                    <tr>
+
                                       <td>
                                         <span class="txt-dark weight-500">
                                           {{ $user->first_name }}
@@ -257,26 +253,18 @@
                                           {{ $user->last_name }}
                                         </span>
                                       </td>
+
                                       <td>
                                         {{ $user->phone_number }}
                                       </td>
 
                                       <td>
-                                        @foreach ($user->groups as $user_group) 
-                                          <span>{{ $user_group->name }}</span> &nbsp;
-                                        @endforeach
+                                        @if ($user->group)
+                                        <span class="txt-dark weight-500">
+                                            {{ $user->group->name }}
+                                        </span>
+                                        @endif
                                       </td>
-                                      
-                                      @if (Auth::user()->hasRole('superadministrator'))
-                                        <td>
-                                          @if ($user->company)
-                                          <span class="txt-dark weight-500">
-                                              {{ $user->company->name }}
-                                          </span>
-                                          @endif
-                                        </td>
-                                        
-                                      @endif
                                       
                                       <td>
                                          <span class="txt-dark weight-500">
@@ -302,7 +290,7 @@
                  </div>
                  <div class="panel-heading">
                     <div class="pull-left">
-                       <h6 class="panel-title txt-dark">Company Groups</h6>
+                       <h6 class="panel-title txt-dark"> Group Members</h6>
                     </div>
                     <div class="pull-right">
                        <a href="#" class="pull-left inline-block refresh mr-15">
@@ -331,10 +319,9 @@
                                    <tr>
                                       <th width="35%">Name</th>
                                       <th width="25%">Phone Number</th>
-                                      <th width="20%">Members</th>
 
                                       @if (Auth::user()->hasRole('superadministrator'))
-                                        <th width="20%">Company</th>
+                                        <th width="20%">Group</th>
                                       @endif
 
                                       <th width="20%">Created</th>
@@ -343,6 +330,7 @@
                                 <tbody>
                                    
                                    @foreach ($groups as $group) 
+
                                    <tr>
 
                                       <td>
@@ -357,14 +345,10 @@
                                         </span>
                                       </td>
 
-                                      <td>
-                                        {{ count($group->users) }}
-                                      </td>
-
                                       @if (Auth::user()->hasRole('superadministrator'))
                                         <td>
-                                          @if ($group->company)
-                                            {{ $group->company_name }}
+                                          @if ($group->name)
+                                            {{ $group->name }}
                                           @endif
                                         </td>
                                       @endif
@@ -376,6 +360,7 @@
                                       </td>
                                       
                                    </tr>
+
                                    @endforeach
                                    
                                 </tbody>

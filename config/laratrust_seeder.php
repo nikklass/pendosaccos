@@ -9,11 +9,14 @@ return [
             'users' => 'c,r,u,d',
             'acl' => 'c,r,u,d',
             'profile' => 'r,u',
-
             'sms' => 'c,r,u,d',
             'scheduled_sms' => 'c,r,u,d',
             'groups' => 'c,r,u,d',
-            'companies' => 'c,r,u,d'
+            'withdrawal' => 'c,r,u,d',
+            'deposit' => 'c,r,u,d',
+            'repayment' => 'c,r,u,d',
+            'account' => 'c,r,u,d',
+            'loan' => 'c,r,u,d'
 
         ],  
 
@@ -21,22 +24,29 @@ return [
             
             'users' => 'c,r,u,d',
             'profile' => 'r,u',
-
             'sms' => 'c,r,u,d',
             'scheduled_sms' => 'c,r,u,d',
             'groups' => 'c,r,u,d',
-            'companies' => 'c,r,u,d'
+            'withdrawal' => 'c,r,u,d',
+            'deposit' => 'c,r,u,d',
+            'repayment' => 'c,r,u,d',
+            'account' => 'c,r,u,d',
+            'loan' => 'c,r,u,d'
 
         ],
 
-        'companyadministrator' => [
+        'groupdministrator' => [
             
             'users' => 'c,r,u,d',
             'profile' => 'r,u',
-
             'sms' => 'c,r,u,d',
             'scheduled_sms' => 'c,r,u,d',
-            'groups' => 'c,r,u,d'
+            'groups' => 'c,r,u,d',
+            'withdrawal' => 'c,r,u,d',
+            'deposit' => 'c,r,u,d',
+            'repayment' => 'c,r,u,d',
+            'account' => 'c,r,u,d',
+            'loan' => 'c,r,u,d'
 
         ],
 

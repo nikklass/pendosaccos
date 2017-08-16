@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Group;
 use App\User;
-use App\Company;
 use Session;
 
 class GroupController extends Controller
@@ -31,19 +30,19 @@ class GroupController extends Controller
 
         $user = auth()->user();
 
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
+        //if user is superadmin, show all groups, else show a user's groups
+        $groups = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all()->pluck('id');
+            $groups = Group::all()->pluck('id');
         } else {
-            if ($user->company) {
-                $companies[] = $user->company->id;
+            if ($user->group) {
+                $groups[] = $user->group->id;
             }
         }
 
-        $groups = Group::whereIn('company_id', $companies)
+        $groups = Group::whereIn('id', $groups)
                  ->orderBy('name', 'asc')
-                 ->with('company')
+                 //->with('group')
                  ->paginate(10);
         //dd($groups, $user);
 
@@ -60,22 +59,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        $userCompany = User::where('id', $user->id)
-            ->with('company')
-            ->first();
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
-        if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
-        } else {
-            $companies[] = $user->company;
-        }
-        //dd($userCompany, $companies);
-
-        return view('groups.create')
-            ->withCompanies($companies)
-            ->withUser($userCompany);
+        return view('groups.create');
     }
 
     /**
@@ -87,29 +71,27 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         
-        //dd($request);
-
         $user_id = auth()->user()->id;
 
         $this->validate($request, [
             'name' => 'required|max:255',
-            'phone_number' => 'sometimes|max:13',
-            'company_id' => 'required'
+            'email' => 'sometimes|email',
+            'phone_number' => 'sometimes|max:13'
         ]);
 
         $phone_number = '';
         if ($request->phone_number) {
             if (!isValidPhoneNumber($request->phone_number)){
-                $message = \Config::get('constants.error.invalid_phone_number');
+                $message = config('constants.error.invalid_phone_number');
+                $errors['phone_number'] = $message;
                 Session::flash('error', $message);
-                return redirect()->back()->withInput();
+                return redirect()->back()->withErrors($errors)->withInput();
             }
             $phone_number = formatPhoneNumber($request->phone_number);
         }
 
         $group = new Group();
         $group->name = $request->name;
-        $group->company_id = $request->company_id;
         $group->phone_number = $phone_number;
         $group->description = trim($request->description);
         $group->email = $request->email;
@@ -135,12 +117,10 @@ class GroupController extends Controller
         
         //get admin user for this group
         $group = Group::where('id', $id)
-                 ->with('company')
                  ->first();
 
         //get group members
         $users = $group->users()->paginate(10);
-        //dd($users);
         
         return view('groups.show')
             ->withUsers($users)
@@ -158,25 +138,12 @@ class GroupController extends Controller
     {
         
         $user = auth()->user();
-        $userCompany = User::where('id', $user->id)
-            ->with('company')
-            ->first();
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
-        if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
-        } else {
-            $companies[] = $user->company;
-        }
-        //dd($companies);
 
         $group = Group::where('id', $id)
-                 ->with('company')
                  ->first();
         
         return view('groups.edit')
             ->withGroup($group)
-            ->withCompanies($companies)
             ->withUser($user);
 
     }
@@ -194,16 +161,17 @@ class GroupController extends Controller
         $user_id = auth()->user()->id;
 
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'group_name' => 'required|max:255',
             'phone_number' => 'sometimes|max:13,phone_number,'.$id,
-            'company_id' => 'required|max:255'
+            'email' => 'sometimes|email',
+            'group_id' => 'required|max:255'
         ]);
         //dd($request);
 
         $phone_number = '';
         if ($request->phone_number) {
             if (!isValidPhoneNumber($request->phone_number)){
-                $message = \Config::get('constants.error.invalid_phone_number');
+                $message = config('constants.error.invalid_phone_number');
                 Session::flash('error', $message);
                 return redirect()->back()->withInput();
             }
@@ -211,8 +179,7 @@ class GroupController extends Controller
         }
 
         $group = Group::findOrFail($id);
-        $group->name = $request->name;
-        $group->company_id = $request->company_id;
+        $group->name = $request->group_name;
         $group->phone_number = $phone_number;
         $group->description = trim($request->description);
         $group->email = $request->email;

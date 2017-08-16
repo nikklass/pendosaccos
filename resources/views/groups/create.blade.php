@@ -21,11 +21,11 @@
 
       <!-- Title -->
        <div class="row heading-bg">
-          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <div class="col-sm-6 col-xs-12">
             <h5 class="txt-dark">Create New Group</h5>
           </div>
           <!-- Breadcrumb -->
-          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <div class="col-sm-6 col-xs-12">
               
               {!! Breadcrumbs::render('groups.create') !!}
 
@@ -74,62 +74,6 @@
                                         action="{{ route('groups.store') }}"> 
 
                                        {{ csrf_field() }}
-
-                                       @if (Auth::user()->hasRole('superadministrator'))
-                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
-                                              
-                                          <label for="company_id" class="col-sm-3 control-label">
-                                             Company Name
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                            
-                                             <select class="selectpicker form-control" 
-                                                name="company_id" 
-                                                data-style="form-control btn-default btn-outline"
-                                                required>
-
-                                                @foreach ($companies as $company)
-                                                <li class="mb-10">
-                                                <option value="{{ $company->id }}"
-                                          @if ($company->id == old('company_id', $company->id))
-                                              selected="selected"
-                                          @endif
-                                                    >
-                                                      {{ $company->name }}
-                                                    </option>
-                                                </li>
-                                                @endforeach
-                                                
-                                             </select>
-
-                                             @if ($errors->has('company_name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('company_name') }}</strong>
-                                                  </span>
-                                             @endif
-                                          
-                                          </div>
-
-                                       </div>
-                                       @else
-
-                                          <div class="form-group">
-                                            <label class="control-label col-md-3">Company Name</label>
-                                            <div class="col-md-9">
-                                            
-                                              @if ($user->company)
-                                                <p class="form-control-static"> {{ $user->company->name }} </p>
-                                                <input 
-                                                    type="hidden" 
-                                                    name="company_id"
-                                                    value="{{ $user->company->id }}">
-                                              @endif
-
-                                            </div>
-                                          </div>
-
-                                       @endif
 
                                        <div  class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                                               
@@ -195,7 +139,7 @@
 
                                              @if ($errors->has('phone_number'))
                                                   <span class="help-block">
-                                                      <strong>{{ $errors->first('phone_number') }}</strong>
+                                                      <strong>{!! $errors->first('phone_number') !!}</strong>
                                                   </span>
                                              @endif
                                           </div>
@@ -277,7 +221,7 @@
                                           <div class="col-sm-9">
                                               <button 
                                                 type="submit" 
-                                                class="btn btn-primary btn-block mr-10"
+                                                class="btn btn-lg btn-primary btn-block mr-10"
                                                  id="submit-btn">
                                                  Submit
                                               </button>

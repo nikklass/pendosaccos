@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
 use App\Events\AccountAdded;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
+use App\Services\User\UserUpdate;
 use App\User;
 use Hash;
 use Illuminate\Auth\Events\Registered;
@@ -39,38 +39,36 @@ class UserController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         
         $user = auth()->user();
 
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
+        //if user is superadmin, show all groups, else show a user's groups
+        $groups = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all()->pluck('id');
+            $groups = Group::all()->pluck('id');
         } else if ($user->hasRole('administrator')) {
-            if ($user->company) {
-                $companies[] = $user->company->id;
+            if ($user->group) {
+                $groups[] = $user->group->id;
             }
         }
 
-        //get company users
+        //get group users
         $users = [];
 
-        if ($companies) { 
+        if ($groups) { 
 
-            $users = User::whereIn('company_id', $companies)
+            $users = User::whereIn('group_id', $groups)
                     ->orderBy('id', 'desc')
-                    ->with('company')
+                    ->with('group')
                     ->with('roles')
                     ->paginate(10);
 
         }
 
-        //dd($users, $companies);
+        //dd($users, $groups);
 
         return view('users.index')
                 ->withUser($user)
@@ -83,49 +81,42 @@ class UserController extends Controller
     {
         
         $user = auth()->user();
-        $userCompany = User::where('id', $user->id)
-            ->with('company')
+        $usergroup = User::where('id', $user->id)
+            ->with('group')
             ->first();
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
+        //if user is superadmin, show all groups, else show a user's groups
+        $groups = [];
         if ($user->hasRole('superadministrator')){
-            $companies = Company::all();
+            $groups = Group::all();
         } else {
-            $companies = $user->company;
+            $groups = $user->group;
         }
-        //dd($companies);
 
         return view('users.create')
-            ->withCompanies($companies)
-            ->withUser($userCompany);
+            ->withgroups($groups)
+            ->withUser($usergroup);
 
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
 
     public function store(Request $request)
     {
-
-        //dd($request);
 
         $this->validate(request(), [
             'first_name' => 'required',
             'last_name' => 'required',
             'account_number' => 'required',
             'email' => 'email|unique:users',
-            'sms_user_name' => 'unique:users',
             'phone_number' => 'required|max:13'
         ]);
 
         $phone_number = '';
         if ($request->phone_number) {
             if (!isValidPhoneNumber($request->phone_number)){
-                $message = \Config::get('constants.error.invalid_phone_number');
+                $message = config('constants.error.invalid_phone_number');
                 Session::flash('error', $message);
                 return redirect()->back()->withInput();
             }
@@ -139,10 +130,10 @@ class UserController extends Controller
         $userData = [
             'first_name' => request()->first_name,
             'last_name' => request()->last_name,
-            'sms_user_name' => request()->sms_user_name,
             'email' => request()->email,
-            'company_id' => request()->company_id,
+            'group_id' => request()->group_id,
             'account_number' => request()->account_number,
+            'account_balance' => request()->account_balance,
             'gender' => request()->gender,
             'phone_number' => $phone_number,
             'password' => bcrypt($password),
@@ -152,11 +143,6 @@ class UserController extends Controller
         ];
 
         $user = User::create($userData);
-        
-        //add generated password to returned data
-        //$user['password'] = $password;
-
-        //event(new Registered($user));
 
         session()->flash("success", "User successfully created");
         return $this->registered(request(), $user)
@@ -166,144 +152,78 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        /*$bulk_sms_data = getBulkSMSData($id);
-        dd($bulk_sms_data);*/
 
         $user = User::where('id', $id)->with('roles')->first();
-        return view("users.show")->withUser($user);
+
+        $loans = $user->loans()->orderBy('id', 'desc')
+                        ->paginate(10);
+        
+        return view('users.show', compact('user', 'loans'));
 
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($id) 
     {
 
         $user = User::where('id', $id)
             ->with('roles')
-            ->with('groups')
-            ->with('company')
+            ->with('group')
             ->first();
 
-        //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
-        if (auth()->user()->hasRole('superadministrator')){
-            $companies = Company::all();
-        } else {
-            $companies[] = $user->company;
-        }
-        
+        //if user is superadmin, show all groups, else show a user's groups
         $groups = [];
-        if ($user->company) {
-            //get groups
-            $groups = $user->company->groups;
+        if (auth()->user()->hasRole('superadministrator')){
+            $groups = Group::orderBy('name', 'asc')->get();
+        } else {
+            $groups[] = $user->group;
         }
 
         //get all roles
         $roles = Role::all();
 
-        //dd($user, $companies);
-
-        return view("users.edit")
-            ->withUser($user)
-            ->withRoles($roles)
-            ->withGroups($groups)
-            ->withCompanies($companies);
+        return view("users.edit", compact('user', 'roles', 'groups'));
 
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, UserUpdate $userUpdate)
     {
-        
-        $this->validate(request(), [
+                
+        $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'sometimes|email|unique:users,email,'.$id,
             'account_number' => 'required',
-            //'sms_user_name' => 'sometimes|unique:users,sms_user_name,'.$id,
             'phone_number' => 'required|max:13'
-                //'required|unique:users,phone_number|unique:users,company_id,id,'.$id,
         ]);
 
-        $phone_number = '';
-        if ($request->phone_number) {
-            if (!isValidPhoneNumber($request->phone_number)){
-                $message = \Config::get('constants.error.invalid_phone_number');
-                Session::flash('error', $message);
-                return redirect()->back()->withInput();
-            }
-            $phone_number = formatPhoneNumber($request->phone_number);
+        if (!$userUpdate->checkData($request, $id))
+        {
+            $errors[] = $userUpdate->getErrors();
+            return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        $user = User::findOrFail($id);
+        //if all is ok, update item
+        $user = $userUpdate->updateUser($request, $id);
 
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->company_id = $request->company_id;
-        $user->phone_number = $phone_number;
-        $user->account_number = $request->account_number;
-        $user->gender = $request->gender;
+        //send back
+        $message = config('constants.success.update');
+        Session::flash('success', sprintf($message, "User"));
 
-        if ($request->password_option == 'auto'){
-            /*auto generate new password*/
-            $password = generateCode(6);
-            $user->password = bcrypt($password);
-            //send the user a link to change password
-
-        } else if ($request->password_option == 'manual'){
-            /*set to entered password*/
-            $user->password = bcrypt($request->password);
-        }
-
-        if ($user->save()) {
-
-            if ($request->rolesSelected) {
-                //sync roles
-                $user->syncRoles(explode(',', $request->rolesSelected));
-            }
-            if ($request->groupsSelected) {
-                //sync groups
-                $groups = explode(',', $request->groupsSelected);
-                $user->groups()->sync($groups);
-            }
-            
-            //dd($user);
-
-            Session::flash('success', 'User was edited successfully');
-            return redirect()->route('users.show', $id);
-
-        } else {
-
-            Session::flash('error', 'There ws an error saving the update');
-            return redirect()->route('users.edit', $id);
-
-        }
+        return redirect()->route('users.show', $id);
 
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

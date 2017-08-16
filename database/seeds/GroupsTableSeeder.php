@@ -13,19 +13,19 @@ class GroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        /*$this->command->info('Truncating companies table');
+        $this->command->info('Truncating groups table');
         $this->truncateGroupTables();
         
-        factory(App\Group::class, 100)->create();*/
+        factory(App\Group::class, 5)->create();
 
     }
 
     public function truncateGroupTables()
     {
-        /*DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::table('groups')->truncate();
         \App\Group::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');*/
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
 }

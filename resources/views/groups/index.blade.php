@@ -16,8 +16,8 @@
           <div class="col-sm-6 col-xs-12">
           <h5 class="txt-dark">
                 Manage Groups 
-                @if ((!Auth::user()->hasRole('superadministrator')) && $user->company)
-                  &nbsp; - &nbsp; ({{ $user->company->name }})</th>
+                @if ((!Auth::user()->hasRole('superadministrator')) && $user->group)
+                  &nbsp; - &nbsp; ({{ $user->group->name }})</th>
                 @endif
             </h5>
           </div>
@@ -32,7 +32,7 @@
        <!-- /Title -->
 
        <!-- Row -->
-        <div class="row">
+        <div class="row mt-15">
            <div class="col-sm-12 col-xs-12">
               <div class="panel panel-default card-view panel-refresh">
                  <div class="refresh-container">
@@ -123,16 +123,12 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th>Group Name</th>
-
-                                      @if (Auth::user()->hasRole('superadministrator'))
-                                        <th>Company</th>
-                                      @endif
-
-                                      <th>Phone</th>
-                                      <th>Email</th>
-                                      <th>Created</th>
-                                      <th>Actions</th>
+                                      <th width="25%">Group Name</th>
+                                      <th width="10%">Members</th>
+                                      <th width="15%">Phone</th>
+                                      <th width="15%">Email</th>
+                                      <th width="20%">Created</th>
+                                      <th width="15%">Actions</th>
                                    </tr>
                                 </thead>
                                 <tbody>
@@ -145,15 +141,13 @@
                                             {{ $group->name }}
                                           </span>
                                         </td>
-                                        
-                                        @if (Auth::user()->hasRole('superadministrator'))
-                                            <td>
-                                              <span class="txt-dark weight-500">
-                                                {{ $group->company->name }}
-                                              </span>
-                                            </td>
-                                        @endif
-                                        
+
+                                        <td>
+                                          <span class="txt-dark weight-500">
+                                            {{ format_num(count($group->users), 0) }}
+                                          </span>
+                                        </td>
+                                                                                
 	                                      <td>
                                            <span class="txt-dark weight-500">
                                             {{ $group->phone_number }}
@@ -192,7 +186,7 @@
                           </div>
                        </div>
                        <hr>
-                       <div class="text-center">
+                       <div class="text-center mb-15">
 							             {{ $groups->links() }}
                        </div>   
                     </div>   

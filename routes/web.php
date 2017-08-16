@@ -1,18 +1,14 @@
 <?php
 
+View::share('passport_client_id', config('constants.passport.client_id'));
+View::share('passport_client_secret', config('constants.passport.client_secret'));
+View::share('passport_login_url', config('constants.passport.login_url'));
+View::share('passport_user_url', config('constants.passport.user_url'));
 
-View::share('passport_client_id', \Config::get('constants.passport.client_id'));
-View::share('passport_client_secret', \Config::get('constants.passport.client_secret'));
-View::share('passport_login_url', \Config::get('constants.passport.login_url'));
-View::share('passport_user_url', \Config::get('constants.passport.user_url'));
-
-
-View::share('get_users_url', \Config::get('constants.routes.get_users_url'));
-View::share('send_message_url', \Config::get('constants.routes.send_message_url'));
-View::share('create_user_url', \Config::get('constants.routes.create_user_url'));
-View::share('create_message_url', \Config::get('constants.routes.create_message_url'));
-
-
+View::share('get_users_url', config('constants.routes.get_users_url'));
+View::share('send_message_url', config('constants.routes.send_message_url'));
+View::share('create_user_url', config('constants.routes.create_user_url'));
+View::share('create_message_url', config('constants.routes.create_message_url'));
 
 
 Route::group(['middleware' => 'role:superadministrator|administrator|companyadministrator'], function() {
@@ -30,8 +26,8 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	Route::get('users/create-bulk', 'UserImportController@create')->name('bulk-users.create');
 	Route::post('users/create-bulk', 'UserImportController@store')->name('bulk-users.store');
 	Route::get('users/create-bulk/get-data/{uuid}', 'UserImportController@getImportData')->name('bulk-users.getimportdata');
-	Route::get('users/create-bulk/get-incomplete/{uuid}', 'UserImportController@getIncompleteData')->name('bulk-users.getincompletedata');
-	
+	Route::get('users/create-bulk/get-incomplete/{uuid}', 'UserImportController@getIncompleteData')->name('bulk-users.getincompletedata');	
+
 	//send email routes...
 	Route::get('/email/newUser', 'EmailController@newUserEmail')->name('email.newuser');
 
@@ -54,6 +50,22 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	//schedule smsoutbox routes...
 	Route::resource('/scheduled-smsoutbox', 'ScheduleSmsOutboxController');
 
+	//withdrawals routes...
+	//Route::get('/withdrawals/search', 'WithdrawalController@index')->name('withdrawals.search');
+	Route::resource('/withdrawals', 'WithdrawalController');
+	
+	//deposits routes...
+	Route::resource('/deposits', 'DepositController');
+
+	//repayments routes...
+	Route::resource('/repayments', 'RepaymentController');
+
+	//accounts routes...
+	Route::resource('/accounts', 'AccountController');
+
+	//loans routes...
+	Route::resource('/loans', 'LoanController');
+
 });
 
 //superadmin routes
@@ -63,11 +75,6 @@ Route::group(['middleware' => 'role:superadministrator'], function() {
 });
 
 //superadmin and admin routes
-Route::group(['middleware' => 'role:superadministrator|administrator'], function() {
-	//companies routes...
-	Route::resource('/companies', 'CompanyController');
-});
-
 Route::group(['middleware' => 'guest'], function() {
 
 	// Authentication Routes...

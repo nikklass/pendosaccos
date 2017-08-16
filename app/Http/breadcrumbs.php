@@ -1,10 +1,14 @@
 <?php
 
-use App\Company;
+use App\Deposit;
 use App\Group;
-use App\SmsOutbox;
+use App\Loan;
 use App\Permission;
+use App\Repayment;
 use App\Role;
+use App\SmsOutbox;
+use App\User;
+use App\Withdrawal;
 
 // Home
 Breadcrumbs::register('home', function($breadcrumbs)
@@ -34,7 +38,7 @@ Breadcrumbs::register('smsoutbox.show', function($breadcrumbs, $id)
 {
     $smsoutbox = SmsOutbox::findOrFail($id);
     $breadcrumbs->parent('smsoutbox');
-    $breadcrumbs->push($smsoutbox->id, route('smsoutbox.show', $smsoutbox->id));
+    $breadcrumbs->push('Showing Sms Outbox Id - ' . $smsoutbox->id, route('smsoutbox.show', $smsoutbox->id));
 });
 
 /******** SMS OUTBOX ROUTES ********/
@@ -61,7 +65,7 @@ Breadcrumbs::register('groups.show', function($breadcrumbs, $id)
 {
     $group = Group::findOrFail($id);
     $breadcrumbs->parent('groups');
-    $breadcrumbs->push($group->name, route('groups.show', $group->id));
+    $breadcrumbs->push('Showing Group - ' . $group->name, route('groups.show', $group->id));
 });
 
 // Home > Groups > Edit Group
@@ -69,45 +73,154 @@ Breadcrumbs::register('groups.edit', function($breadcrumbs, $id)
 {
     $group = Group::findOrFail($id);
     $breadcrumbs->parent('groups');
-    $breadcrumbs->push($group->name, route('groups.edit', $group->id));
+    $breadcrumbs->push('Edit Group - ' . $group->name, route('groups.edit', $group->id));
 });
 
 /******** END GROUPS ROUTES ********/
 
 
-/******** COMPANIES ROUTES ********/
 
-// Home > Companies
-Breadcrumbs::register('companies', function($breadcrumbs)
+/******** WITHDRAWALS ROUTES ********/
+
+// Home > withdrawals
+Breadcrumbs::register('withdrawals', function($breadcrumbs)
 {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push('Companies', route('companies.index'));
+    $breadcrumbs->push('withdrawals', route('withdrawals.index'));
 });
 
-// Home > Companies > Create New Company
-Breadcrumbs::register('companies.create', function($breadcrumbs)
+// Home > withdrawals > Create New withdrawal
+Breadcrumbs::register('withdrawals.create', function($breadcrumbs)
 {
-    $breadcrumbs->parent('companies');
-    $breadcrumbs->push('Create New Company', route('companies.create'));
+    $breadcrumbs->parent('withdrawals');
+    $breadcrumbs->push('Create New Withdrawal', route('withdrawals.create'));
 });
 
-// Home > Companies > Show Company
-Breadcrumbs::register('companies.show', function($breadcrumbs, $id)
+// Home > withdrawals > Show withdrawal
+Breadcrumbs::register('withdrawals.show', function($breadcrumbs, $id)
 {
-    $company = Company::findOrFail($id);
-    $breadcrumbs->parent('companies');
-    $breadcrumbs->push($company->name, route('companies.show', $company->id));
+    $withdrawal = Withdrawal::findOrFail($id);
+    $breadcrumbs->parent('withdrawals');
+    $breadcrumbs->push('Displaying Withdrawal Id - ' . $withdrawal->id, route('withdrawals.show', $withdrawal->id));
 });
 
-// Home > Companies > Edit Company
-Breadcrumbs::register('companies.edit', function($breadcrumbs, $id)
+// Home > withdrawals > Edit withdrawal
+Breadcrumbs::register('withdrawals.edit', function($breadcrumbs, $id)
 {
-    $company = Company::findOrFail($id);
-    $breadcrumbs->parent('companies');
-    $breadcrumbs->push($company->name, route('companies.edit', $company->id));
+    $withdrawal = Withdrawal::findOrFail($id);
+    $breadcrumbs->parent('withdrawals');
+    $breadcrumbs->push('Edit Withdrawal Id - ' . $withdrawal->id, route('withdrawals.edit', $withdrawal->id));
 });
 
-/******** END COMPANIES ROUTES ********/
+/******** END WITHDRAWAL ROUTES ********/
+
+
+
+
+/******** DEPOSIT ROUTES ********/
+
+// Home > deposits
+Breadcrumbs::register('deposits', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('deposits', route('deposits.index'));
+});
+
+// Home > deposits > Create New deposit
+Breadcrumbs::register('deposits.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('deposits');
+    $breadcrumbs->push('Create New Deposit', route('deposits.create'));
+});
+
+// Home > deposits > Show deposit
+Breadcrumbs::register('deposits.show', function($breadcrumbs, $id)
+{
+    $deposit = Deposit::findOrFail($id);
+    $breadcrumbs->parent('deposits');
+    $breadcrumbs->push('Showing Deposit Id - ' . $deposit->id, route('deposits.show', $deposit->id));
+});
+
+// Home > deposits > Edit deposit
+Breadcrumbs::register('deposits.edit', function($breadcrumbs, $id)
+{
+    $deposit = Deposit::findOrFail($id);
+    $breadcrumbs->parent('deposits');
+    $breadcrumbs->push('Edit Deposit Id - ' . $deposit->id, route('deposits.edit', $deposit->id));
+});
+
+/******** END DEPOSIT ROUTES ********/
+
+
+
+/******** REPAYMENTS ROUTES ********/
+
+// Home > repayments
+Breadcrumbs::register('repayments', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('repayments', route('repayments.index'));
+});
+
+// Home > repayments > Create New Repayment
+Breadcrumbs::register('repayments.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('repayments');
+    $breadcrumbs->push('Create Loan Repayment', route('repayments.create'));
+});
+
+// Home > repayments > Show Repayment
+Breadcrumbs::register('repayments.show', function($breadcrumbs, $id)
+{
+    $repayment = Repayment::findOrFail($id);
+    $breadcrumbs->parent('repayments');
+    $breadcrumbs->push('Showing Loan Repayment - ' . $repayment->id, route('repayments.show', $repayment->id));
+});
+
+// Home > repayments > Edit Repayment
+Breadcrumbs::register('repayments.edit', function($breadcrumbs, $id)
+{
+    $repayment = Repayment::findOrFail($id);
+    $breadcrumbs->parent('repayments');
+    $breadcrumbs->push('Edit Loan Repayment - ' . $repayment->id, route('repayments.edit', $repayment->id));
+});
+
+/******** END REPAYMENTS ROUTES ********/
+
+
+/******** LOANS ROUTES ********/
+
+// Home > loans
+Breadcrumbs::register('loans', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('loans', route('loans.index'));
+});
+
+// Home > loans > Create New Loan
+Breadcrumbs::register('loans.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('loans');
+    $breadcrumbs->push('Create Loan', route('loans.create'));
+});
+
+// Home > loans > Show Loan
+Breadcrumbs::register('loans.show', function($breadcrumbs, $id)
+{
+    $loan = Loan::findOrFail($id);
+    $breadcrumbs->parent('loans');
+    $breadcrumbs->push('Showing Loan - ' . $loan->id, route('loans.show', $loan->id));
+});
+
+// Home > loans > Edit Loan
+Breadcrumbs::register('loans.edit', function($breadcrumbs, $id)
+{
+    $loan = Loan::findOrFail($id);
+    $breadcrumbs->parent('loans');
+    $breadcrumbs->push('Edit Loan - ' . $loan->id, route('loans.edit', $loan->id));
+});
+
+/******** END LOANS ROUTES ********/
 
 
 
@@ -132,7 +245,7 @@ Breadcrumbs::register('permissions.show', function($breadcrumbs, $id)
 {
     $permission = Permission::findOrFail($id);
     $breadcrumbs->parent('permissions');
-    $breadcrumbs->push($permission->display_name, route('permissions.show', $permission->id));
+    $breadcrumbs->push('Showing Permission - ' . $permission->display_name, route('permissions.show', $permission->id));
 });
 
 // Home > Permissions > Edit Permission
@@ -140,7 +253,7 @@ Breadcrumbs::register('permissions.edit', function($breadcrumbs, $id)
 {
     $permission = Permission::findOrFail($id);
     $breadcrumbs->parent('permissions');
-    $breadcrumbs->push($permission->display_name, route('permissions.edit', $permission->id));
+    $breadcrumbs->push('Edit Permission - ' . $permission->display_name, route('permissions.edit', $permission->id));
 });
 
 /******** END PERMISSIONS ROUTES ********/
@@ -167,7 +280,7 @@ Breadcrumbs::register('roles.show', function($breadcrumbs, $id)
 {
     $role = Role::findOrFail($id);
     $breadcrumbs->parent('roles');
-    $breadcrumbs->push($role->display_name, route('roles.show', $role->id));
+    $breadcrumbs->push('Displaying Role - ' . $role->display_name, route('roles.show', $role->id));
 });
 
 // Home > Roles > Edit Role
@@ -175,7 +288,7 @@ Breadcrumbs::register('roles.edit', function($breadcrumbs, $id)
 {
     $role = Role::findOrFail($id);
     $breadcrumbs->parent('roles');
-    $breadcrumbs->push($role->display_name, route('roles.edit', $role->id));
+    $breadcrumbs->push('Edit Role - ' . $role->display_name, route('roles.edit', $role->id));
 });
 
 /******** END ROLES ROUTES ********/
@@ -208,19 +321,19 @@ Breadcrumbs::register('bulk-users.create', function($breadcrumbs)
 // Home > Users > Show User
 Breadcrumbs::register('users.show', function($breadcrumbs, $id)
 {
-    $user = Group::findOrFail($id);
+    $user = User::findOrFail($id);
     $full_names = $user->first_name . ' ' . $user->last_name;
     $breadcrumbs->parent('users');
-    $breadcrumbs->push($full_names, route('users.show', $user->id));
+    $breadcrumbs->push("Displaying User - " . $full_names, route('users.show', $user->id));
 });
 
 // Home > Users > Edit User
 Breadcrumbs::register('users.edit', function($breadcrumbs, $id)
 {
-    $user = Group::findOrFail($id);
+    $user = User::findOrFail($id);
     $full_names = $user->first_name . ' ' . $user->last_name;
     $breadcrumbs->parent('users');
-    $breadcrumbs->push($full_names, route('users.edit', $user->id));
+    $breadcrumbs->push("Edit User - " . $full_names, route('users.edit', $user->id));
 });
 
 

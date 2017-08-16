@@ -6,7 +6,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <title>
-            @yield('title') :: Pendo Admin - Your financial convenience home
+            @yield('title') :: Saccos - For your financial convenience
         </title>
 
         <meta name="description" content="Pendo media admin console" />
@@ -56,6 +56,9 @@
 
 
         @yield('page_scripts')
+        
+
+        @include('layouts.partials.error_messages')
         
 
     </body>

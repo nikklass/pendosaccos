@@ -15,6 +15,19 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\Registered' => [
             'App\Listeners\SendWelcomeEmail',
+            'App\Listeners\SaveUserArchive',
+        ],
+        'App\Events\WithdrawalCreated' => [
+            'App\Listeners\SaveWithdrawalArchive',
+        ],
+        'App\Events\DepositCreated' => [
+            'App\Listeners\SaveDepositArchive',
+        ],
+        'App\Events\LoanCreated' => [
+            'App\Listeners\SaveLoanArchive',
+        ],
+        'App\Events\RepaymentCreated' => [
+            'App\Listeners\SaveRepaymentArchive',
         ],
     ];
 

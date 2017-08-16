@@ -115,7 +115,7 @@
                                          <div class="form-group">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9">
-                                               <button type="submit" class="btn btn-primary btn-block mr-10">Submit</button>
+                                               <button type="submit" class="btn btn-lg btn-primary btn-block mr-10">Submit</button>
                                             </div>
                                          </div>
 

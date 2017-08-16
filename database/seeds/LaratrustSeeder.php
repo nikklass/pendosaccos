@@ -15,7 +15,7 @@ class LaratrustSeeder extends Seeder
     public function run()
     {
         
-        /*$faker = Faker::create();
+        $faker = Faker::create();
 
         $this->command->info('Truncating User, Role and Permission tables');
         $this->truncateLaratrustTables();
@@ -63,11 +63,11 @@ class LaratrustSeeder extends Seeder
             $user = \App\User::create([
                 'first_name' => ucwords(str_replace("_", " ", $key)),
                 'last_name' => ucwords(str_replace("_", " ", $key)),
-                'phone_number' => $faker->numberBetween(1000,99999),
-                'sms_user_name' => '',
+                'phone_number' => "2547" . $faker->numberBetween(11,99) . $faker->numberBetween(100000,999999),
                 'account_number' => $faker->numberBetween(1000,99999),
+                'group_id' => $faker->numberBetween(1,5),
                 'email' => $key.'@pendo.co.ke',
-                'gender' => 'm',
+                'gender' => $faker->randomElement($array = array ('m','f')),
                 'api_token' => str_random(60),
                 'password' => bcrypt('123')
             ]);
@@ -107,7 +107,7 @@ class LaratrustSeeder extends Seeder
                     }
                 }
             }
-        }*/
+        }
 
         
     }

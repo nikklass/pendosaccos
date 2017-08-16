@@ -29,9 +29,8 @@ class CreateBulkSmsOutboxesTable extends Migration
             $table->integer('status_id')->unsigned()->default(8);
             $table->integer('sms_type_id')->unsigned()->default(6);
             $table->integer('schedule_sms_outbox_id')->unsigned()->nullable();
-            $table->integer('company_id')->unsigned()->nullable();
-            $table->string('sms_user_name', 50)->nullable();
             $table->integer('group_id')->unsigned()->nullable();
+            $table->string('sms_user_name', 50)->nullable();
             $table->string('phone_number', 13);
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
@@ -50,7 +49,6 @@ class CreateBulkSmsOutboxesTable extends Migration
             $table->integer('user_id')->unsigned()->nullable();
             $table->integer('status_id')->unsigned()->default(5);
             $table->integer('sms_type_id')->unsigned()->default(6);
-            $table->integer('company_id')->unsigned()->nullable();
             $table->string('sms_user_name', 50)->nullable();
             $table->integer('group_id')->unsigned()->nullable();
             $table->string('phone_number', 13);
@@ -61,22 +59,22 @@ class CreateBulkSmsOutboxesTable extends Migration
         });
 
         /*sms types table*/
-        /*Schema::defaultStringLength(191);
+        Schema::defaultStringLength(191);
         Schema::create('sms_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
             $table->string('description', 255);
             $table->timestamps();
-        });*/
+        });
 
-        /*sms types table*/
-        /*Schema::defaultStringLength(191);
+        //sms types table
+        Schema::defaultStringLength(191);
         Schema::create('statuses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50);
             $table->text('section');
             $table->timestamps();
-        });*/
+        });
 
     }
 
@@ -89,7 +87,7 @@ class CreateBulkSmsOutboxesTable extends Migration
     {
         Schema::dropIfExists('sms_outboxes');
         Schema::dropIfExists('schedule_sms_outboxes');
-        /*Schema::dropIfExists('sms_types');
-        Schema::dropIfExists('statuses');*/
+        Schema::dropIfExists('sms_types');
+        Schema::dropIfExists('statuses');
     }
 }

@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "Semesha",
-    "keywords": ["framework", "laravel"],
+    "name": "nikklass/pendo saccos",
+    "description": "Pendo Saccos",
+    "keywords": ["pendo", "sacco", "Api", "REST", "oAuth2", "Dingo API"],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -14,7 +14,9 @@
         "maatwebsite/excel": "~2.1.0",
         "santigarcor/laratrust": "4.0.*",
         "webpatser/laravel-uuid": "2.*",
-        "mpdf/mpdf": "~6.1"
+        "mpdf/mpdf": "~6.1",
+        "dingo/api": "1.0.*@dev",
+        "spatie/laravel-permission": "^1.7"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

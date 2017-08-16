@@ -8,9 +8,9 @@
          </span> 
       </li>
 
-      @if ((!Auth::user()->hasRole('superadministrator')) && ($user->company))
+      @if (!Auth::user()->hasRole('superadministrator'))
       <li class="navigation-header">
-            <span class="pb-0">{{ $user->company->name }}</span>
+            <span class="pb-0">{{ Auth::user()->group->name }}</span>
       </li>
 
       <li><hr class="light-grey-hr mb-10 mt-10"/></li>
@@ -29,35 +29,7 @@
       </li>
 
       @if (Auth::user()->hasRole('superadministrator'))
-      <li>
-         <a href="javascript:void(0);" data-toggle="collapse" data-target="#companies_dr">
-            <div class="pull-left">
-               <i class="zmdi zmdi-apps mr-20"></i>
-               <span class="right-nav-text">Companies </span>
-            </div>
-            <div class="pull-right">
-               <i class="zmdi zmdi-caret-down"></i>
-            </div>
-            <div class="clearfix"></div>
-         </a>
-         <ul id="companies_dr" class="collapse collapse-level-1">
-            
-            <li>
-               <a href="{{ route('companies.create') }}">
-                  <i class="zmdi zmdi-accounts-add mr-10"></i>
-                  <span class="right-nav-text">Create Company</span>
-               </a>
-            </li>
-            <li>
-               <a href="{{ route('companies.index') }}">
-                  <i class="fa fa-users mr-10"></i>
-                  <span class="right-nav-text">Manage Companies</span>
-               </a>
-            </li>
-
-         </ul>
-      </li>
-
+      
       <li>
          <a href="javascript:void(0);" data-toggle="collapse" data-target="#perms_dr">
             <div class="pull-left">
@@ -121,7 +93,7 @@
          <a href="javascript:void(0);" data-toggle="collapse" data-target="#groups_dr">
             <div class="pull-left">
                <i class="zmdi zmdi-apps mr-20"></i>
-               <span class="right-nav-text">User Groups </span>
+               <span class="right-nav-text">Sacco Groups </span>
             </div>
             <div class="pull-right">
                <i class="zmdi zmdi-caret-down"></i>
@@ -146,11 +118,13 @@
          </ul>
       </li>
 
+      <li><hr class="light-grey-hr mb-10"/></li>
+
       <li>
          <a href="javascript:void(0);" data-toggle="collapse" data-target="#users_dr">
             <div class="pull-left">
                <i class="zmdi zmdi-accounts mr-20"></i>
-               <span class="right-nav-text">User Accounts </span>
+               <span class="right-nav-text">Member Accounts </span>
             </div>
             <div class="pull-right">
                <i class="zmdi zmdi-caret-down"></i>
@@ -174,14 +148,134 @@
             <li>
                <a href="{{ route('users.index') }}">
                   <i class="zmdi zmdi-accounts-list mr-10"></i>
-                  <span class="right-nav-text">Manage Users</span>
+                  <span class="right-nav-text">Manage Members</span>
                </a>
             </li>
 
          </ul>
       </li>
 
-      
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#withdrawals_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-grain mr-20"></i>
+               <span class="right-nav-text">Withdrawals </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="withdrawals_dr" class="collapse collapse-level-1">
+            
+            <li>
+               <a href="{{ route('withdrawals.create') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Create Withdrawal</span>
+               </a>
+            </li>
+
+            <li>
+               <a href="{{ route('withdrawals.index') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Manage Withdrawals</span>
+               </a>
+            </li>
+            
+         </ul>
+      </li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#deposits_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-grain mr-20"></i>
+               <span class="right-nav-text">Deposits </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="deposits_dr" class="collapse collapse-level-1">
+            
+            <li>
+               <a href="{{ route('deposits.create') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Create Deposit</span>
+               </a>
+            </li>
+
+            <li>
+               <a href="{{ route('deposits.index') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Manage Deposits</span>
+               </a>
+            </li>
+            
+         </ul>
+      </li>
+
+      <li><hr class="light-grey-hr mb-10"/></li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#loans_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-balance mr-20"></i>
+               <span class="right-nav-text">Loans </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="loans_dr" class="collapse collapse-level-1">
+            
+            <li>
+               <a href="{{ route('loans.create') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Create Loan</span>
+               </a>
+            </li>
+
+            <li>
+               <a href="{{ route('loans.index') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Manage Loans</span>
+               </a>
+            </li>
+            
+         </ul>
+      </li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#repayments_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-money mr-20"></i>
+               <span class="right-nav-text">Repayments </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="repayments_dr" class="collapse collapse-level-1">
+            
+            <!-- <li>
+               <a href="{{ route('repayments.create') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">New Repayment</span>
+               </a>
+            </li> -->
+
+            <li>
+               <a href="{{ route('repayments.index') }}">
+                  <i class="zmdi zmdi-money mr-10"></i>
+                  <span class="right-nav-text">Manage Repayments</span>
+               </a>
+            </li>
+            
+         </ul>
+      </li>
 
       <li><hr class="light-grey-hr mb-10"/></li>
 
@@ -209,90 +303,20 @@
                </a>
                <ul id="bulksms_dr" class="collapse collapse-level-1 two-col-list">
                   <li>
-                     <a href="{{ route('smsoutbox.create') }}">Send SMS</a>
+                     <a href="{{ route('smsoutbox.create') }}">Create SMS</a>
                   </li>
                   <li>
-                     <a href="{{ route('scheduled-smsoutbox.index') }}">Scheduled SMS</a>
+                     <a href="{{ route('scheduled-smsoutbox.index') }}">ViewbScheduled SMS</a>
                   </li>
                   <li>
-                     <a href="{{ route('smsoutbox.index') }}">My Outbox</a>
+                     <a href="{{ route('smsoutbox.index') }}">View SMS Outbox</a>
                   </li>
-                  <!-- <li>
-                     <a href="modals.php">Analytics</a>
-                  </li> -->
+                  
                </ul>
             </li>
-            <!-- <li>
-               <a href="javascript:void(0);" data-toggle="collapse" data-target="#premsms_dr">
-                  <div class="pull-left">
-                     <span class="right-nav-text">Premium SMS</span>
-                  </div>
-                  <div class="pull-right">
-                     <i class="zmdi zmdi-caret-down"></i>
-                  </div>
-                  <div class="clearfix"></div>
-               </a>
-               <ul id="premsms_dr" class="collapse collapse-level-1 two-col-list">
-                  <li>
-                     <a href="panels_wells.php">Outbox</a>
-                  </li>
-                  <li>
-                     <a href="modals.php">Analytics</a>
-                  </li>
-               </ul>
-            </li> -->
-            <li>
-               <a href="#">Inbox</a>
-            </li>
-            <!-- <li>
-               <a href="notifications.php">Short Codes</a>
-            </li> -->
             
-         </ul>
-      </li>
-
-      <li>
-         <a href="javascript:void(0);" data-toggle="collapse" data-target="#voice_dr">
-            <div class="pull-left">
-               <i class="zmdi zmdi-phone mr-20"></i>
-               <span class="right-nav-text">Voice</span>
-            </div>
-            <div class="pull-right">
-               <i class="zmdi zmdi-caret-down"></i>
-            </div>
-            <div class="clearfix"></div>
-         </a>
-         <ul id="voice_dr" class="collapse collapse-level-1 two-col-list">
             <li>
-               <a href="#">Phone Numbers</a>
-            </li>
-            <li>
-               <a href="#">Create a Number</a>
-            </li>
-            
-         </ul>
-      </li>
-
-      <li>
-         <a href="javascript:void(0);" data-toggle="collapse" data-target="#ussd_dr">
-            <div class="pull-left">
-               <i class="zmdi zmdi-gps mr-20"></i>
-               <span class="right-nav-text">USSD</span>
-            </div>
-            <div class="pull-right">
-               <i class="zmdi zmdi-caret-down"></i>
-            </div>
-            <div class="clearfix"></div>
-         </a>
-         <ul id="ussd_dr" class="collapse collapse-level-1 two-col-list">
-            <li>
-               <a href="#">Service Codes</a>
-            </li>
-            <li>
-               <a href="#">Push Request</a>
-            </li>
-            <li>
-               <a href="#">Analytics</a>
+               <a href="#">MPESA</a>
             </li>
             
          </ul>
@@ -349,7 +373,7 @@
          </ul>
       </li>
 
-      <li>
+      <li class="mb-20">
             <a href="{{ route('logout') }}"
                 onclick="event.preventDefault();
                          document.getElementById('logout-form').submit();">

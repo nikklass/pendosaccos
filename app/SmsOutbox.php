@@ -3,7 +3,7 @@
 namespace App;
 
 
-use App\Company;
+use App\Group;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,9 +23,9 @@ class SmsOutbox extends Model
     }
 
     /*one to many relationship*/
-    public function company()
+    public function group()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Group::class);
     }
 
     /*one to many relationship*/

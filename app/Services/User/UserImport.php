@@ -86,9 +86,6 @@ class UserImport
 
 	public function createUsers($data, $company_id) {
 
-		//dump($data);
-
-		//try {
 			
 			DB::beginTransaction();
 			//insert data
@@ -113,13 +110,6 @@ class UserImport
 
 	        }
 	        DB::commit();
-			
-		/*} catch (\Exception $e) {
-			
-			DB::rollBack();
-			\Log::info($e->getMessage());
-
-		}*/
 
 	}
 

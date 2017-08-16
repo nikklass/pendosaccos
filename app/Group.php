@@ -1,8 +1,9 @@
 <?php
 
 namespace App;
-use App\Company;
+use App\Deposit;
 use App\User;
+use App\Withdrawal;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model
@@ -12,14 +13,21 @@ class Group extends Model
     ];
 
     /*one to many relationship*/
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
-
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(User::class);
+    }
+
+    /*withdrawals relationship*/
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class);
+    }
+
+    /*deposits relationship*/
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
     }
 
 }

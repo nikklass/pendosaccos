@@ -21,11 +21,11 @@
 
       <!-- Title -->
        <div class="row heading-bg">
-          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <div class="col-sm-6 col-xs-12">
             <h5 class="txt-dark">Edit Group - {{ $group->name }}</h5>
           </div>
           <!-- Breadcrumb -->
-          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+          <div class="col-sm-6 col-xs-12">
               {!! Breadcrumbs::render('groups.edit', $group->id) !!}
           </div>
           <!-- /Breadcrumb -->
@@ -64,90 +64,24 @@
                                        {{ method_field('PUT') }}
                                        {{ csrf_field() }}
 
-                                       @if (Auth::user()->hasRole('superadministrator'))
-
-                                       <div  class="form-group{{ $errors->has('company_id') ? ' has-error' : '' }}">
-                                              
-                                          <label for="company_id" class="col-sm-3 control-label">
-                                             Company
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                            
-                                             <select class="selectpicker form-control" 
-                                                name="company_id" 
-                                                data-style="form-control btn-default btn-outline"
-                                                required>  
-
-                                                @foreach ($companies as $company)
-                                                <li class="mb-10">
-                                                <option value="{{ $company->id }}"
-
-                                          @if ($company->id == old('company_id', $group->company->id))
-                                              selected="selected"
-                                          @endif
-                                                    >
-                                                      {{ $company->name }}
-                                                    </option>
-                                                </li>
-                                                @endforeach
-                                                
-                                             </select>
-
-                                             @if ($errors->has('company_name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('company_name') }}</strong>
-                                                  </span>
-                                             @endif
+                                        <div class="form-group">
+                                          <label class="control-label col-md-3">Group Name</label>
+                                          <div class="col-md-9">
                                           
+                                              <input 
+                                              type="text" 
+                                              class="form-control" 
+                                              id="group_name" 
+                                              name="group_name"
+                                              value="{{ $group->name }}">
+
+                                              <input 
+                                                  type="hidden" 
+                                                  name="group_id"
+                                                  value="{{ $group->id }}">
+
                                           </div>
-
-                                       </div>
-
-                                       @else
-
-                                          <div class="form-group">
-                                            <label class="control-label col-md-3">Company</label>
-                                            <div class="col-md-9">
-                                            
-                                              @if ($group->company)
-                                                <p class="form-control-static"> {{ $group->company->name }} </p>
-                                                <input 
-                                                    type="hidden" 
-                                                    name="company_id"
-                                                    value="{{ old('company_id', $group->company->id)}}">
-                                              @endif
-
-                                            </div>
-                                          </div>
-
-                                       @endif
-
-
-                                       <div  class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                                              
-                                          <label for="name" class="col-sm-3 control-label">
-                                             Group Name
-                                             <span class="text-danger"> *</span>
-                                          </label>
-                                          <div class="col-sm-9">
-                                            <input 
-                                                type="text" 
-                                                class="form-control" 
-                                                id="name" 
-                                                name="name"
-                                                value="{{ old('name', $group->name)}}"
-                                                required 
-                                                autofocus>
-
-                                             @if ($errors->has('first_name'))
-                                                  <span class="help-block">
-                                                      <strong>{{ $errors->first('first_name') }}</strong>
-                                                  </span>
-                                             @endif
-                                          </div>
-
-                                       </div>
+                                        </div>
 
                                        <div  class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                                               

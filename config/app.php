@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Pendo Admin'),
+    'name' => env('APP_NAME', 'Saccos'),
 
     /*
     |--------------------------------------------------------------------------
@@ -189,6 +189,8 @@ return [
          * Custom service providers...
          */
         App\Providers\ValidationServiceProvider::class,
+        App\Providers\EloquentEventServiceProvider::class,
+        
 
 
     ],
@@ -244,6 +246,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Uuid' => Webpatser\Uuid\Uuid::class,
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facade::class,
+        'Carbon' => 'Carbon\Carbon',
 
     ],
 
