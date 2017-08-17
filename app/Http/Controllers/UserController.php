@@ -7,6 +7,7 @@ use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\Services\User\UserUpdate;
+use App\Services\User\UserStore;
 use App\User;
 use Hash;
 use Illuminate\Auth\Events\Registered;
@@ -68,8 +69,6 @@ class UserController extends Controller
 
         }
 
-        //dd($users, $groups);
-
         return view('users.index')
                 ->withUser($user)
                 ->withUsers($users);
@@ -102,7 +101,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request)
+    public function store(Request $request, UserStore $userStore)
     {
 
         $this->validate(request(), [
@@ -113,38 +112,19 @@ class UserController extends Controller
             'phone_number' => 'required|max:13'
         ]);
 
-        $phone_number = '';
-        if ($request->phone_number) {
-            if (!isValidPhoneNumber($request->phone_number)){
-                $message = config('constants.error.invalid_phone_number');
-                Session::flash('error', $message);
-                return redirect()->back()->withInput();
-            }
-            $phone_number = formatPhoneNumber($request->phone_number);
+        if (!$userStore->checkData($request, $id))
+        {
+            $errors[] = $userStore->getErrors();
+            return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        //generate random password
-        $password = generateCode(6);
+        //if all is ok, create item
+        $user = $userStore->createUser($request);
 
-        // create user
-        $userData = [
-            'first_name' => request()->first_name,
-            'last_name' => request()->last_name,
-            'email' => request()->email,
-            'group_id' => request()->group_id,
-            'account_number' => request()->account_number,
-            'account_balance' => request()->account_balance,
-            'gender' => request()->gender,
-            'phone_number' => $phone_number,
-            'password' => bcrypt($password),
-            'api_token' => str_random(60),
-            'created_by' => request()->user()->id,
-            'updated_by' => request()->user()->id
-        ];
+        //send back
+        $message = config('constants.success.insert');
+        Session::flash('success', sprintf($message, "User"));
 
-        $user = User::create($userData);
-
-        session()->flash("success", "User successfully created");
         return $this->registered(request(), $user)
                         ?: redirect()->back();
 
