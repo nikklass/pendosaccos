@@ -48,7 +48,7 @@ class DepositStore
         $amount = $data->amount;
 
         //get user group id and account balance
-        $user = User::findOrFail($user_id);
+        $user = User::findOrFail($data->user_id);
         $group_id = $user->group_id;
         $before_balance = (float)$user->account_balance;
 

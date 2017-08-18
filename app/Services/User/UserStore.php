@@ -65,16 +65,11 @@ class UserStore
             
             //get group details
             if ($auth_user->hasRole('administrator')) {
-                //$current_group_account_balance = (float)$auth_user->group->account_balance;
                 $current_group_id = $auth_user->group->id;
             } else {
                //get user group data
                 $current_group_id = $data->group_id;
-                //$new_group = Group::findOrFail($current_group_id);
-	            //$current_group_account_balance = $new_group->account_balance;
             }
-
-            //dd($current_group_account_balance);
 
             DB::beginTransaction();
                 
@@ -115,7 +110,7 @@ class UserStore
 
             DB::commit();  
 
-            return $user;          
+            return $user;           
 
         }
 
