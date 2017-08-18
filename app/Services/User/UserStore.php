@@ -12,18 +12,18 @@ class UserStore
 	protected $errors = [];
 	protected $valid = true;
 
-	public function checkData($data, $id)
+	public function checkData($data)
 	{
 		
         //get logged in user
         $auth_user = auth()->user();
         $user_id = $auth_user->id;
 
-        //get loan user data
-        $loan_user = User::findOrFail($id);
+        //get user data
+        $user_group_id = Group::findOrFail($data->group_id);
 
         if ((($auth_user->hasRole('administrator')) 
-                && ($auth_user->group->id == $loan_user->group->id))
+                && ($auth_user->group->id == $user_group_id))
                 || ($auth_user->hasRole('superadministrator'))) {
 
 	        //valid phone number?
@@ -49,30 +49,32 @@ class UserStore
 	}
 
 
-	public function createUser($data, $id) {
+	public function createUser($data) {
 			
 		//get logged in user
 		$auth_user = auth()->user();
         $user_id = $auth_user->id;
 
-        //get loan user data
-        dd($data);
+        //get user data
+        $user_group_id = Group::findOrFail($data->group_id);
 
-		//if user is admin, and users and created user groups are same, proceed
+        //if user is admin, and users and created user groups are same, proceed
         if ((($auth_user->hasRole('administrator')) 
-                && ($auth_user->group->id == $user->group->id))
+                && ($auth_user->group->id == $user_group_id))
                 || ($auth_user->hasRole('superadministrator'))) {
             
             //get group details
             if ($auth_user->hasRole('administrator')) {
-                $current_group_account_balance = (float)$auth_user->group->account_balance;
+                //$current_group_account_balance = (float)$auth_user->group->account_balance;
                 $current_group_id = $auth_user->group->id;
             } else {
                //get user group data
                 $current_group_id = $data->group_id;
-                $new_group = Group::findOrFail($current_group_id);
-	            $current_group_account_balance = $new_group->account_balance;
+                //$new_group = Group::findOrFail($current_group_id);
+	            //$current_group_account_balance = $new_group->account_balance;
             }
+
+            //dd($current_group_account_balance);
 
             DB::beginTransaction();
                 

@@ -112,7 +112,7 @@ class UserController extends Controller
             'phone_number' => 'required|max:13'
         ]);
 
-        if (!$userStore->checkData($request, $id))
+        if (!$userStore->checkData($request))
         {
             $errors[] = $userStore->getErrors();
             return redirect()->back()->withInput()->withErrors($errors);
