@@ -56,7 +56,7 @@ class UserStore
         $user_id = $auth_user->id;
 
         //get loan user data
-        //dd($data);
+        dd($data);
 
 		//if user is admin, and users and created user groups are same, proceed
         if ((($auth_user->hasRole('administrator')) 
@@ -77,17 +77,21 @@ class UserStore
             DB::beginTransaction();
                 
 	            //update group new balance
+	            $account_balance = $data->account_balance;
 
-				//calculate and update  account balance for new group user moves to
-				$new_group = Group::findOrFail($new_group_id);
-	            $new_group->account_balance = $new_group->account_balance + $user_account_balance;
+				//calculate and update new account balance for group
+				$new_group = Group::findOrFail($current_group_id);
+	            $new_group->account_balance = $new_group->account_balance + $account_balance;
 	            $new_group->save();
 
-                //create the user 
+                //format the user  phone
                 $phone_number = formatPhoneNumber($data->phone_number);
 
-		                 //generate random password
+		        //generate random password
 		        $password = generateCode(6);
+
+		        //plain password
+		        $plain_password = $password;
 
 		        // create user
 		        $userData = [
@@ -96,13 +100,13 @@ class UserStore
 		            'email' => $data->email,
 		            'group_id' => $data->group_id,
 		            'account_number' => $data->account_number,
-		            'account_balance' => $data->account_balance,
+		            'account_balance' => $account_balance,
 		            'gender' => $data->gender,
 		            'phone_number' => $phone_number,
 		            'password' => bcrypt($password),
 		            'api_token' => str_random(60),
-		            'created_by' => $data->user()->id,
-		            'updated_by' => $data->user()->id
+		            'created_by' => $user_id,
+		            'updated_by' => $user_id
 		        ];
 
 		        $user = User::create($userData);
