@@ -300,6 +300,7 @@
                                 <tbody>
                                     
                                     @foreach ($user->loans as $loan)
+
                                       <tr>
                                         <td align="right">
                                           {{ format_num($loan->loan_amount) }}
@@ -320,6 +321,7 @@
                                                </a>
                                         </td>
                                       </tr>
+                                      
                                     @endforeach
 
                                     <tr>

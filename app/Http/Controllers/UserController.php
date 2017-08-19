@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\AccountAdded;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Role;
@@ -27,16 +26,6 @@ class UserController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -69,9 +58,7 @@ class UserController extends Controller
 
         }
 
-        return view('users.index')
-                ->withUser($user)
-                ->withUsers($users);
+        return view('users.index', compact('user', 'users'));
 
     }
 
@@ -198,7 +185,7 @@ class UserController extends Controller
         $message = config('constants.success.update');
         Session::flash('success', sprintf($message, "User"));
 
-        return redirect()->route('users.show', $id);
+        return redirect()->route('users.show', $user->id);
 
     }
 

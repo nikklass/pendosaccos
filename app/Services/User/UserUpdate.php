@@ -58,18 +58,18 @@ class UserUpdate
         //get loan user data
         $user = User::findOrFail($id);
 
+		//user account balance
+        $user_account_balance = $user->account_balance;
+
 		//if user is admin, and users and created user groups are same, proceed
         if ((($auth_user->hasRole('administrator')) 
                 && ($auth_user->group->id == $user->group->id))
                 || ($auth_user->hasRole('superadministrator'))) {
             
-            //get group's current balance
-            $account_balance = (float)$auth_user->group->account_balance;
+            //get group's current data
             if ($auth_user->hasRole('administrator')) {
-                $current_group_account_balance = (float)$auth_user->group->account_balance;
                 $current_group_id = $auth_user->group->id;
             } else {
-                $current_group_account_balance = (float)$user->group->account_balance;
                 $current_group_id = $user->group->id;
             }
 
@@ -78,52 +78,46 @@ class UserUpdate
 
 
             DB::beginTransaction();
-                
-                $group_change = false;
 
-                //if user group has been changed and user is superadmin, alter account balance totals
-	            if (($current_group_id != $new_group_id) && ($auth_user->hasRole('superadministrator'))) {
-
-		            $group_change = true;
-
-		            //calculate and update group new balance
-		            //get amount to add from the user balance
-		            $user_account_balance = (float)$user->account_balance;
-
-		            //update old group
-		            $group = Group::findOrFail($current_group_id);
-		            $group->account_balance = $group->account_balance - $user_account_balance;
-		            $group->save();
-
-					//calculate and update  account balance for new group user moves to
-					$new_group = Group::findOrFail($new_group_id);
-		            $new_group->account_balance = $new_group->account_balance + $user_account_balance;
-		            $new_group->save();
-
-		        }
-
-                //update the user 
+                //format phone number 
                 $phone_number = formatPhoneNumber($data->phone_number);
 
-                $user = User::findOrFail($id);
-
+		        //update user
 		        $user->first_name = $data->first_name;
 		        $user->last_name = $data->last_name;
 		        $user->email = $data->email;
-		        
 		        $user->phone_number = $phone_number;
 		        $user->account_number = $data->account_number;
 		        $user->gender = $data->gender;
 
 		        //only superadmin can alter group id
-		        if (($auth_user->hasRole('superadministrator')) && $group_change) {
-		        	$user->group_id = $data->group_id;
-		        }
+		        if ($current_group_id == $new_group_id) {
 
-		        //dont edit account balance when changing groups
-		        if (($auth_user->hasRole('superadministrator')) && !$group_change) {
-		        	$user->account_balance = $data->account_balance;
-		        }
+		        	//update new group balance
+	            	$new_group = Group::findOrFail($new_group_id);
+		            $new_group->account_balance = ($new_group->account_balance - $user_account_balance) + $data->account_balance;
+		            $new_group->save();
+
+		        } else {
+
+		        	$user->group_id = $data->group_id;
+
+					//decrease current group balance
+	            	$current_group = Group::findOrFail($current_group_id);
+		        	if ($current_group->account_balance > 0) {
+			            $current_group->account_balance = ($current_group->account_balance - $user_account_balance);
+			            $current_group->save();
+			        }
+
+			        //increase new group balance
+	            	$new_group = Group::findOrFail($new_group_id);
+		            $new_group->account_balance = $new_group->account_balance + $data->account_balance;
+		            $new_group->save();
+
+		        } 
+
+	            //update use balance
+	        	$user->account_balance = $data->account_balance;
 
 		        if ($data->password_option == 'auto'){
 		            /*auto generate new password*/
@@ -152,9 +146,8 @@ class UserUpdate
 
             DB::commit();  
 
-            return $user;          
-
-        }
+            return $user;  
+        }        
 
 	}
 
