@@ -44,7 +44,7 @@ class RepaymentService
                 if ($amount > $loan_balance) {
                     
                     $message = config('constants.error.excess_loan_repayment');
-                    $message = sprintf($message, format_num($amount, 0), format_num($loan_balance, 0));
+                    $message = sprintf($message, formatCurrency($amount, 0), formatCurrency($loan_balance, 0));
                     $this->errors = $message;
 
                     $this->valid = false;

@@ -215,11 +215,11 @@
                                               <th width="15%">Name</th>
                                               
                                               @if (Auth::user()->hasRole('superadministrator'))
-                                              <th width="15%">Group</th>
+                                              <th width="10%">Group</th>
                                               @endif
 
                                               <th width="10%">Created By</th>
-                                              <th width="10%">Created At</th>
+                                              <th width="15%">Created At</th>
                                               <th width="15%">Actions</th>
                                            </tr>
                                         </thead>

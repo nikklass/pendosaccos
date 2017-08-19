@@ -16,9 +16,10 @@ return [
     ],
     'error' => [
         'invalid_phone_number' => 'Please enter a valid phone number in any of these formats: <br>7XXXXXXXX,  <br>07XXXXXXXX, <br>2547XXXXXXXX, <br>+2547XXXXXXXX',
-        'excess_withdrawal' => 'Withdrawal amount <strong>Ksh %s</strong> is more than your account balance: <strong>Ksh %s</strong>',
-        'excess_loan_repayment' => 'Repayment amount <strong>Ksh %s</strong> is more than your loan balance: <strong>Ksh %s</strong>',
-        'excess_loan' => 'Loan amount <strong>Ksh %s</strong> is more than <strong>%s</strong> group account balance: <strong>Ksh %s</strong>',
+        'excess_withdrawal' => 'Withdrawal amount <strong>%s</strong> is more than your account balance: <strong>%s</strong>',
+        'excess_loan_repayment' => 'Repayment amount <strong>%s</strong> is more than your loan balance: <strong>%s</strong>',
+        'excess_withdrawal_amount' => 'Withdrawal amount <strong>%s</strong> is more than your account balance: <strong>%s</strong>',
+        'excess_loan' => 'Loan amount <strong>%s</strong> is more than <strong>%s</strong> group account balance: <strong>%s</strong>',
         'invalid_access' => 'Invalid access',
     ],
     'success' => [

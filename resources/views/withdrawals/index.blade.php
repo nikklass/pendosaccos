@@ -125,9 +125,15 @@
                                     <thead>
                                        <tr>
                                           <th width="5%">id</th>
-                                          <th width="15%">Amount (Ksh)</th>
-                                          <th width="20%">Name</th>
-                                          <th width="15%">Group</th>
+                                          <th width="10%">Amount (Ksh)</th>
+                                          <th width="10%" class="text-right">Before Bal (Ksh)</th>
+                                          <th width="10%" class="text-right">After Bal (Ksh)</th>
+                                          <th width="15%">Name</th>
+                                          
+                                          @if (Auth::user()->hasRole('superadministrator'))
+                                          <th width="10%">Group</th>
+                                          @endif
+
                                           <th width="10%">Created By</th>
                                           <th width="15%">Created At</th>
                                           <th width="15%">Actions</th>
@@ -150,6 +156,18 @@
                                               </span>
                                             </td>
 
+                                            <td align="right">
+                                              <span class="txt-dark weight-500">
+                                                {{ format_num($withdrawal->before_balance, 0) }}
+                                              </span>
+                                            </td>
+
+                                            <td align="right">
+                                              <span class="txt-dark weight-500">
+                                                {{ format_num($withdrawal->after_balance, 0) }}
+                                              </span>
+                                            </td>
+
                                             <td>
                                               <span class="txt-dark weight-500">
                                                 {{ $withdrawal->user->first_name }}
@@ -158,11 +176,13 @@
                                               </span>
                                             </td>
 
+                                            @if (Auth::user()->hasRole('superadministrator'))
                                             <td>
                                               <span class="txt-dark weight-500">
                                                 {{ $withdrawal->user->group->name }}
                                               </span>
                                             </td>
+                                            @endif
 
                                             <td>
                                               <span class="txt-dark weight-500">

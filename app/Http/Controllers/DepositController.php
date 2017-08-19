@@ -210,8 +210,6 @@ class DepositController extends Controller
     public function update(Request $request, $id, DepositUpdate $depositUpdate)
     {
         
-        $user_id = auth()->user()->id;
-
         $this->validate($request, [
             'amount' => 'required',
         ]);
@@ -222,15 +220,8 @@ class DepositController extends Controller
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        //if all is ok, create item
+        //if all is ok, update item
         $deposit = $depositUpdate->updateItem($request, $id);
-
-
-        /*$deposit = Deposit::findOrFail($id);
-        $deposit->amount = $request->amount;
-        $deposit->comment = $request->comment;
-        $deposit->updated_by = $user_id;
-        $deposit->save();*/
 
         $message = config('constants.success.update');
         Session::flash('success', sprintf($message, "Deposit"));

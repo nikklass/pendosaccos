@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Withdrawal\WithdrawalStore;
+use App\Services\Withdrawal\WithdrawalUpdate;
+
 use App\Group;
 use App\ScheduleSmsOutbox;
 use App\SmsOutbox;
@@ -32,8 +35,6 @@ class WithdrawalController extends Controller
     public function index(Request $request)
     {
         
-        //dump($request);
-
         //get logged in user
         $auth_user = auth()->user();
 
@@ -56,8 +57,6 @@ class WithdrawalController extends Controller
 
         if ($search) {
             if ($search_text) {
-                //$withdrawals = $withdrawals->user()->where('first_name', 'like', "%$search_text%");
-                //$withdrawals = $withdrawals->where('first_name', 'like', "%$search_text%");
                 $withdrawals = $withdrawals->where('amount', '=', "$search_text");
             }
         }
@@ -65,17 +64,12 @@ class WithdrawalController extends Controller
         $withdrawals = $withdrawals->orderBy('id', 'desc')
                         ->paginate(10);
 
-        //dd($search_text, $withdrawals);
-
         return view('withdrawals.index', compact('withdrawals'));
-        //return redirect()->back()->withInput();
 
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -128,72 +122,37 @@ class WithdrawalController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, WithdrawalStore $withdrawalStore)
     {
         
-        $auth_user = auth()->user();
-        $user_id = $auth_user->id;
         $errors = [];
-        $user = User::findOrFail($request->user_id);
 
         $this->validate($request, [
             'user_id' => 'required',
             'amount' => 'required'
         ]);
 
-        //get users current balance
-        $account_balance = (float)$user->account_balance;
-        //amount withdrawn
-        $amount = (float)$request->amount;
 
-        //check if withdrawal is more than balance
-        if ($amount > $account_balance) {
-            $message = config('constants.error.excess_withdrawal');
-            $message = sprintf($message, format_num($amount, 0), format_num($account_balance, 0));
-            Session::flash('error', $message);
-            return redirect()->back()->withInput();
+        if (!$withdrawalStore->checkData($request))
+        {
+            $errors[] = $withdrawalStore->getErrors();
+            return redirect()->back()->withInput()->withErrors($errors);
         }
 
-        $new_balance = $account_balance - $amount;
-
-        DB::beginTransaction();
-            
-            //update the user balance
-            $userAccount = User::findOrFail($request->user_id);
-            $userAccount->account_balance = $new_balance;
-            $userAccount->save();
-
-            $withdrawal = Withdrawal::create([
-                    'user_id' => $user->id,
-                    'group_id' => $user->group_id,
-                    'amount' => $amount,
-                    'comment' => $request->comment,
-                    'updated_by' => $user_id,
-                    'created_by' => $user_id,
-                    'src_host' => getUserAgent(),
-                    'src_ip' => getIp()
-              ]);
-
-            $withdrawal->save();
-
-        DB::commit();
+        //if all is ok, create item
+        $withdrawal = $withdrawalStore->createItem($request);
 
         //send back
-        Session::flash('success', "Withdrawal successfully made");
-        return view('withdrawals.show', compact('withdrawal', 'user'));
-        //return redirect()->back()->withInput();
+        $message = config('constants.success.insert');
+        Session::flash('success', sprintf($message, "Deposit"));
+
+        return redirect()->route('withdrawals.show', $withdrawal->id);
 
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -210,9 +169,6 @@ class WithdrawalController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
@@ -227,36 +183,32 @@ class WithdrawalController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, WithdrawalUpdate $withdrawalUpdate)
     {
         
-        $user_id = auth()->user()->id;
-
         $this->validate($request, [
             'amount' => 'required',
         ]);
 
-        $withdrawal = Withdrawal::findOrFail($id);
-        $withdrawal->amount = $request->amount;
-        $withdrawal->comment = $request->comment;
-        $withdrawal->updated_by = $user_id;
-        $withdrawal->save();
+        if (!$withdrawalUpdate->checkData($request, $id))
+        {
+            $errors[] = $withdrawalUpdate->getErrors();
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
 
-        Session::flash('success', 'Successfully updated withdrawal id - ' . $withdrawal->id);
+        //if all is ok, update item
+        $withdrawal = $withdrawalUpdate->updateItem($request, $id);
+
+        $message = config('constants.success.update');
+        Session::flash('success', sprintf($message, "Withdrawal"));
+
         return redirect()->route('withdrawals.show', $withdrawal->id);
 
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {

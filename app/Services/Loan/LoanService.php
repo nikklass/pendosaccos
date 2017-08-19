@@ -40,7 +40,7 @@ class LoanService
             //check if loan is more than groups account balance 
             if ($amount > $account_balance) {
                 $message = config('constants.error.excess_loan');
-                $message = sprintf($message, format_num($amount, 0), $group_name, format_num($account_balance, 0));
+                $message = sprintf($message, formatCurrency($amount, 0), $group_name, formatCurrency($account_balance, 0));
                 $this->errors = $message;
                 $this->valid = false;
             }

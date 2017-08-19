@@ -6,7 +6,7 @@ use App\Group;
 use App\Loan;
 use App\Repayment;
 use App\ScheduleSmsOutbox;
-use App\Services\Repayment\RepaymentService;
+use App\Services\Repayment\RepaymentStore;
 use App\SmsOutbox;
 use App\User;
 use Excel;
@@ -110,7 +110,7 @@ class RepaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, RepaymentService $repaymentService)
+    public function store(Request $request, RepaymentStore $repaymentStore)
     {
         
         $errors = [];
@@ -120,14 +120,14 @@ class RepaymentController extends Controller
             'amount' => 'required|integer'
         ]);
 
-        if (!$repaymentService->checkData($request))
+        if (!$repaymentStore->checkData($request))
         {
-            $errors[] = $repaymentService->getErrors();
+            $errors[] = $repaymentStore->getErrors();
             return redirect()->back()->withInput()->withErrors($errors);
         }
 
         //if all is ok, create item
-        $repaymentService->createRepayment($request);
+        $repaymentStore->createRepayment($request);
 
         //send back
         $message = config('constants.success.insert');
