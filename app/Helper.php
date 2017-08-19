@@ -10,12 +10,9 @@ use Maatwebsite\Excel\Facades\Excel;
 * @param $number
 * @param $currency
 */
-function formatNumber($number, $currency = 'IDR')
+function formatCurrency($number, $decimals = 2, $currency = 'Ksh')
 {
-   if($currency == 'Ksh') {
-        return number_format($number, 2, '.', ',');
-   }
-   return number_format($number, 0, '.', '.');
+    return $currency . " " . number_format($number, $decimals, '.', ',');
 }
 
 //format phone number
@@ -147,7 +144,7 @@ function generateCode($length = 5, $add_dashes = false, $available_sets = 'ud')
 
 //format number 
 function format_num($num, $decimals=2) {
-	return number_format($num,$decimals, '.', ',');
+	return number_format($num, $decimals, '.', ',');
 }
 
 function getUserAgent(){
@@ -180,20 +177,9 @@ function getHost() {
 
 // fetching bulk sms data
 function getBulkSMSData($user_id) {
-		
-	/*$user = User::where('id', $user_id)
-		->with('group')
-		->first();*/
 	
 	$sms_user_name = ENV('BULK_SMS_USR');
 	$sms_user_name = 'yehu';
-	//dd($sms_user_name);
-	/*if ($user->company) {
-		$sms_user_name = $user->company->sms_user_name;
-	}*/
-	//dd($user, $sms_user_name);
-
-	//dd($sms_username);
 
 	if ($sms_user_name) {
 		
@@ -277,7 +263,7 @@ function sendSms($params) {
     $body['msg'] = $params['sms_message'];
 
     //get the url for sending sms from constants file - \app\constants.php
-    $send_bulk_sms_url = \Config::get('constants.bulk_sms.send_sms_url');
+    $send_bulk_sms_url = config('constants.bulk_sms.send_sms_url');
 
     $resp = $client->request('POST', $send_bulk_sms_url, ['form_params' => $body]);
 

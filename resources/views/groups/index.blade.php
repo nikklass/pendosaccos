@@ -48,13 +48,6 @@
                           <i class="fa fa-plus"></i>
                         </a>
 
-                        <!-- <a 
-                          href="{{ route('groups.create') }}" 
-                          class="btn btn-sm btn-success btn-outline btn-icon right-icon mr-5">
-                          <span>Download</span>
-                          <i class="fa fa-file-excel-o"></i>
-                        </a>  -->
-
                         <div class="btn-group">
                             <div class="dropdown">
                                <button 
@@ -123,11 +116,12 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th width="25%">Group Name</th>
+                                      <th width="20%">Group Name</th>
+                                      <th width="15%" class="text-right">Acct. Bal (Ksh)</th>
                                       <th width="10%">Members</th>
-                                      <th width="15%">Phone</th>
+                                      <th width="10%">Phone</th>
                                       <th width="15%">Email</th>
-                                      <th width="20%">Created</th>
+                                      <th width="15%">Created</th>
                                       <th width="15%">Actions</th>
                                    </tr>
                                 </thead>
@@ -139,6 +133,12 @@
 	                                      <td>
                                           <span class="txt-dark weight-500">
                                             {{ $group->name }}
+                                          </span>
+                                        </td>
+
+                                        <td align="right">
+                                          <span class="txt-dark weight-500">
+                                            {{ format_num($group->account_balance) }}
                                           </span>
                                         </td>
 

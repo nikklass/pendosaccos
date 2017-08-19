@@ -54,12 +54,6 @@ class DepositUpdate
         $old_group_id = $old_deposit->group_id;
         $old_user_id = $old_deposit->user_id;
 
-        //dump($old_deposit);
-
-        //get old group data
-        $old_group = Group::findOrFail($old_group_id);
-        $old_group_account_balance = (float)$old_group->account_balance;
-
         DB::beginTransaction();
             
             $old_user = User::findOrFail($old_user_id);
@@ -68,7 +62,8 @@ class DepositUpdate
             $old_user->account_balance = ($old_user->account_balance - $old_amount) + $amount;
             $old_user->save();
 
-            //update new group data
+            //update group data
+            $old_group = Group::findOrFail($old_group_id);
             $old_group->account_balance = ($old_group->account_balance - $old_amount) + $amount;
             $old_group->save();
 
@@ -83,8 +78,6 @@ class DepositUpdate
                 $deposit->updated_by = $user_id;
 
             $deposit->save();
-
-            //dd($deposit);
 
         DB::commit();
 

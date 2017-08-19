@@ -29139,7 +29139,7 @@ module.exports = "/fonts/Simple-Line-Icons.woff?78f07e2c2a535c26ef21d95e41bd7175
 /* 223 */
 /***/ (function(module, exports) {
 
-module.exports = "/fonts/glyphicons-halflings-regular.svg?1c41ecd622239ba9588b9b991211d2bc";
+module.exports = "/fonts/glyphicons-halflings-regular.svg?0a2f6f5f6a168ccf906979febb12811b";
 
 /***/ }),
 /* 224 */

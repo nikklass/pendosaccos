@@ -76,7 +76,7 @@
                                 <div class="col-xs-8 text-center pl-0 pr-0 data-wrap-left">
                                     <span class="txt-light block counter">
                                       <span class="counter-anim">
-                                        {{ $user->count_groups }}
+                                        Ksh {{ format_num($month_deposits->amount) }}
                                       </span>
                                     </span>
                                     <span class="weight-500 uppercase-font txt-light block">

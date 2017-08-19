@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon;
+
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Loan;
+use App\Deposit;
 use App\Role;
 use App\SmsOutbox;
 use App\User;
@@ -26,8 +29,16 @@ class HomeController extends Controller
         
         $user = auth()->user();
 
+        //find current month start and end dates
+        $month = Carbon::now()->month; // Current month
+        $year = Carbon::now()->year; // Current month
+
         //if user is superadmin, show all groups, else show a user's groups
         $groups = [];
+        $groups_balance = "";
+        $groups_loans = "";
+        $month_deposits = "";
+
         if ($user->hasRole('superadministrator')){
             
             $group_ids = Group::all()->pluck('id');
@@ -41,22 +52,36 @@ class HomeController extends Controller
             $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
                 ->first();
 
+            //get month deposits
+            $month_deposits = Deposit::selectRaw('sum(amount) amount')
+                ->whereRaw('MONTH(created_at) = ?', [$month])
+                ->whereRaw('YEAR(created_at) = ?', [$year])
+                ->first();
+
         } else { 
 
             if ($user->group) {
                 $group_ids[] = $user->group->id;
                 $groups[] = $user->group;
+
+                //get groups balance
+                $groups_balance = Group::select('account_balance')
+                    ->where('id', $user->group->id)
+                    ->first();
+
+                //get groups loans
+                $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
+                    ->where('group_id', $user->group->id)
+                    ->first();
+
+                //get month deposits
+                $month_deposits = Deposit::selectRaw('sum(amount) amount')
+                    ->where('group_id', $user->group->id)
+                    ->whereRaw('MONTH(created_at) = ?', [$month])
+                    ->whereRaw('YEAR(created_at) = ?', [$year])
+                    ->first();
+
             }
-
-            //get groups balance
-            $groups_balance = Group::select('account_balance')
-                ->where('id', $user->group->id)
-                ->first();
-
-            //get groups loans
-            $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
-                ->where('group_id', $user->group->id)
-                ->first();
 
         }
 
@@ -90,22 +115,19 @@ class HomeController extends Controller
         }
 
         //get summary of group balances
-        $loans_amount = Loan::selectRaw('year(created_at) year, month(created_at) month, sum(loan_amount) loan_amount')
+        /*$loans_amount = Loan::selectRaw('year(created_at) year, month(created_at) month, sum(loan_amount) loan_amount')
                 ->groupBy('year', 'month')
-                ->get();
-        
-
-        //$query = "Select count(*) account_balance from groups group by year, month";
-
-        //dd($user, $groups_all, $smsoutboxes);
+                ->get();*/
         
         return view('home', compact(
                                     'smsoutboxes', 
                                     'user', 
                                     'users', 
                                     'groups_balance',
-                                    'groups_loans'
+                                    'groups_loans',
+                                    'month_deposits'
                                     ))->withGroups($groups_all);
+        
 
     }
 

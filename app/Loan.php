@@ -3,6 +3,7 @@
 namespace App;
 use App\LoanArchive;
 use App\LoanType;
+use App\Group;
 use App\Repayment;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,12 @@ class Loan extends Model
     public function repayments()
     {
         return $this->hasMany(Repayment::class);
+    }
+
+    /*one to many relationship*/
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 
     /*one to many relationship*/

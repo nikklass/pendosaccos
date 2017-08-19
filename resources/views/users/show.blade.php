@@ -280,7 +280,7 @@
                     <div class="row">
                       <div class="col-sm-12">
                         
-                          @if ($user->loans)
+                          @if (count($user->loans))
 
                             <table class="table">
                                       

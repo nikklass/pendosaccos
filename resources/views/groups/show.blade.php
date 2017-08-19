@@ -50,7 +50,7 @@
                       <h5 class="block mt-10 mb-5 weight-500 capitalize-font">
                           Group name: <span class="txt-danger">{{ $group->name }}</span>
                       </h5>
-                      <!-- <h6 class="block capitalize-font pb-20">Developer Geek</h6> -->
+                      <!-- <h6 class="block capitalize-font pb-20">Nikk</h6> -->
                     </div>  
                     <div class="social-info">
                       <div class="row">
@@ -160,14 +160,39 @@
 
                       <div class="row">
                         <div class="col-sm-12">
-                            
-                            <div class="user_options_tall nicescroll-bar">
-                                
-                                <h3 class="text-left text-success mb-20">
-                                  Ksh {{ format_num($group->account_balance) }}
-                                </h3> 
+                                                            
+                            <h3 class="text-left text-success mb-20">
+                              {{ formatCurrency($group->account_balance) }}
+                            </h3> 
 
-                            </div>
+                        </div>
+                      </div>
+
+                 </div>
+
+              </div>
+
+            </div>
+
+            <div class="panel panel-default card-view pa-0">
+              
+              <div  class="panel-wrapper collapse in">
+                 
+                 <div  class="panel-body pb-0 ml-20 mr-20">
+                    
+                      <p class="mb-20">
+                          <h5>Group Loans</h5>
+                      </p>
+
+                      <hr>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                                
+                            <h3 class="text-left text-primary mb-20">
+
+                             {{ formatCurrency($groups_loans->loan_balance) }}
+                            </h3> 
 
                         </div>
                       </div>
@@ -185,7 +210,7 @@
                 <div  class="panel-body pb-0 ml-20 mr-20">
                     
                       <p class="mb-20">
-                          <h5>Group Members</h5>
+                          <h5>Group Members ({{$users->total()}})</h5>
                       </p>
 
                       <hr>

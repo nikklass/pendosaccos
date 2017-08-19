@@ -3,6 +3,7 @@
 namespace App;
 use App\Deposit;
 use App\User;
+use App\Loan;
 use App\Withdrawal;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,6 +29,12 @@ class Group extends Model
     public function deposits()
     {
         return $this->hasMany(Deposit::class);
+    }
+
+    /*deposits relationship*/
+    public function loans()
+    {
+        return $this->hasMany(Loan::class);
     }
 
 }

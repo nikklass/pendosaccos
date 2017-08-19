@@ -259,13 +259,6 @@
             <div class="clearfix"></div>
          </a>
          <ul id="repayments_dr" class="collapse collapse-level-1">
-            
-            <!-- <li>
-               <a href="{{ route('repayments.create') }}">
-                  <i class="zmdi zmdi-money mr-10"></i>
-                  <span class="right-nav-text">New Repayment</span>
-               </a>
-            </li> -->
 
             <li>
                <a href="{{ route('repayments.index') }}">
@@ -314,11 +307,43 @@
                   
                </ul>
             </li>
+                        
+         </ul>
+      </li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#mpesa_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-smartphone mr-20"></i>
+               <span class="right-nav-text">MPESA</span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="mpesa_dr" class="collapse collapse-level-1 two-col-list">
             
             <li>
-               <a href="#">MPESA</a>
+               <a href="javascript:void(0);" data-toggle="collapse">
+                  <div class="pull-left">
+                     <span class="right-nav-text">Create MPESA</span>
+                  </div>
+                  
+                  <div class="clearfix"></div>
+               </a>
             </li>
-            
+
+            <li>
+               <a href="javascript:void(0);" data-toggle="collapse">
+                  <div class="pull-left">
+                     <span class="right-nav-text">Manage MPESA</span>
+                  </div>
+                  
+                  <div class="clearfix"></div>
+               </a>
+            </li>
+                        
          </ul>
       </li>
 

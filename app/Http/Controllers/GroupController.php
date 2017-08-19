@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
+use App\Loan;
 use App\User;
 use Session;
 
@@ -121,10 +122,13 @@ class GroupController extends Controller
 
         //get group members
         $users = $group->users()->paginate(10);
-        
-        return view('groups.show')
-            ->withUsers($users)
-            ->withGroup($group);
+
+        //get groups loans
+        $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
+            ->where('group_id', $id)
+            ->first();
+
+        return view('groups.show', compact('users', 'group', 'groups_loans'));
 
     }
 
