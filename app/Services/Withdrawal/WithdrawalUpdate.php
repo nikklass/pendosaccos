@@ -81,20 +81,20 @@ class WithdrawalUpdate
             $old_user = User::findOrFail($old_user_id);
 
             //update old user data
-            $old_user->account_balance = ($old_user->account_balance - $old_amount) + $amount;
+            $old_user->account_balance = ($old_user->account_balance + $old_amount) - $amount;
             $old_user->save();
 
             //update group data
             $old_group = Group::findOrFail($old_group_id);
-            $old_group->account_balance = ($old_group->account_balance - $old_amount) + $amount;
+            $old_group->account_balance = ($old_group->account_balance + $old_amount) - $amount;
             $old_group->save();
 
             //update withdrawal info
             $withdrawal = withdrawal::findOrFail($id);
                 $withdrawal->amount = $data->amount;
                 $withdrawal->comment = $data->comment;
-                $withdrawal->before_balance = ($old_withdrawal->before_balance - $old_amount) + $amount;
-                $withdrawal->after_balance = ($old_withdrawal->after_balance - $old_amount) + $amount;
+                $withdrawal->before_balance = ($old_withdrawal->before_balance + $old_amount) + $amount;
+                $withdrawal->after_balance = ($old_withdrawal->after_balance + $old_amount) + $amount;
                 $withdrawal->src_host = getUserAgent();
                 $withdrawal->src_ip = getIp();
                 $withdrawal->updated_by = $user_id;
