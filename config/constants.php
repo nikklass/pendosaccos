@@ -43,11 +43,21 @@ return [
     'mpesa' => [
         'consumer_key' => env('MPESA_CONSUMER_KEY'),
         'consumer_secret' => env('MPESA_CONSUMER_SECRET'),
-        'security_credentials' => env('MPESA_SECURITY_CREDENTIALS'),
         'short_code' => env('MPESA_SHORT_CODE'),
+        'lipa_mpesa_password' => env('LIPA_NA_MPESA_PASSWORD'),
         'get_mpesa_token_url' => $remote_mpesa_api_url . "oauth/v1/generate?grant_type=client_credentials",
         'c2b_simulate_trans_url' => $remote_mpesa_api_url . "mpesa/c2b/v1/simulate",
         'c2b_register_url' => $remote_mpesa_api_url . "mpesa/c2b/v1/registerurl",
+        'b2b_payment_request_url' => $remote_mpesa_api_url . "mpesa/b2b/v1/paymentrequest",
+        'b2c_payment_request_url' => $remote_mpesa_api_url . "mpesa/b2c/v1/paymentrequest",
+        'account_balance_url' => $remote_mpesa_api_url . "mpesa/accountbalance/v1/query",
+        'lipa_mpesa_online_query_url' => $remote_mpesa_api_url . "mpesa/stkpushquery/v1/query",
+        'lipa_mpesa_online_payment_url' => $remote_mpesa_api_url . "mpesa/stkpush/v1/processrequest",
+        
+
+        
+        
+        
         
     ],
     'bulk_sms' => [

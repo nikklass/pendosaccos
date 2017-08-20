@@ -7,6 +7,7 @@ use App\Mpesac2b;
 use App\User;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Mpesac2bStore 
 {
@@ -43,60 +44,79 @@ class Mpesac2bStore
 
 	public function createItem($data) {
         
-        $client = new \GuzzleHttp\Client();
+        $amount = "500";
+        $phone_number = "0720743211";
+        $billRefNumber = "0012";
 
-        $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
-        $c2b_simulate_trans_url = config('constants.mpesa.c2b_simulate_trans_url');
-        $short_code = config('constants.mpesa.short_code');
+        $validation_url = "https://rczhkxfxge.localtunnel.me";
+        $confirmation_url = "https://rczhkxfxge.localtunnel.me";
 
-        //get mpesa credentials
-        $credentials = getMpesaTokenCredentials(); 
+        //register c2b trans url
+        //lt --port 8310
+        $c2bregister = createC2bTransactionRegisterUrl($validation_url, $confirmation_url);
 
-        $resp = $client->request('GET', $get_mpesa_token_url,
-        [
-            'headers' => [
-                'Authorization' => 'Basic ' . $credentials,
-                'Content-Type' => 'application/json'
-            ],
-        ]);   
+        //simulate c2b mpesa trans
+        $c2b_mpesa_trans = createMpesac2bSimulateTransaction($amount, $phone_number, $billRefNumber);
 
-        if ($resp->getBody()) {
-            
-            $result = json_decode($resp->getBody());
-            $access_token = $result->access_token;
+        //create b2b payment request
+        $queue_timeout_url = "https://rczhkxfxge.localtunnel.me";
+        $result_url = "https://rczhkxfxge.localtunnel.me";
+        $command_id='BusinessPayBill';
+        $username = "nikk";
+        $receiver_short_code = "456345";
+        $amount = "300";
+        $remarks = "product test";
+        $account_reference = "3432";
 
-            try {
+        $b2b_payment_request = createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, $remarks, $account_reference, $queue_timeout_url, $result_url, $command_id);
 
-                //send request to mpesa
-                $dataclient = getGuzzleClient($access_token);
-                $response = $dataclient->request('POST', $c2b_simulate_trans_url, [
-                    'json' => [
-                        'ShortCode' => $short_code,
-                        'CommandID' => 'CustomerPayBillOnline',
-                        'Amount' => $data->amount,
-                        'Msisdn' => '254720743211',
-                        'BillRefNumber' => 'payment-01'
-                    ]
-                ]);
 
-                if ($response->getStatusCode() == 200) {
-                    dump("ok here");
-                    if ($response->getBody()) {
-            
-                        $result = json_decode($response->getBody());
-                        dd($result);
+        //create b2c payment request
+        $queue_timeout_url = "https://rczhkxfxge.localtunnel.me";
+        $result_url = "https://rczhkxfxge.localtunnel.me";
+        $command_id='BusinessPayment';
+        $username = "nikk";
+        $receiver_short_code = "254720743211";
+        $amount = "300";
+        $remarks = "product";
+        $occassion = "return_data";
 
-                    }
-                }  
+        $b2c_payment_request = createMpesab2cPaymentRequest($username, $receiver_short_code, $amount, $remarks, $occassion, $queue_timeout_url, $result_url, $command_id);
 
-            } catch (\Exception $e) {
-                dump($e);
-            }
 
-        }
-        dd("hereeee");
+        //get mpesa account balance
+        $queue_timeout_url = "https://rczhkxfxge.localtunnel.me";
+        $result_url = "https://rczhkxfxge.localtunnel.me";
+        $username = "nikk";
+        $receiver_short_code = "254720743211";
+        $remarks = "product";
+
+        $mpesa_account_balance = getMpesaAccountBalance($username, $receiver_short_code, $remarks, $queue_timeout_url, $result_url);
+
+
+        //create lipa na mpesa online payment
+        $amount = "200";
+        $phone_number = "254720743211";
+        $callback_url = "https://rczhkxfxge.localtunnel.me";
+        $account_reference = "product";
+        $transaction_desc = "product";
+
+        //$lipa_mpesa_online_payment = createLipaMpesaOnlinePayment($amount, $phone_number, $callback_url, $account_reference, $transaction_desc);
+
+        //dd($c2bregister, $c2b_mpesa_trans, $b2b_payment_request, $b2c_payment_request, 
+        //    $mpesa_account_balance, $lipa_mpesa_online_payment);
+
+        dd($c2bregister, $c2b_mpesa_trans, $b2b_payment_request, $b2c_payment_request, 
+            $mpesa_account_balance);
 
         //////////////////////////
+
+        {
+            "ConversationID": "AG_20170820_0000780b4867bed330a9",
+            "OriginatorConversationID": "32515-56378-1",
+            "ResponseCode": "0",
+            "ResponseDescription": "The service request has been accepted successfully."
+        }
 
 
         DB::beginTransaction();

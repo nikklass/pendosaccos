@@ -2,6 +2,7 @@
 
 use App\User;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -371,6 +372,26 @@ function getMpesaTokenCredentials() {
 
 }
 
+function byteStr2byteArray($s) {
+    return array_slice(unpack("C*", "\0".$s), 1);
+}
+
+function getMpesaSecurityCredentials() 
+{ 
+  	
+  	$mpesa_initiator_password = config('constants.mpesa.consumer_secret');
+    //$password_byte_array = byteStr2byteArray($mpesa_initiator_password);
+
+    //read cert
+    $cert_path = Storage::disk('local')->get('cert/cert.cer');;
+    //$ssl = openssl_x509_parse($cert_path);
+
+    openssl_public_encrypt($mpesa_initiator_password, $encrypted, $cert_path, OPENSSL_PKCS1_PADDING);
+
+  	return(base64_encode($encrypted)); 
+
+} 
+
 function getGuzzleClient($token)
 {
     return new \GuzzleHttp\Client([
@@ -380,4 +401,401 @@ function getGuzzleClient($token)
             'Content-Type' => 'application/json',
         ],
     ]);
+}
+
+function getTokenGuzzleClient()
+{
+    //get mpesa credentials
+    $credentials = getMpesaTokenCredentials(); 
+    return new \GuzzleHttp\Client([
+        'headers' => [
+            'Authorization' => 'Basic ' . $credentials,
+            'Content-Type' => 'application/json'
+        ],
+    ]);
+}
+
+function createC2bTransactionRegisterUrl($validation_url, $confirmation_url) {
+	
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $c2b_register_url = config('constants.mpesa.c2b_register_url');
+    $short_code = config('constants.mpesa.short_code');
+
+    //get mpesa credentials
+    $tokenclient = getTokenGuzzleClient();
+
+    $resp = $tokenclient->request('GET', $get_mpesa_token_url);   
+
+    if ($resp->getBody()) {
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+
+        try {
+
+            //send request to mpesa
+            //ReponseType - how mpesa responds in case of timeout = cancelled/completed
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $c2b_register_url, [
+                'json' => [
+                    'ShortCode' => $short_code,
+                    'ResponseType' => 'Cancelled',
+                    'ConfirmationURL' => $confirmation_url,
+                    'ValidationURL' => $validation_url
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+
+                if ($response->getBody()) {
+        
+                    $result = json_decode($response->getBody());
+
+                    return $result;
+                    
+
+                }
+
+            }  
+
+        } catch (\Exception $e) {
+            dump($e);
+        }
+
+    }
+
+}
+
+function createMpesac2bSimulateTransaction($amount, $phone_number, $billRefNumber, $commandId='CustomerPayBillOnline') {
+	
+	//commandId Options 
+	/*
+		CustomerPayBillOnline
+ 		CustomerBuyGoodsOnline
+	*/
+	$client = new \GuzzleHttp\Client();
+
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $c2b_simulate_trans_url = config('constants.mpesa.c2b_simulate_trans_url');
+    $short_code = config('constants.mpesa.short_code');
+
+    //format phone number
+    $phone_number = formatPhoneNumber($phone_number);
+
+    //get mpesa credentials
+    $credentials = getMpesaTokenCredentials(); 
+
+    $resp = $client->request('GET', $get_mpesa_token_url,
+    [
+        'headers' => [
+            'Authorization' => 'Basic ' . $credentials,
+            'Content-Type' => 'application/json'
+        ],
+    ]);   
+
+    if ($resp->getBody()) {
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+
+        try {
+
+            //send request to mpesa
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $c2b_simulate_trans_url, [
+                'json' => [
+                    'ShortCode' => $short_code,
+                    'CommandID' => $commandId,
+                    'Amount' => $amount,
+                    'Msisdn' => $phone_number,
+                    'BillRefNumber' => $billRefNumber
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+
+                if ($response->getBody()) {
+        
+                    $result = json_decode($response->getBody());
+
+                    return $result;
+                    
+
+                }
+
+            }  
+
+        } catch (\Exception $e) {
+            dump($e);
+        }
+
+    }
+
+}
+
+/*B2B Payment Request*/
+function createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, $remarks, $account_reference, $queue_timeout_url, $result_url, $command_id='BusinessPayBill') {
+	
+	//commandId Options 
+	/*
+		BusinessPayBill
+		BusinessBuyGoods
+		DisburseFundsToBusiness
+		BusinessToBusinessTransfer
+		BusinessTransferFromMMFToUtility
+		BusinessTransferFromUtilityToMMF
+		MerchantToMerchantTransfer
+		MerchantTransferFromMerchantToWorking
+		MerchantServicesMMFAccountTransfer
+		AgencyFloatAdvance
+	*/
+
+	/*	
+		SenderIdentifierType/ ReceiverIdentifierType
+
+		1 – MSISDN
+
+		2 – Till Number
+
+		4 – Organization short code
+	*/
+
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $b2b_payment_request_url = config('constants.mpesa.b2b_payment_request_url');
+    $short_code = config('constants.mpesa.short_code');
+
+    //get mpesa credentials
+    $tokenclient = getTokenGuzzleClient();
+
+    $resp = $tokenclient->request('GET', $get_mpesa_token_url);   
+
+    if ($resp->getBody()) {
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+        $mpesa_security_credentials = getMpesaSecurityCredentials();
+
+        try {
+
+            //send request to mpesa
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $b2b_payment_request_url, [
+                'json' => [
+                    'Initiator' => $username,
+                    'CommandID' => $command_id,
+                    'Amount' => $amount,
+                    'SecurityCredential' => $mpesa_security_credentials,
+                    'SenderIdentifierType' => 4,
+                    'RecieverIdentifierType' => 4,
+                    'PartyA' => $short_code,
+                    'PartyB' => $receiver_short_code,
+                    'AccountReference' => $account_reference,
+                    'Remarks' => $remarks,
+                    'QueueTimeOutURL' => $queue_timeout_url,
+                    'ResultURL' => $result_url
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+
+                if ($response->getBody()) {
+        
+                    $result = json_decode($response->getBody());
+
+                    return $result;
+                    
+
+                }
+
+            }  
+
+        } catch (\Exception $e) {
+            dump($e);
+        }
+
+    }
+
+}
+
+
+/*B2C Payment Request*/
+function createMpesab2cPaymentRequest($username, $receiver_short_code, $amount, $remarks, $occassion, $queue_timeout_url, $result_url, $command_id='BusinessPayment') {
+	
+	//commandId Options 
+	/*
+		SalaryPayment
+		BusinessPayment
+		PromotionPayment
+	*/
+
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $b2c_payment_request_url = config('constants.mpesa.b2c_payment_request_url');
+    $short_code = config('constants.mpesa.short_code');
+
+    //get mpesa credentials
+    $tokenclient = getTokenGuzzleClient();
+
+    $resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+
+    if ($resp->getBody()) {
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+        $mpesa_security_credentials = getMpesaSecurityCredentials();
+        //dd($access_token);
+
+        try {
+
+            //send request to mpesa
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $b2c_payment_request_url, [
+                'json' => [
+                    'InitiatorName' => $username,
+                    'CommandID' => $command_id,
+                    'Amount' => $amount,
+                    'SecurityCredential' => $mpesa_security_credentials,
+                    'PartyA' => $short_code,
+                    'PartyB' => $receiver_short_code,
+                    'Remarks' => $remarks,
+                    'QueueTimeOutURL' => $queue_timeout_url,
+                    'ResultURL' => $result_url,
+                    'Occassion' => $occassion
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+
+                if ($response->getBody()) {
+        
+                    $result = json_decode($response->getBody());
+
+                    return $result;
+
+                }
+
+            }  
+
+        } catch (\Exception $e) {
+            dump($e);
+        }
+
+    }
+
+}
+
+
+/*Get Mpesa Account Balance*/
+function getMpesaAccountBalance($username, $receiver_short_code, $remarks, $queue_timeout_url, $result_url,  $receiver_identifier='4') {
+
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $account_balance_url = config('constants.mpesa.account_balance_url');
+    $short_code = config('constants.mpesa.short_code');
+
+    //get mpesa credentials
+    $tokenclient = getTokenGuzzleClient();
+
+    $resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+
+    if ($resp->getBody()) {
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+        $mpesa_security_credentials = getMpesaSecurityCredentials();
+
+        try {
+
+            //send request to mpesa
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $account_balance_url, [
+                'json' => [
+                    'Initiator' => $username,
+                    'CommandID' => 'AccountBalance',
+                    'SecurityCredential' => $mpesa_security_credentials,
+                    'IdentifierType' => $receiver_identifier,
+                    'PartyA' => $short_code,
+                    'Remarks' => $remarks,
+                    'QueueTimeOutURL' => $queue_timeout_url,
+                    'ResultURL' => $result_url
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+
+                if ($response->getBody()) {
+        
+                    $result = json_decode($response->getBody());
+
+                    return $result;
+
+                }
+
+            }  
+
+        } catch (\Exception $e) {
+            dump($e);
+        }
+
+    }
+
+}
+
+/*Create Lipa na mpesa Online Payment*/
+function createLipaMpesaOnlinePayment($amount, $phone_number, $callback_url, $account_reference, $transaction_desc) {
+
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $lipa_mpesa_online_payment_url = config('constants.mpesa.lipa_mpesa_online_payment_url');
+    $short_code = config('constants.mpesa.short_code');
+    $business_short_code = config('constants.mpesa.short_code');
+    $lipa_mpesa_password = config('constants.mpesa.lipa_mpesa_password');
+
+    //get mpesa credentials
+    $tokenclient = getTokenGuzzleClient();
+
+    $resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+
+    if ($resp->getBody()) {
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+        $time = date('YmdHis');
+        $password = base64_encode("$business_short_code:$lipa_mpesa_password:$time");
+
+        try {
+
+            //send request to mpesa
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $lipa_mpesa_online_payment_url, [
+                'json' => [
+                    'BusinessShortCode' => $business_short_code,
+                    'Password' => $password,
+                    'Timestamp' => $time,
+                    'TransactionType' => 'CustomerPayBillOnline',
+                    'Amount' => $amount,
+                    'PartyA' => $short_code,
+                    'PartyB' => $short_code,
+                    'PhoneNumber' => $phone_number,
+                    'CallBackURL' => $callback_url,
+                    'AccountReference' => $account_reference,
+                    'TransactionDesc' => $transaction_desc
+                ]
+            ]);
+
+            if ($response->getStatusCode() == 200) {
+
+                if ($response->getBody()) {
+        
+                    $result = json_decode($response->getBody());
+
+                    return $result;
+
+                }
+
+            }  
+
+        } catch (\Exception $e) {
+            dump($e);
+        }
+
+    }
+
 }
