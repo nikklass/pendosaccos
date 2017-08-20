@@ -66,6 +66,9 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	//loans routes...
 	Route::resource('/loans', 'LoanController');
 
+	//mpesac2b routes...
+	Route::resource('/mpesa/mpesac2b', 'Mpesac2bController');
+
 });
 
 //superadmin routes

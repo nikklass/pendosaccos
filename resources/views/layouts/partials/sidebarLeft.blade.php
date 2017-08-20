@@ -323,25 +323,46 @@
             <div class="clearfix"></div>
          </a>
          <ul id="mpesa_dr" class="collapse collapse-level-1 two-col-list">
-            
             <li>
-               <a href="javascript:void(0);" data-toggle="collapse">
+               <a href="javascript:void(0);" data-toggle="collapse" data-target="#c2b_dr">
                   <div class="pull-left">
-                     <span class="right-nav-text">Create MPESA</span>
+                     <span class="right-nav-text">C2B</span>
                   </div>
-                  
+                  <div class="pull-right">
+                     <i class="zmdi zmdi-caret-down"></i>
+                  </div>
                   <div class="clearfix"></div>
                </a>
+               <ul id="c2b_dr" class="collapse collapse-level-1 two-col-list">
+                  <li>
+                     <a href="{{ route('mpesac2b.create') }}">Create C2B</a>
+                  </li>
+                  <li>
+                     <a href="{{ route('mpesac2b.index') }}">Manage C2B</a>
+                  </li>
+                  
+               </ul>
             </li>
 
             <li>
-               <a href="javascript:void(0);" data-toggle="collapse">
+               <a href="javascript:void(0);" data-toggle="collapse" data-target="#b2b_dr">
                   <div class="pull-left">
-                     <span class="right-nav-text">Manage MPESA</span>
+                     <span class="right-nav-text">B2B</span>
                   </div>
-                  
+                  <div class="pull-right">
+                     <i class="zmdi zmdi-caret-down"></i>
+                  </div>
                   <div class="clearfix"></div>
                </a>
+               <ul id="b2b_dr" class="collapse collapse-level-1 two-col-list">
+                  <li>
+                     <a href="{{ route('mpesac2b.create') }}">Create B2B</a>
+                  </li>
+                  <li>
+                     <a href="{{ route('mpesac2b.index') }}">Manage B2B</a>
+                  </li>
+                  
+               </ul>
             </li>
                         
          </ul>

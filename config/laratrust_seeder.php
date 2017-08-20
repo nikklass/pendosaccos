@@ -35,7 +35,7 @@ return [
 
         ],
 
-        'groupdministrator' => [
+        'groupadministrator' => [
             
             'users' => 'c,r,u,d',
             'profile' => 'r,u',

@@ -354,3 +354,30 @@ function isPaybillValid($est_id, $user_id=NULL, $admin=NULL) {
 	return $response; 
 
 }
+
+
+//mpesa
+
+function getMpesaTokenCredentials() {
+	
+	//read static mpesa data from env
+    $mpesa_consumer_key = config('constants.mpesa.consumer_key');
+    $mpesa_consumer_secret = config('constants.mpesa.consumer_secret');
+    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+
+    $credentials = base64_encode("$mpesa_consumer_key:$mpesa_consumer_secret"); 
+
+    return $credentials;
+
+}
+
+function getGuzzleClient($token)
+{
+    return new \GuzzleHttp\Client([
+        'headers' => [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $token,
+            'Content-Type' => 'application/json',
+        ],
+    ]);
+}

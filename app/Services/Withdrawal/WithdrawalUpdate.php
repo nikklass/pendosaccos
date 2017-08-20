@@ -35,7 +35,6 @@ class WithdrawalUpdate
 
                 //get users current loan balance
                 $account_balance = (float)$user->account_balance;
-                //$before_balance = $account_balance;
 
                 //current withdrawal amount
                 $amount = (float)$data->amount;

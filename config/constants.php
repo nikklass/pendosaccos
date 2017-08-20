@@ -6,6 +6,8 @@ $api_path_url = $api_domain_url . $api_version_url;
 
 $remote_api_url = "http://mschools.co.ke/api/v1/";
 
+$remote_mpesa_api_url = "https://sandbox.safaricom.co.ke/";
+
 return [
     'options' => [
         'option_attachment' => '13',
@@ -37,6 +39,16 @@ return [
         'client_secret' => env('PASSPORT_CLIENT_SECRET'),
         'login_url' => $api_domain_url . 'oauth/token',
         'user_url' => $api_domain_url . 'api/user'
+    ],
+    'mpesa' => [
+        'consumer_key' => env('MPESA_CONSUMER_KEY'),
+        'consumer_secret' => env('MPESA_CONSUMER_SECRET'),
+        'security_credentials' => env('MPESA_SECURITY_CREDENTIALS'),
+        'short_code' => env('MPESA_SHORT_CODE'),
+        'get_mpesa_token_url' => $remote_mpesa_api_url . "oauth/v1/generate?grant_type=client_credentials",
+        'c2b_simulate_trans_url' => $remote_mpesa_api_url . "mpesa/c2b/v1/simulate",
+        'c2b_register_url' => $remote_mpesa_api_url . "mpesa/c2b/v1/registerurl",
+        
     ],
     'bulk_sms' => [
         'send_sms_url' => $remote_api_url . "send_bulk_sms",
