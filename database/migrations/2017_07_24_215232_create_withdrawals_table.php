@@ -21,13 +21,14 @@ class CreateWithdrawalsTable extends Migration
         Schema::create('withdrawals', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->bigInteger('amount');
             $table->decimal('before_balance',14,2)->default(0);
             $table->decimal('after_balance',14,2)->default(0);
             $table->text('comment')->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('status_id')->unsigned()->default(8);
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
@@ -39,13 +40,14 @@ class CreateWithdrawalsTable extends Migration
             $table->increments('id');
             $table->integer('parent_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->decimal('amount',14,2);
             $table->decimal('before_balance',14,2)->default(0);
             $table->decimal('after_balance',14,2)->default(0);
             $table->text('comment')->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('status_id')->unsigned()->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->timestamps();
@@ -56,13 +58,14 @@ class CreateWithdrawalsTable extends Migration
         Schema::create('deposits', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->decimal('amount',14,2);
             $table->decimal('before_balance',14,2)->default(0);
             $table->decimal('after_balance',14,2)->default(0);
             $table->text('comment')->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('status_id')->unsigned()->default(8);
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
@@ -75,13 +78,14 @@ class CreateWithdrawalsTable extends Migration
             $table->increments('id');
             $table->integer('parent_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->decimal('amount',14,2);
             $table->decimal('before_balance',14,2)->default(0);
             $table->decimal('after_balance',14,2)->default(0);
             $table->text('comment')->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('status_id')->unsigned()->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->timestamps();
@@ -92,7 +96,7 @@ class CreateWithdrawalsTable extends Migration
         Schema::create('repayments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->integer('loan_id')->unsigned();
             $table->decimal('amount',14,2);
             $table->decimal('before_balance',14,2)->default(0);
@@ -101,6 +105,7 @@ class CreateWithdrawalsTable extends Migration
             $table->integer('status_id')->unsigned()->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
@@ -112,7 +117,7 @@ class CreateWithdrawalsTable extends Migration
             $table->increments('id');
             $table->integer('parent_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->integer('loan_id')->unsigned();
             $table->decimal('amount',14,2);
             $table->decimal('before_balance',14,2)->default(0);
@@ -121,6 +126,7 @@ class CreateWithdrawalsTable extends Migration
             $table->integer('status_id')->unsigned()->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->timestamps();
         });
@@ -130,7 +136,7 @@ class CreateWithdrawalsTable extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->integer('loan_type_id')->unsigned()->default(1);
             $table->decimal('loan_amount',14,2);
             $table->decimal('paid_amount',14,2)->default(0);
@@ -141,6 +147,7 @@ class CreateWithdrawalsTable extends Migration
             $table->integer('status_id')->unsigned()->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
@@ -152,7 +159,7 @@ class CreateWithdrawalsTable extends Migration
             $table->increments('id');
             $table->integer('parent_id')->unsigned();
             $table->integer('user_id')->unsigned();
-            $table->integer('group_id')->unsigned();
+            $table->integer('team_id')->unsigned();
             $table->integer('loan_type_id')->unsigned();
             $table->decimal('loan_amount',14,2);
             $table->decimal('paid_amount',14,2)->default(0);
@@ -163,6 +170,7 @@ class CreateWithdrawalsTable extends Migration
             $table->integer('status_id')->unsigned()->nullable();
             $table->string('src_ip')->nullable();
             $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
             $table->integer('created_by')->unsigned()->nullable();
             $table->timestamps();
         });

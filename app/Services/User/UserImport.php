@@ -16,14 +16,12 @@ class UserImport
 	protected $errorRowId;
 	protected $validRowId;
 
-	public function checkImportData($data, $company_id)
+	public function checkImportData($data, $group_id)
 	{
 		
 		$emails = [];
 		$phone_numbers = [];
 		$account_numbers = [];
-
-		//dump($data);
 
 		foreach ($data as $key => $row) {
 
@@ -51,65 +49,114 @@ class UserImport
 		}
 
 		//check existing email
-		$emailexist = $this->checkEmailUserExist($emails, $company_id);
-		//$emailexist = [];
-		//dump('emailexist - ');
-		//dump($emailexist);
+		$emailexist = $this->checkEmailUserExist($emails, $group_id);
+
 		if (count($emailexist) > 0) {
 			$this->valid = false;
 			$this->addEmailUserExistErrorMessage($emailexist, $data);
 		}
 
 		//check existing phone number
-		$phonenumberexist = $this->checkPhoneNumberUserExist($phone_numbers, $company_id);
-		//$phonenumberexist = [];
-		//dump('phonenumberexist - ');
-		//dump($phonenumberexist);
+		$phonenumberexist = $this->checkPhoneNumberUserExist($phone_numbers, $group_id);
+
 		if (count($phonenumberexist) > 0) {
 			$this->valid = false;
 			$this->addPhoneNumberUserExistErrorMessage($phonenumberexist, $data);
 		}
 
 		//check existing account number
-		$accountnumberexist = $this->checkAccountNumberUserExist($account_numbers, $company_id);
-		//$accountnumberexist = [];
-		//dump('accountnumberexist - ');
-		//dump($accountnumberexist);
+		$accountnumberexist = $this->checkAccountNumberUserExist($account_numbers, $group_id);
+		
 		if (count($accountnumberexist) > 0) {
 			$this->valid = false;
 			$this->addAccountNumberUserExistErrorMessage($accountnumberexist, $data);
 		}
 
+		//is user admin or superadmin
+		if ((($auth_user->hasRole('administrator')) 
+                && ($auth_user->group->id == $user_group_id))
+                || ($auth_user->hasRole('superadministrator'))) {
+
+        } else {
+
+            $message = config('constants.error.invalid_access');
+            $this->errors = $message;
+            $this->valid = false;
+
+        }
+
 		return $this->valid;
 
 	}
 
-	public function createUsers($data, $company_id) {
+	public function createUsers($data, $group_id) {
 
-			
-			DB::beginTransaction();
-			//insert data
-	        foreach ($data as $key => $value) {
-	            
-	            // create user
-	            $userData = [
-	                'account_number' => $value->account_number,
-	                'first_name' => $value->first_name,
-	                'last_name' => $value->last_name,
-	                'gender' => $value->gender,
-	                'email' => $value->email,
-	                'phone_number' => formatPhoneNumber($value->phone_number),
-	                'company_id' => $company_id,
-	                'created_by' => auth()->user()->id,
-	                'updated_by' => auth()->user()->id
-	            ];
+		//get logged in user
+		$auth_user = auth()->user();
+        $user_id = $auth_user->id;
 
-	            //dump($userData);
+        //get user data
+        $user_group_id = Group::findOrFail($group_id);
 
-	            $user = User::create($userData);
+        //if user is admin, and users and created user groups are same, proceed
+        if ((($auth_user->hasRole('administrator')) 
+                && ($auth_user->group->id == $user_group_id))
+                || ($auth_user->hasRole('superadministrator'))) {
+            
+            //get group details
+            if ($auth_user->hasRole('administrator')) {
+                $current_group_id = $auth_user->group->id;
+            } else {
+               //get user group data
+                $current_group_id = $group_id;
+            }
 
-	        }
-	        DB::commit();
+            DB::beginTransaction();
+                
+	            //update group new balance
+	            $account_balance = $data->account_balance;
+
+				if ($account_balance > 0) {
+
+					//calculate and update new account balance for group
+					$new_group = Group::findOrFail($current_group_id);
+		            $new_group->account_balance = $new_group->account_balance + $account_balance;
+		            $new_group->save();
+
+		        }
+
+                //format the user  phone
+                $phone_number = formatPhoneNumber($data->phone_number);
+
+		        //generate random password
+		        $password = generateCode(6);
+
+		        //plain password
+		        $plain_password = $password;
+
+		        // create user
+		        $userData = [
+		            'first_name' => $data->first_name,
+		            'last_name' => $data->last_name,
+		            'email' => $data->email,
+		            'group_id' => $data->group_id,
+		            'account_number' => $data->account_number,
+		            'account_balance' => $account_balance,
+		            'gender' => $data->gender,
+		            'phone_number' => $phone_number,
+		            'password' => bcrypt($password),
+		            'api_token' => str_random(60),
+		            'created_by' => $user_id,
+		            'updated_by' => $user_id
+		        ];
+
+		        $user = User::create($userData);
+
+            DB::commit();  
+
+            return $user;           
+
+        }
 
 	}
 
@@ -136,28 +183,28 @@ class UserImport
 
 	}
 
-	private function checkEmailUserExist($emails, $company_id)
+	private function checkEmailUserExist($emails, $group_id)
 	{
 		return User::whereIn('email', $emails)
-			->where('company_id', $company_id)
+			->where('group_id', $group_id)
 		    ->get()
 		    ->pluck('email')
 		    ->toArray();
 	}
 
-	private function checkPhoneNumberUserExist($phone_numbers, $company_id)
+	private function checkPhoneNumberUserExist($phone_numbers, $group_id)
 	{
 		return User::whereIn('phone_number', $phone_numbers)
-			->where('company_id', $company_id)
+			->where('group_id', $group_id)
 		    ->get()
 		    ->pluck('phone_number')
 		    ->toArray();
 	}
 
-	private function checkAccountNumberUserExist($account_numbers, $company_id)
+	private function checkAccountNumberUserExist($account_numbers, $group_id)
 	{
 		return User::whereIn('account_number', $account_numbers)
-			->where('company_id', $company_id)
+			->where('group_id', $group_id)
 		    ->get()
 		    ->pluck('account_number')
 		    ->toArray();

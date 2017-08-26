@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Edit Member - {{ $user->first_name }} {{ $user->last_name }}
+    Edit User - {{ $user->first_name }}
 
 @endsection
 
@@ -21,7 +21,7 @@
       <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6">
-            <h5 class="txt-dark">Edit Member - {{ $user->first_name }} {{ $user->last_name }}</h5>
+            <h5 class="txt-dark">Edit User - {{ $user->first_name }} {{ $user->last_name }}</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6">
@@ -60,7 +60,7 @@
 
                                              <div class="pull-left">
                                                 <h5 class="panel-title txt-dark">
-                                                  <strong>Member Details</strong>
+                                                  <strong>Account Details</strong>
                                                 </h5>
                                              </div>
                                              <div class="clearfix"></div>
@@ -70,7 +70,58 @@
                                               
                                               <div class="panel-body">               
 
-                                                 <div class="form-wrap">     
+                                                 <div class="form-wrap">                                                    
+                                                      <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
+                                              
+                                                        <label for="account_number" class="col-sm-3 control-label">
+                                                           Account No.
+                                                           <span class="text-danger"> *</span>
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                           <div class="input-group">
+                                                              <input 
+                                                                  type="text" 
+                                                                  class="form-control" 
+                                                                  id="account_number" 
+                                                                  name="account_number"
+                                                                  value="{{ $user->account_number }}" 
+                                                                  required autofocus>
+                                                              <div class="input-group-addon"><i class="icon-plus"></i></div>
+                                                           </div>
+                                                           @if ($errors->has('account_number'))
+                                                                <span class="help-block">
+                                                                    <strong>{{ $errors->first('account_number') }}</strong>
+                                                                </span>
+                                                           @endif
+                                                        </div>
+
+                                                      </div>
+
+                                                      <div  class="form-group{{ $errors->has('account_number') ? ' has-error' : '' }}">
+                                              
+                                                        <label for="account_balance" class="col-sm-3 control-label">
+                                                           Account Bal.
+                                                           <span class="text-danger"> *</span>
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                           <div class="input-group">
+                                                              <input 
+                                                                  type="text" 
+                                                                  class="form-control" 
+                                                                  id="account_balance" 
+                                                                  name="account_balance"
+                                                                  value="{{ $user->account_balance }}" 
+                                                                  required autofocus>
+                                                              <div class="input-group-addon"><i class="icon-plus"></i></div>
+                                                           </div>
+                                                           @if ($errors->has('account_balance'))
+                                                                <span class="help-block">
+                                                                    <strong>{{ $errors->first('account_balance') }}</strong>
+                                                                </span>
+                                                           @endif
+                                                        </div>
+
+                                                     </div>
 
                                                        <div  class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                                                               
@@ -266,6 +317,8 @@
                                     </div>
 
 
+                                    @if (Auth::user()->hasRole('superadministrator'))
+
                                         <div  class="col-sm-12 col-md-6">
                                                       
                                                <input type="hidden" name="rolesSelected" :value="rolesSelected">
@@ -276,70 +329,98 @@
 
                                                      <div class="pull-left">
                                                         <h5 class="panel-title txt-dark">
-                                                          <strong>Member Group Roles</strong>
+                                                          <strong>User Roles</strong>
                                                         </h5>
                                                      </div>
                                                      <div class="clearfix"></div>
                                                   </div>
                                                   <div  class="panel-wrapper collapse in">
                                                      <div  class="panel-body">
+
+                                                     @if (Auth::user()->hasRole('superadministrator'))
                                                        
-                                                       @foreach($user_accounts_unique as $user_account)
-                                                          
-                                                          <div class="panel panel-default border-panel card-view">
-                                                              <div class="form-group">
-                                                                <label class="control-label col-md-3 text-left">
-                                                                  Group:
-                                                                </label>
-                                                                <div class="col-md-9">
+                                                       <div  class="form-group{{ $errors->has('group_id') ? ' has-error' : '' }}">
+                                                              
+                                                          <label for="group_id" class="col-sm-12 control-label text-left">
+                                                             Group
+                                                             <span class="text-danger"> *</span> 
+                                                          </label>
+                                                          <div class="col-sm-12">
+                                                            
+                                                             <select class="selectpicker form-control" 
+                                                                name="group_id" 
+                                                                data-style="form-control btn-default btn-outline"
+                                                                required>
+
+                                                                @foreach ($groups as $group)
+                                                                  <li class="mb-10">
+                                                                      <option value="{{ $group->id }}"
+
+                                                            @if ($group->id == old('group_id', $group->id))
+                                                                selected="selected"
+                                                            @endif
+                                                                      >
+                                                                        {{ $group->name }}
+                                                                      </option>
+                                                                  </li>
+                                                                @endforeach
                                                                 
-                                                                  @if ($user_account->team)
+                                                             </select>
 
-                                                                    <p class="form-control-static"> 
-                                                                       
-                                                    <a href="{{ route('groups.show', $user_account->team->id) }}">
-                                                        {{ $user_account->team->name }}
-                                                    </a>
-
-                                                                    </p>
-
-                                                                  @endif
-
-                                                                </div>
-                                                              </div>
-
-                                                              <hr>
-
-                                                              <p>
-                                                                  <ul>
-                                                                      @foreach ($roles as $role)
-                                                                      <li>
-                                                                         <div class="checkbox">
-                                                                            <input 
-                                                                                id="{{ $user_account->team->id }}-{{ $role->id }}" 
-                                                                                type="checkbox"
-                                                                                value="{{ $user_account->team->id }}-{{ $role->id }}"
-                                                                                v-model="rolesSelected" 
-                                                                                @if ($role->name=='user')
-                                                                                  disabled
-                                                                                @endif
-                                                                                >
-                                                                            <label for="{{ $user_account->team->id }}-{{ $role->id }}"> 
-                                                                                {{ $role->display_name }} 
-                                                                                &nbsp;&nbsp;
-                                                                                <em class="ml-15"> 
-                                                                                    ({{ $role->description }})
-                                                                                </em>
-                                                                            </label>
-                                                                         </div>
-                                                                      </li>
-                                                                      @endforeach
-                                                                  </ul>
-                                                              </p>
-
+                                                             @if ($errors->has('group_id'))
+                                                                <span class="help-block">
+                                                                    <strong>
+                                                                      {{ $errors->first('group_id') }}
+                                                                    </strong>
+                                                                </span>
+                                                             @endif
+                                                          
                                                           </div>
 
-                                                        @endforeach
+                                                       </div>
+
+                                                       @else
+
+                                                          <div class="form-group">
+                                                            <label class="control-label col-md-3">Group</label>
+                                                            <div class="col-md-9">
+                                                            
+                                                              @if ($user->group)
+                                                                <p class="form-control-static"> {{ $user->group->name }} </p>
+                                                                <input 
+                                                                    type="hidden" 
+                                                                    name="group_id"
+                                                                    value="{{ $user->group_id }}">
+                                                              @endif
+
+                                                            </div>
+                                                          </div>
+
+                                                       @endif
+                                                       
+
+                                                        <p>
+                                                            <ul>
+                                                                @foreach ($roles as $role)
+                                                                <li>
+                                                                   <div class="checkbox">
+                                                                      <input 
+                                                                          id="{{ $role->id }}" 
+                                                                          type="checkbox"
+                                                                          :value="{{ $role->id }}"
+                                                                          v-model="rolesSelected">
+                                                                      <label for="{{ $role->id }}"> 
+                                                                          {{ $role->display_name }} 
+                                                                          &nbsp;&nbsp;
+                                                                          <em class="ml-15"> 
+                                                                              ({{ $role->description }})
+                                                                          </em>
+                                                                      </label>
+                                                                   </div>
+                                                                </li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </p>
                                                         
                                                      </div>
                                                   </div>
@@ -348,6 +429,65 @@
 
                                         </div>
 
+                                    @else
+
+                                        <div  class="col-sm-12 col-md-6">
+                                                      
+                                               <input type="hidden" name="rolesSelected" :value="rolesSelected">
+
+                                               <div class="panel panel-default border-panel card-view">
+                                                  
+                                                  <div class="panel-heading">
+
+                                                     <div class="pull-left">
+                                                        <h5 class="panel-title txt-dark">
+                                                          <strong>User Roles</strong>
+                                                        </h5>
+                                                     </div>
+                                                     <div class="clearfix"></div>
+                                                  </div>
+                                                  <div  class="panel-wrapper collapse in">
+                                                     <div  class="panel-body">
+                                                       
+                                                        <p>
+                                                            <ul>
+                                                                <li>
+                                                                   <div>
+
+                                                                          @if (count($user->roles))
+                                                                              
+                                                      <ul>
+                                                      @foreach ($user->roles as $role)
+                                                        <li class="mt-10">
+                                                            <i class="fa fa-genderless text-success mr-5"></i>
+                                                            {{ $role->display_name }} 
+                                                            <em class="ml-15"> ({{ $role->description }})</em>
+                                                        </li>
+                                                      @endforeach
+                                                      </ul>
+
+                                                                              
+
+                                                                          @else
+                                                                                  
+                                                                                No roles assigned
+
+                                                                          @endif
+
+                                                                   </div>
+                                                                </li>
+                                                            </ul>
+                                                        </p>
+                                                        
+                                                     </div>
+                                                  </div>
+
+                                               </div>
+
+                                        </div>
+
+                                    @endif
+                            
 
                                     <div class="form-group">
                                         <div class="row">
@@ -398,28 +538,7 @@
         data() {
             return {
               password_option: 'keep',
-              /*rolesSelected: {!! $user_accounts->pluck('team.id') . '-' . $user->roles->pluck('id') !!}*/
-              rolesSelected: this.getSelectedRoles({!! $user_accounts->pluck('team.id') !!}, 
-                                                   {!!$user->roles->pluck('id') !!})
-            }
-        },
-        methods: {
-            
-            getSelectedRoles(team_ids, role_ids) {
-                
-                //console.log(team_ids, role_ids);
-                var pos = 0;
-                var selected_roles = [];
-
-                team_ids.forEach(function(team_id) {
-                    //console.log(team_id, pos, role_ids[pos]);
-                    selected_roles[pos] = team_id + '-' + role_ids[pos];
-                    pos++;
-                });
-
-                console.log(selected_roles);
-                return selected_roles;
-
+              rolesSelected: {!!$user->roles->pluck('id')!!}
             }
         }
         

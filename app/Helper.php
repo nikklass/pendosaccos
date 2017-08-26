@@ -176,70 +176,111 @@ function getHost() {
 	return @$_SERVER["REMOTE_HOST"]? $_SERVER["REMOTE_HOST"]: "" ; 
 }
 
+function getJsonOauthData() {
+	
+	$data = [
+	        'json' => [
+	            "grant_type"=> "password",
+				"client_id"=> config('constants.oauth.client_id'),
+				"client_secret"=> config('constants.oauth.client_secret'),
+				"username"=> config('constants.oauth.username'),
+				"password"=> config('constants.oauth.password'),
+				"scope"=> ""
+	        ]
+	    ];
+
+	return $data;
+
+}
+
 // fetching bulk sms data
 function getBulkSMSData($user_id) {
+		
+	$user = User::where('id', $user_id)
+		->with('company')
+		->first();
 	
-	$sms_user_name = ENV('BULK_SMS_USR');
-	$sms_user_name = 'yehu';
+	$sms_user_name = "";
+	if ($user->company) {
+		$sms_user_name = $user->company->sms_user_name;
+	}
+	//$sms_user_name = "steve";
 
 	if ($sms_user_name) {
 		
 		//get bulk sms data for this client
-		$get_sms_data_url_main = config('constants.bulk_sms.get_sms_data_url');
-		$get_sms_data_url = $get_sms_data_url_main . "?usr=" . $sms_user_name;
-		//dd($get_sms_data_url);
+		$get_sms_data_url = config('constants.bulk_sms.get_sms_data_url');
 
-		//get sms data
-	    $client = new \GuzzleHttp\Client();
+		//url params
+		$body['username'] = $sms_user_name;
 
-	    $resp = $client->request('GET', $get_sms_data_url);
+		//get sms urls
+		$get_oauth_token_url = config('constants.oauth.token_url');
+
+	    //get oauth access token
+	    $tokenclient = getTokenGuzzleClient();
+
+	    $oauth_json_data = getJsonOauthData();
+
+	    $resp = $tokenclient->request('POST', $get_oauth_token_url, $oauth_json_data); 
 
 	    if ($resp->getBody()) {
-		    
-		    $result = json_decode($resp->getBody());
-		    //dd($result);
-					
-			// get results
-			if  ($result->default_source) {
-				
-				$sms_balance = 0;
-				if ($result->sms_balance) {
-					$sms_balance = $result->sms_balance;
-				}
-				//show data
-				$response["error"] = false;
-				$response["sms_user_name"] = $sms_user_name;
-				$response["passwd"] = $result->passwd;
-				$response["alphanumeric_id"] = $result->alphanumeric_id;
-				$response["fullname"] = $result->fullname;
-				$response["rights"] = $result->rights;
-				$response["active"] = $result->active;
-				$response["default_sid"] = $result->default_sid;
-				$response["default_source"] = $result->default_source;
-				$response["paybill"] = $result->paybill;
-				$response["relationship"] = $result->relationship;
-				$response["home_ip"] = $result->home_ip;
-				$response["default_priority"] = $result->default_priority;
-				$response["default_dest"] = $result->default_dest;
-				$response["default_msg"] = $result->default_msg;
-				$response["sms_balance"] = $sms_balance;
-				$response["sms_expiry"] = $result->sms_expiry;
-				$response["routes"] = $result->routes;
-				$response["last_updated"] = $result->last_updated;			
-		        
-		    } else {
-				
-				$response["error"] = true;
-				$response["message"] = $result->message;
-				
-		    }
+        
+	        $result = json_decode($resp->getBody());
+	        $access_token = $result->access_token;
+	        $refresh_token = $result->refresh_token;
 
-		} else {
+	        try {
+
+	            //send request to send sms
+	            $dataclient = getGuzzleClient($access_token);
+	            $respons = $dataclient->request('GET', $get_sms_data_url, [
+	                'query' => $body
+	            ]);
+
+	            if ($respons->getStatusCode() == 200) {
+
+	                if ($respons->getBody()) {
+	        
+	                    $result = json_decode($respons->getBody());
+	                    dd($result);
+
+	                    $response["error"] = false;
+						$response["sms_user_name"] = $sms_user_name;
+						$response["passwd"] = $result->data->passwd;
+						$response["alphanumeric_id"] = $result->data->alphanumeric_id;
+						$response["fullname"] = $result->data->fullname;
+						$response["rights"] = $result->data->rights;
+						$response["active"] = $result->data->active;
+						$response["default_sid"] = $result->data->default_sid;
+						$response["default_source"] = $result->data->default_source;
+						$response["paybill"] = $result->data->paybill;
+						$response["relationship"] = $result->data->relationship;
+						$response["home_ip"] = $result->data->home_ip;
+						$response["default_priority"] = $result->data->default_priority;
+						$response["default_dest"] = $result->data->default_dest;
+						$response["default_msg"] = $result->data->default_msg;
+						$response["sms_balance"] = $result->data->sms_balance;
+						$response["sms_expiry"] = $result->data->sms_expiry;
+						$response["routes"] = $result->data->routes;
+						$response["last_updated"] = $result->data->last_updated;	
+
+	                } else {
 				
-			$response["error"] = true;
-			$response["message"] = "An error occured fetching bulk sms data";
-			
-	    }
+						$response["error"] = true;
+						$response["message"] = "An error occured while fetching bulk sms account";
+						
+				    }
+
+				    return $response; 
+
+	            }  
+
+	        } catch (\Exception $e) {
+	            //dd($e);
+	        }
+
+	    } 
 
 	} else {
 				
@@ -252,49 +293,78 @@ function getBulkSMSData($user_id) {
 	
 }
 
+//send sms
 function sendSms($params) {
-	
-	//send sms
-    $client = new \GuzzleHttp\Client();
 
-    $body['usr'] = $params['usr'];
+	//get data array
+	$body['usr'] = $params['usr'];
     $body['pass'] = $params['pass'];
     $body['src'] = $params['src'];
     $body['dest'] = $params['phone_number'];
     $body['msg'] = $params['sms_message'];
 
-    //get the url for sending sms from constants file - \app\constants.php
-    $send_bulk_sms_url = config('constants.bulk_sms.send_sms_url');
+	//get urls
+	$get_oauth_token_url = config('constants.oauth.token_url');
+	$send_sms_url = config('constants.bulk_sms.send_sms_url');
 
-    $resp = $client->request('POST', $send_bulk_sms_url, ['form_params' => $body]);
+    //get oauth access token
+    $tokenclient = getTokenGuzzleClient();
+
+    $oauth_json_data = getJsonOauthData();
+
+	$resp = $tokenclient->request('POST', $get_oauth_token_url, $oauth_json_data);
 
     if ($resp->getBody()) {
-	    
-	    $result = json_decode($resp->getBody());
-				
-		// get results
-		if  (!$result->error) {
-			
-			//show data
-			$response["error"] = false;
-			$response["message"] = $result->message;
-			$response["mobile"] = $result->mobile;
-	        
-	    } else {
-			
-			$response["error"] = true;
-			$response["message"] = $result->message;
-			
-	    }
+        
+        $result = json_decode($resp->getBody());
+        $access_token = $result->access_token;
+        $refresh_token = $result->refresh_token;
 
-	} else {
+        try {
+
+            //send request to send sms
+            $dataclient = getGuzzleClient($access_token);
+            $respons = $dataclient->request('POST', $send_sms_url, [
+                'query' => $body
+            ]);
+
+            if ($respons->getStatusCode() == 200) {
+
+                if ($respons->getBody()) {
+        
+                    $result = json_decode($respons->getBody());
+                    //dd($result);
+
+                    // get results
+					if  ($result->success) {
+						
+						//show data
+						$response["error"] = false;
+						$response["message"] = $result->success->message;
+				        
+				    } else {
+						
+						$response["error"] = true;
+						$response["message"] = $result->success->message;
+						
+				    }
+
+                } else {
 			
-		$response["error"] = true;
-		$response["message"] = "An error occured while sending sms";
-		
+					$response["error"] = true;
+					$response["message"] = "An error occured while sending sms";
+					
+			    }
+
+			    return $response; 
+
+            }  
+
+        } catch (\Exception $e) {
+            dd($e);
+        }
+
     }
-
-    return $response; 
 
 }
 
@@ -357,14 +427,157 @@ function isPaybillValid($est_id, $user_id=NULL, $admin=NULL) {
 }
 
 
+//check admin group ids
+function getAdminGroupIds($user_account_team_ids, $permissions){
+	
+	$team_ids = [];
+	
+	if (auth()->user()->hasRole('superadministrator')){
+
+		$team_ids = $user_account_team_ids;
+
+	} else {
+		
+		foreach ($user_account_team_ids as $team_id) {
+	        //if permissions is an array
+	        if (is_array($permissions)) {
+		        if (auth()->user()->can($permissions, $team_id, true)){
+			        $team_ids[] = $team_id;
+			    }
+			} else {
+				//check single permission
+				if (auth()->user()->can($permissions, $team_id)){
+			        $team_ids[] = $team_id;
+			    }
+			}
+	    }
+
+	} 
+
+    return $team_ids;
+
+}
+
+function isAdminRoleError($rolesdata) {
+
+	$error = false; 
+
+	//check perms
+    $team_ids = [];
+    $role_ids = [];
+    $role_names = [];
+    $roles_data = explode(',', $rolesdata);
+    
+    foreach ($roles_data as $role) {
+
+    	//split value to get roles - 2nd param
+    	$role_data = explode('-', $role);
+
+    	$team_id = $role_data[0];
+    	$role_id = $role_data[1];
+
+    	//get role name
+    	$role_name_data = Role::findOrFail($role_id);
+    	$role_name = $role_name_data->name;
+    	
+    	//check user permissions
+    	if (checkAdminGroupIds($team_id, 'edit-user')) {
+    		$error = false; 
+    	} else {
+    		$error = true; 
+    		break;
+    	}
+
+    }
+
+    return $error;
+
+}
+
+
+function isAdminGroupIdsError($user_account_team_ids, $permissions, $item_user_id=null, $is_owner_allowed=true){
+	
+	$error = true;
+	
+	if (auth()->user()->hasRole('superadministrator')) {
+		
+		$error = false;
+
+	} else {
+		
+		//dd($user_account_team_ids);
+		//have we supplied team ids?
+		if (count($user_account_team_ids)) {
+			foreach ($user_account_team_ids as $team_id) {
+		        //if permissions is an array
+		        if (is_array($permissions)) {
+			        if (auth()->user()->can($permissions, $team_id, true)){
+				        $error = false;
+				    }
+				} else {
+					//check single permission
+					if (auth()->user()->can($permissions, $team_id)){
+				        $error = false;
+				    }
+				}
+		    }
+		}
+
+	    //are we still in error? and is item owner allowed to perform this action?
+	    if ($error && $is_owner_allowed) {
+		    
+		    //check if logged user owns item
+		    if (auth()->user()->id == $item_user_id){
+		        $error = false;
+		    }
+
+		}
+
+	} 
+
+    return $error;
+
+}
+
 //mpesa
 
-function getMpesaTokenCredentials() {
+
+/*
+consumer_key_1
+
+C2B
+TransactionStatus
+AccountBalance
+Reversal
+C2B PayBill
+*/
+
+
+/*
+consumer_key_2
+
+B2C
+TransactionStatus
+AccountBalance
+Reversal
+*/
+
+
+function getMpesaTokenCredentials_1() {
 	
-	//read static mpesa data from env
-    $mpesa_consumer_key = config('constants.mpesa.consumer_key');
-    $mpesa_consumer_secret = config('constants.mpesa.consumer_secret');
-    $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
+    $mpesa_consumer_key_1 = config('constants.mpesa.consumer_key_1');
+    $mpesa_consumer_secret_1 = config('constants.mpesa.consumer_secret_1');
+
+    $credentials = base64_encode("$mpesa_consumer_key:$mpesa_consumer_secret"); 
+
+    return $credentials;
+
+}
+
+function getMpesaTokenCredentials_2() {
+	
+    $mpesa_consumer_key = config('constants.mpesa.consumer_key_2');
+    $mpesa_consumer_secret = config('constants.mpesa.consumer_secret_2');
 
     $credentials = base64_encode("$mpesa_consumer_key:$mpesa_consumer_secret"); 
 
@@ -380,11 +593,12 @@ function getMpesaSecurityCredentials()
 { 
   	
   	$mpesa_initiator_password = config('constants.mpesa.consumer_secret');
-    //$password_byte_array = byteStr2byteArray($mpesa_initiator_password);
+  	//$mpesa_initiator_password = "Vu5TS3WX";
 
     //read cert
     $cert_path = Storage::disk('local')->get('cert/cert.cer');;
-    //$ssl = openssl_x509_parse($cert_path);
+    $ssl = openssl_x509_parse($cert_path);
+    //dd($ssl);
 
     openssl_public_encrypt($mpesa_initiator_password, $encrypted, $cert_path, OPENSSL_PKCS1_PADDING);
 
@@ -406,7 +620,19 @@ function getGuzzleClient($token)
 function getTokenGuzzleClient()
 {
     //get mpesa credentials
-    $credentials = getMpesaTokenCredentials(); 
+    $credentials = getMpesaTokenCredentials_2(); 
+    return new \GuzzleHttp\Client([
+        'headers' => [
+            'Authorization' => 'Basic ' . $credentials,
+            'Content-Type' => 'application/json'
+        ],
+    ]);
+}
+
+function getTokenGuzzleClient_2()
+{
+    //get mpesa credentials
+    $credentials = getMpesaTokenCredentials_2(); 
     return new \GuzzleHttp\Client([
         'headers' => [
             'Authorization' => 'Basic ' . $credentials,
@@ -421,10 +647,16 @@ function createC2bTransactionRegisterUrl($validation_url, $confirmation_url) {
     $c2b_register_url = config('constants.mpesa.c2b_register_url');
     $short_code = config('constants.mpesa.short_code');
 
-    //get mpesa credentials
+    //get mpesa token
     $tokenclient = getTokenGuzzleClient();
 
-    $resp = $tokenclient->request('GET', $get_mpesa_token_url);   
+    try {
+    	$resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    } catch (\Exception $e) {
+        dd($e);
+    }
+
+    //dd(json_decode($resp->getBody())); 
 
     if ($resp->getBody()) {
         
@@ -482,16 +714,14 @@ function createMpesac2bSimulateTransaction($amount, $phone_number, $billRefNumbe
     //format phone number
     $phone_number = formatPhoneNumber($phone_number);
 
-    //get mpesa credentials
-    $credentials = getMpesaTokenCredentials(); 
+    //get mpesa token
+    $tokenclient = getTokenGuzzleClient();
 
-    $resp = $client->request('GET', $get_mpesa_token_url,
-    [
-        'headers' => [
-            'Authorization' => 'Basic ' . $credentials,
-            'Content-Type' => 'application/json'
-        ],
-    ]);   
+    try {
+    	$resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    } catch (\Exception $e) {
+        dd($e);
+    } 
 
     if ($resp->getBody()) {
         
@@ -538,6 +768,7 @@ function createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, 
 	
 	//commandId Options 
 	/*
+
 		BusinessPayBill
 		BusinessBuyGoods
 		DisburseFundsToBusiness
@@ -548,26 +779,30 @@ function createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, 
 		MerchantTransferFromMerchantToWorking
 		MerchantServicesMMFAccountTransfer
 		AgencyFloatAdvance
+
 	*/
 
 	/*	
 		SenderIdentifierType/ ReceiverIdentifierType
 
 		1 – MSISDN
-
 		2 – Till Number
-
 		4 – Organization short code
+
 	*/
 
     $get_mpesa_token_url = config('constants.mpesa.get_mpesa_token_url');
     $b2b_payment_request_url = config('constants.mpesa.b2b_payment_request_url');
     $short_code = config('constants.mpesa.short_code');
 
-    //get mpesa credentials
+    //get mpesa token
     $tokenclient = getTokenGuzzleClient();
 
-    $resp = $tokenclient->request('GET', $get_mpesa_token_url);   
+    try {
+    	$resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    } catch (\Exception $e) {
+        dd($e);
+    }  
 
     if ($resp->getBody()) {
         
@@ -578,8 +813,7 @@ function createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, 
         try {
 
             //send request to mpesa
-            $dataclient = getGuzzleClient($access_token);
-            $response = $dataclient->request('POST', $b2b_payment_request_url, [
+            $body = [
                 'json' => [
                     'Initiator' => $username,
                     'CommandID' => $command_id,
@@ -594,7 +828,10 @@ function createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, 
                     'QueueTimeOutURL' => $queue_timeout_url,
                     'ResultURL' => $result_url
                 ]
-            ]);
+            ];
+
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $b2b_payment_request_url, $body);
 
             if ($response->getStatusCode() == 200) {
 
@@ -619,7 +856,7 @@ function createMpesab2bPaymentRequest($username, $receiver_short_code, $amount, 
 
 
 /*B2C Payment Request*/
-function createMpesab2cPaymentRequest($username, $receiver_short_code, $amount, $remarks, $occassion, $queue_timeout_url, $result_url, $command_id='BusinessPayment') {
+function createMpesab2cPaymentRequest($username, $sender_short_code, $receiver_short_code, $amount, $remarks, $occassion, $queue_timeout_url, $result_url, $command_id='BusinessPayment') {
 	
 	//commandId Options 
 	/*
@@ -632,23 +869,30 @@ function createMpesab2cPaymentRequest($username, $receiver_short_code, $amount, 
     $b2c_payment_request_url = config('constants.mpesa.b2c_payment_request_url');
     $short_code = config('constants.mpesa.short_code');
 
-    //get mpesa credentials
-    $tokenclient = getTokenGuzzleClient();
+    if ($sender_short_code) {
+    	$short_code = $sender_short_code;
+    }
 
-    $resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    //get mpesa token
+    $tokenclient = getTokenGuzzleClient_2();
+
+    try {
+    	$resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    } catch (\Exception $e) {
+        dd($e);
+    }
 
     if ($resp->getBody()) {
         
         $result = json_decode($resp->getBody());
         $access_token = $result->access_token;
         $mpesa_security_credentials = getMpesaSecurityCredentials();
-        //dd($access_token);
+        //dd($access_token, $mpesa_security_credentials);
 
         try {
 
             //send request to mpesa
-            $dataclient = getGuzzleClient($access_token);
-            $response = $dataclient->request('POST', $b2c_payment_request_url, [
+            $body = [
                 'json' => [
                     'InitiatorName' => $username,
                     'CommandID' => $command_id,
@@ -661,13 +905,17 @@ function createMpesab2cPaymentRequest($username, $receiver_short_code, $amount, 
                     'ResultURL' => $result_url,
                     'Occassion' => $occassion
                 ]
-            ]);
+            ];
+            dd($body);
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $b2c_payment_request_url, $body);
 
             if ($response->getStatusCode() == 200) {
 
                 if ($response->getBody()) {
         
                     $result = json_decode($response->getBody());
+                    dd($result);
 
                     return $result;
 
@@ -691,10 +939,18 @@ function getMpesaAccountBalance($username, $receiver_short_code, $remarks, $queu
     $account_balance_url = config('constants.mpesa.account_balance_url');
     $short_code = config('constants.mpesa.short_code');
 
-    //get mpesa credentials
+    if ($receiver_short_code) {
+    	$short_code = $receiver_short_code;
+    }
+
+    //get mpesa token
     $tokenclient = getTokenGuzzleClient();
 
-    $resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    try {
+    	$resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    } catch (\Exception $e) {
+        dd($e);
+    } 
 
     if ($resp->getBody()) {
         
@@ -703,27 +959,31 @@ function getMpesaAccountBalance($username, $receiver_short_code, $remarks, $queu
         $mpesa_security_credentials = getMpesaSecurityCredentials();
 
         try {
-
+        	//$remarks = "sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks sample remarks ";
             //send request to mpesa
-            $dataclient = getGuzzleClient($access_token);
-            $response = $dataclient->request('POST', $account_balance_url, [
+            $body = [
                 'json' => [
                     'Initiator' => $username,
                     'CommandID' => 'AccountBalance',
                     'SecurityCredential' => $mpesa_security_credentials,
-                    'IdentifierType' => $receiver_identifier,
+                    'IdentifierType' => 6,
                     'PartyA' => $short_code,
                     'Remarks' => $remarks,
                     'QueueTimeOutURL' => $queue_timeout_url,
                     'ResultURL' => $result_url
                 ]
-            ]);
+            ];
+            //dd($body);
+            
+            $dataclient = getGuzzleClient($access_token);
+            $response = $dataclient->request('POST', $account_balance_url, $body);
 
             if ($response->getStatusCode() == 200) {
 
                 if ($response->getBody()) {
         
                     $result = json_decode($response->getBody());
+                    dd($result);
 
                     return $result;
 
@@ -732,7 +992,7 @@ function getMpesaAccountBalance($username, $receiver_short_code, $remarks, $queu
             }  
 
         } catch (\Exception $e) {
-            dump($e);
+            dd($e);
         }
 
     }
@@ -748,10 +1008,14 @@ function createLipaMpesaOnlinePayment($amount, $phone_number, $callback_url, $ac
     $business_short_code = config('constants.mpesa.short_code');
     $lipa_mpesa_password = config('constants.mpesa.lipa_mpesa_password');
 
-    //get mpesa credentials
+    //get mpesa token
     $tokenclient = getTokenGuzzleClient();
 
-    $resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    try {
+    	$resp = $tokenclient->request('GET', $get_mpesa_token_url);  
+    } catch (\Exception $e) {
+        dd($e);
+    } 
 
     if ($resp->getBody()) {
         

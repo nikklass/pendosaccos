@@ -10,7 +10,7 @@
 
       @if (!Auth::user()->hasRole('superadministrator'))
       <li class="navigation-header">
-            <span class="pb-0">{{ Auth::user()->group->name }}</span>
+            <span class="pb-0">{{ Auth::user()->first_name }}</span>
       </li>
 
       <li><hr class="light-grey-hr mb-10 mt-10"/></li>
@@ -124,7 +124,7 @@
          <a href="javascript:void(0);" data-toggle="collapse" data-target="#users_dr">
             <div class="pull-left">
                <i class="zmdi zmdi-accounts mr-20"></i>
-               <span class="right-nav-text">Member Accounts </span>
+               <span class="right-nav-text">Member Profiles </span>
             </div>
             <div class="pull-right">
                <i class="zmdi zmdi-caret-down"></i>
@@ -149,6 +149,41 @@
                <a href="{{ route('users.index') }}">
                   <i class="zmdi zmdi-accounts-list mr-10"></i>
                   <span class="right-nav-text">Manage Members</span>
+               </a>
+            </li>
+
+         </ul>
+      </li>
+
+      <li>
+         <a href="javascript:void(0);" data-toggle="collapse" data-target="#member_accounts_dr">
+            <div class="pull-left">
+               <i class="zmdi zmdi-money mr-20"></i>
+               <span class="right-nav-text">Member Accounts </span>
+            </div>
+            <div class="pull-right">
+               <i class="zmdi zmdi-caret-down"></i>
+            </div>
+            <div class="clearfix"></div>
+         </a>
+         <ul id="member_accounts_dr" class="collapse collapse-level-1">
+            
+            <li>
+               <a href="{{ route('users.create') }}">
+                  <i class="zmdi zmdi-account-add mr-10"></i>
+                  <span class="right-nav-text">Create Single</span>
+               </a>
+            </li>
+            <li>
+               <a href="{{ route('bulk-users.create') }}">
+                  <i class="zmdi zmdi-accounts-add mr-10"></i>
+                  <span class="right-nav-text">Create Bulk</span>
+               </a>
+            </li>
+            <li>
+               <a href="{{ route('users.index') }}">
+                  <i class="zmdi zmdi-accounts-list mr-10"></i>
+                  <span class="right-nav-text">Manage Member Accounts</span>
                </a>
             </li>
 

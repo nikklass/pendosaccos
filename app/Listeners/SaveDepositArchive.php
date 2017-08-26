@@ -28,7 +28,7 @@ class SaveDepositArchive
             $deposit_archive = DepositArchive::create([
                 'parent_id' => $event->deposit->id,
                 'user_id' => $event->deposit->user_id,
-                'group_id' => $event->deposit->group_id,
+                'team_id' => $event->deposit->team_id,
                 'amount' => $event->deposit->amount,
                 'before_balance' => $event->deposit->before_balance,
                 'after_balance' => $event->deposit->after_balance,

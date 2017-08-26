@@ -41,9 +41,9 @@
                       <h5 class="block mt-10 mb-5 weight-500 capitalize-font">
                           Member Name: 
                           <span class="txt-danger">
-                              {{ $deposit->user->first_name }}
+                              {{ $deposit->user->user->first_name }}
                               &nbsp;
-                              {{ $deposit->user->last_name }}
+                              {{ $deposit->user->user->last_name }}
                           </span>
                       </h5>
                       <!-- <h6 class="block capitalize-font pb-20">Developer Geek</h6> -->
@@ -61,7 +61,7 @@
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
                                             <strong>Member Group:</strong> 
-                                            {{ $deposit->user->group->name }}
+                                            {{ $deposit->user->team->display_name }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -187,8 +187,8 @@
 
                               <li class="mb-20">
                                   <strong>Created By: </strong> 
-                                  {{ $deposit->creator->first_name }}
-                                  {{ $deposit->creator->last_name }}
+                                  {{ $deposit->creator->user->first_name }}
+                                  {{ $deposit->creator->user->last_name }}
                               </li>
 
                               <li class="mb-20">
@@ -198,8 +198,8 @@
 
                               <li class="mb-20">
                                   <strong>Last Updated By: </strong> 
-                                  {{ $deposit->updater->first_name }}
-                                  {{ $deposit->updater->last_name }}
+                                  {{ $deposit->updater->user->first_name }}
+                                  {{ $deposit->updater->user->last_name }}
                               </li>
 
                           </ul>

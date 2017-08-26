@@ -4,6 +4,8 @@ namespace App\Services\User;
 
 use App\Group;
 use App\Loan;
+use App\Role;
+use App\RoleUser;
 use App\User;
 use Illuminate\Support\Facades\DB;
 
@@ -11,20 +13,32 @@ class UserUpdate
 {
 	protected $errors = [];
 	protected $valid = true;
+	protected $pagePermission = 'edit-user';
 
 	public function checkData($data, $id)
 	{
-		
-        //get logged in user
-        $auth_user = auth()->user();
-        $user_id = $auth_user->id;
 
-        //get loan user data
-        $loan_user = User::findOrFail($id);
+        $error = false;
 
-        if ((($auth_user->hasRole('administrator')) 
-                && ($auth_user->group->id == $loan_user->group->id))
-                || ($auth_user->hasRole('superadministrator'))) {
+        //check perms
+	    $roles_data = explode(',', $data->rolesSelected);
+	    
+	    foreach ($roles_data as $role) {
+
+	    	//split value to get roles - 2nd param
+	    	$role_data = explode('-', $role);
+
+	    	$team_id = $role_data[0];
+	    	
+	    	//get team ids
+        	if (isAdminGroupIdsError($team_id, $this->pagePermission)) {
+        		$error = true;
+        		break;
+        	}
+
+	    }
+
+        if (!$error) {
 
 	        //valid phone number?
 	        if ($data->phone_number) {
@@ -54,28 +68,53 @@ class UserUpdate
 		//get logged in user
 		$auth_user = auth()->user();
         $user_id = $auth_user->id;
+        $user_valid = false;
 
-        //get loan user data
-        $user = User::findOrFail($id);
+        //init arrays
+        $team_ids = [];
+        $role_ids = [];
 
-		//user account balance
-        $user_account_balance = $user->account_balance;
+        if ($auth_user->hasRole('superadministrator')) {
 
-		//if user is admin, and users and created user groups are same, proceed
-        if ((($auth_user->hasRole('administrator')) 
-                && ($auth_user->group->id == $user->group->id))
-                || ($auth_user->hasRole('superadministrator'))) {
-            
-            //get group's current data
-            if ($auth_user->hasRole('administrator')) {
-                $current_group_id = $auth_user->group->id;
-            } else {
-                $current_group_id = $user->group->id;
-            }
+        	$user_valid = true;
 
-            //get the new group id
-            $new_group_id = $data->group_id;
+        } else {
 
+	        //get user roles and team ids	        
+	        $roles_data = explode(',', $data->rolesSelected);
+
+	        foreach ($roles_data as $role) {
+
+	        	//split value to get roles - 2nd param
+	        	$role_data = explode('-', $role);
+
+	        	$team_id = $role_data[0];
+	        	$role_id = $role_data[1];
+
+	        	//get role name
+	        	$role_name_data = Role::findOrFail($role_id);
+	        	$role_name = $role_name_data->name;
+	        	
+	        	//check user permissions
+	        	if ((!isAdminGroupIdsError($team_id, $this->pagePermission)) && ($role_name != 'user')) {
+	        		$team_ids[] = $team_id;
+	        		$role_ids[] = $role_id;
+	        		//$role_names[] = $role_name;
+	        	}
+
+	        }
+
+	        if (count($team_ids)) { 
+	        	$user_valid = true;
+	        }
+
+	    }
+
+		//if user is valid, proceed
+        if ($user_valid) { 
+
+            //get the user record to edit                                               
+            $user = User::findOrFail($id);
 
             DB::beginTransaction();
 
@@ -87,37 +126,7 @@ class UserUpdate
 		        $user->last_name = $data->last_name;
 		        $user->email = $data->email;
 		        $user->phone_number = $phone_number;
-		        $user->account_number = $data->account_number;
 		        $user->gender = $data->gender;
-
-		        //only superadmin can alter group id
-		        if ($current_group_id == $new_group_id) {
-
-		        	//update new group balance
-	            	$new_group = Group::findOrFail($new_group_id);
-		            $new_group->account_balance = ($new_group->account_balance - $user_account_balance) + $data->account_balance;
-		            $new_group->save();
-
-		        } else {
-
-		        	$user->group_id = $data->group_id;
-
-					//decrease current group balance
-	            	$current_group = Group::findOrFail($current_group_id);
-		        	if ($current_group->account_balance > 0) {
-			            $current_group->account_balance = ($current_group->account_balance - $user_account_balance);
-			            $current_group->save();
-			        }
-
-			        //increase new group balance
-	            	$new_group = Group::findOrFail($new_group_id);
-		            $new_group->account_balance = $new_group->account_balance + $data->account_balance;
-		            $new_group->save();
-
-		        } 
-
-	            //update use balance
-	        	$user->account_balance = $data->account_balance;
 
 		        if ($data->password_option == 'auto'){
 		            /*auto generate new password*/
@@ -132,14 +141,40 @@ class UserUpdate
 
 		        if ($user->save()) {
 
-		            if ($data->rolesSelected) {
-		                //sync roles
-		                $user->syncRoles(explode(',', $data->rolesSelected));
-		            }
-		            if ($data->groupsSelected) {
-		                //sync groups
-		                $groups = explode(',', $data->groupsSelected);
-		                $user->groups()->sync($groups);
+		            if (count($role_ids)) {
+
+		                //get all role ids except user role
+		                $all_admin_role_ids = Role::where('name', '!=', 'user')->pluck('id');
+
+		                //detach all previous admin roles - Pass along an array of role IDs
+						$user->roles()->detach($all_admin_role_ids);
+
+						//current date
+						$now = date('Y-m-d H:i:s');
+		                
+		                //attach new admin roles
+		                $i = 0;
+
+		                foreach ($role_ids as $role_id) {
+			                // create role user
+					        $roleUserData = [
+					            'team_id' => $team_ids[$i],
+			                	'user_id' => $user->id,
+			                	'role_id' => $role_id,
+			                	'user_type' => 'App\User',
+			                	'created_by' => $user_id,
+			                	'updated_by' => $user_id,
+					            'updated_at' => $now,
+			                	'created_at' => $now
+					        ];
+
+					        $roleUser = RoleUser::create($roleUserData);
+
+					        $i++;
+
+					    }
+					    //end attach new roles
+
 		            }
 		            
 		        } 
@@ -150,6 +185,7 @@ class UserUpdate
         }        
 
 	}
+
 
 	/*get errors*/
 	public function getErrors()

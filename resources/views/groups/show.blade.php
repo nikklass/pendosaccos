@@ -217,49 +217,78 @@
 
                       <div class="row">
                         <div class="col-sm-12">
-                            
-                            <div class="user_options_tall nicescroll-bar">
+                          
+                            @if (count($users))
 
-                                <ul class="list-icons">
-                                    
-                                    @if(count($users))
+                              <table class="table">
+                                        
+                                  <thead>
 
-                                        @foreach ($users as $user)
-                                        <li class="mb-10">
-                                            
-                                            <i class="fa fa-genderless text-success mr-5"></i>
-                                            <strong>
-                                                {{ $user->phone_number }} 
-                                            </strong>
-                                            &nbsp; - &nbsp; 
-                                            <span>
-                                              <a href="{{ route('users.show', $user->id) }}" class="btn-link">
-                                                {{ $user->first_name }} 
-                                                &nbsp;
-                                                {{ $user->last_name }}
-                                              </a>
-                                            </span>
+                                      <tr>
+                                          <th width="10%">ID</th>
+                                          <th width="25%">Full Names</th>
+                                          <th class="text-right" width="25%">Balance</th>
+                                          <th width="30%">Created At</th>
+                                          <th width="10%"></th>
+                                      </tr>
 
-                                        </li>
-                                        @endforeach
+                                  </thead>
+                              
+                                  <tbody>
+                                      
+                                      @foreach ($users as $user_account)
 
-                                    @else
+                                        <tr>
 
-                                        <p class="mb-20">
-                                            There are no members in this group
-                                        </p>
+                                          <td>
+                                            {{ $user_account->user->id }}
+                                          </td>
 
-                                    @endif
+                                          <td>
+                                             <a href="{{ route('member-accounts.show', $user_account->user->id) }}" class="btn-link">
+                                               {{ $user_account->user->first_name }} 
+                                               {{ $user_account->user->last_name }} 
+                                                <em>({{ $user_account->role->display_name }})</em>
+                                             </a>
+                                          </td>
+                                          
+                                          <td align="right" class="text-success">
+                                            {{ format_num($user_account->account_balance) }}
+                                          </td>
 
-                                </ul>
+                                          <td>
+                                            {{ formatFriendlyDate($user_account->created_at) }}
+                                          </td>
 
-                                <hr>
+                                          <td>
+                                            <a href="{{ route('member-accounts.show', $user_account->user->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
+                                                  <i class="zmdi zmdi-eye"></i> 
+                                                 </a>
+                                          </td>
 
-                                <div class="text-center mb-15">
-                                   {{ $users->links() }}
-                                </div> 
+                                        </tr>
+                                        
+                                      @endforeach
 
-                            </div>
+                                      <tr>
+                                        <td colspan="5">
+                                          <div class="text-center mt-20">
+                                             {{ $users->links() }}
+                                          </div> 
+                                        </td>
+                                      </tr>
+                                      
+                                  </tbody>
+
+                              </table>
+
+                            @else
+                              
+                              <p class="mb-20">
+                                Group has no members
+                              </p>
+
+                            @endif
 
                         </div>
                       </div>

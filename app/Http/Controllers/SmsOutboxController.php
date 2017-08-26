@@ -2,28 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
-use App\Group;
-use App\SmsOutbox;
+use App\RoleUser;
 use App\ScheduleSmsOutbox;
+use App\SmsOutbox;
+use App\Team;
 use App\User;
-use Session;
+use App\Role;
 use Excel;
-
-use Illuminate\Http\Request;
 use GuzzleHttp\Psr7\Request as GuzzleRequest;
+use Illuminate\Http\Request;
+use Session;
 
 class SmsOutboxController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * Display a listing of the resource.
@@ -76,50 +67,52 @@ class SmsOutboxController extends Controller
         //get logged in user
         $user = auth()->user();
 
+        //get user accounts, with user roles only
+        $user_role_id = Role::where('name', 'user')->pluck('id');
+
         $userCompany = User::where('id', $user->id)
-            ->with('company')
             ->first();
 
         //if user is superadmin, show all companies, else show a user's companies
-        $companies = [];
-        $company_ids = [];
+        $teams = [];
+        $team_ids = [];
         if ($user->hasRole('superadministrator')){
-            $company_ids = Company::all()->pluck('id');
-            $companies = Company::all();
+            $team_ids = Team::all()->pluck('id');
+            $teams = Team::all();
         } else if ($user->hasRole('administrator')) {
-            if ($user->company) {
-                $company_ids[] = $user->company->id;
-                $companies[] = $user->company;
-            }
+            $team_ids = $user->teams->pluck('id');
+            $team_ids = getAdminGroupIds($team_ids, 'create-bulk-sms');
         }
+        dd($team_ids);
 
         //get company smsoutbox
         $users = [];
         $groups = [];
 
-        if ($company_ids) {
+        if ($team_ids) {
         
-            $smsoutboxes = SmsOutbox::whereIn('company_id', $company_ids)
+            $smsoutboxes = SmsOutbox::whereIn('team_id', $team_ids)
                     ->orderBy('id', 'desc')
-                    ->with('company')
                     ->with('user')
                     ->get();
 
-            $groups = Group::whereIn('company_id', $company_ids)
+            $groups = Team::whereIn('id', $team_ids)
                     ->orderBy('id', 'desc')
-                    ->with('company')
                     ->get();
 
-            $users = User::whereIn('company_id', $company_ids)
+            $users = RoleUser::whereIn('team_id', $team_ids)
+                    ->where('role_id', $user_role_id)
+                    ->where('team_id', '!=', '1')
                     ->orderBy('id', 'desc')
-                    ->with('company')
                     ->get();
 
         }
 
+        //dd($users);
+
         //get bulk sms data
         $bulk_sms_data = getBulkSMSData($user->id); 
-        //dd($bulk_sms_data);
+        dd($bulk_sms_data);
         
         if (!$bulk_sms_data['error']) {
             $default_source = $bulk_sms_data['default_source'];
@@ -133,12 +126,8 @@ class SmsOutboxController extends Controller
         $userCompany->sms_balance = format_num($sms_balance, 0);
         //dd($bulk_sms_data, $user);
 
-        return view('smsoutbox.create')
-               ->withSmsOutboxes($smsoutboxes)
-               ->withCompanies($companies)
-               ->withGroups($groups)
-               ->withUser($userCompany)
-               ->withUsers($users);
+        return view('smsoutbox.create', compact('smsOutboxes', 'teams', 'users'))
+               ->withUser($userCompany);
 
     }
 

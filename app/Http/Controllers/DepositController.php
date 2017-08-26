@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Deposit;
 use App\Group;
+use App\RoleUser;
 use App\Services\Deposit\DepositStore;
 use App\Services\Deposit\DepositUpdate;
 use App\User;
@@ -18,15 +19,6 @@ use Session;
 
 class DepositController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
      * 
@@ -34,12 +26,9 @@ class DepositController extends Controller
      */
     public function index(Request $request)
     {
-        
-        //dd($request);
-        $thedate = Carbon::now('Africa/Nairobi')->local;
-        $offset = Carbon::createFromTimestamp(0)->offsetHours;
 
-        //dd($thedate, $offset);
+        //set page permissions
+        $permissions = array('read-deposit', 'update-deposit', 'delete-deposit');
 
         //get logged in user
         $auth_user = auth()->user();
@@ -47,34 +36,56 @@ class DepositController extends Controller
         $search = $request->search;
         $search_text = $request->search_text;
 
-        //if user is superadmin, show all deposits, else show a group's deposits
+        //if user is superadmin, show all deposits and user accounts, 
+        //else show deposits as necessary
         $deposits = [];
+        $users = [];
+
         if ($auth_user->hasRole('superadministrator')){
             
+            //get deposits
             $deposits = Deposit::with('user');
-            $users = User::orderBy('first_name', 'asc')->get();
-
-        } else if ($auth_user->hasRole('administrator')) {
-            
-            if ($auth_user->group_id) {
-                $deposits = Deposit::with('user')
-                        ->where("group_id", $auth_user->group_id);
-            }
-            $users = User::where('group_id', $auth_user->group_id)
-                    ->orderBy('first_name', 'asc')
-                    ->get();
+            //get user accounts
+            $users = RoleUser::all();
 
         } else {
             
-            $deposits = Deposit::where("user_id", $auth_user->id)
-                        ->with('user');
-            $users = User::where('id', $auth_user->id)
-                    ->orderBy('first_name', 'asc')
-                    ->get();
+            //get current user group/ team ids
+            $team_ids = $auth_user->teams->pluck('id');
+            $team_ids = $team_ids->unique('id');
 
-        }
+            //find current user permissions in above groups/ teams on deposits model??
+            $team_ids = getAdminGroupIds($team_ids, $permissions); 
 
-        //search params
+            //get current user's account ids
+            $user_account_ids = RoleUser::where('user_id', $auth_user->id)->pluck('id');
+
+            //get group user ids           
+            if (count($team_ids)) {
+
+                //get team users deposits
+                $deposits = Deposit::whereIn("team_id", $team_ids)
+                        ->orWhereIn("user_id", $user_account_ids); 
+
+                //get team user accounts
+                $users = RoleUser::whereIn('team_id', $team_ids) 
+                        ->orWhere('user_id', $auth_user->id);                
+
+            } else {
+                
+                //get current user deposits using account ids
+                $deposits = Deposit::whereIn("user_id", $user_account_ids);
+
+                $users = RoleUser::where('user_id', $auth_user->id);
+
+            }
+
+            //get user accounts
+            $users = $users->get();
+
+        } 
+
+        //search params - for filtering records based on search criteria
         if ($search) {
             
             $start_at = $request->start_at;
@@ -96,9 +107,11 @@ class DepositController extends Controller
             }
 
         }
+        //end search params 
 
-        $deposits = $deposits->orderBy('id', 'desc')
-                        ->paginate(10);
+        $deposits = $deposits->paginate(10);
+
+        //dd($deposits, $users);
 
         //return view with appended url params 
         return view('deposits.index', [
@@ -174,12 +187,24 @@ class DepositController extends Controller
     public function show($id)
     {
         
-        //get details for this Deposit
-        $deposit = Deposit::where('id', $id)
-                 ->with('user')
-                 ->first();
-        
-        return view('deposits.show', compact('deposit'));
+        $permissions = ['read-deposit'];
+        $team_ids = [];
+        //get the deposit/ team id
+        $deposit = Deposit::findOrFail($id);
+        $team_id = $deposit->team_id;
+        $team_ids[] = $team_id;
+        //get the item owner/ user id
+        $item_user_id = $deposit->user->user->id;
+
+        //does user have read permissions? if no error returns...
+        if (!isAdminGroupIdsError($team_ids, $permissions, $item_user_id)){
+            
+            //show details for this Deposit
+            return view('deposits.show', compact('deposit'));
+
+        } else {
+            abort(404);
+        }
 
     }
 
@@ -192,11 +217,24 @@ class DepositController extends Controller
     public function edit($id)
     {
         
-        $deposit = Deposit::where('id', $id)
-                 ->with('user')
-                 ->first();
-        
-        return view('deposits.edit', compact('deposit'));
+        //is owner allowed to perform action?
+        $is_owner_allowed = false;
+        $permissions = ['update-deposit'];
+        $team_ids = [];
+        //get the deposit/ team id
+        $deposit = Deposit::findOrFail($id);
+        $team_id = $deposit->team_id;
+        $team_ids[] = $team_id;
+
+        //does user have edit permissions?
+        if (!isAdminGroupIdsError($team_ids, $permissions, $is_owner_allowed)){
+            
+            //show edit details for this Deposit
+            return view('deposits.edit', compact('deposit'));
+
+        } else {
+            abort(404);
+        }
 
     }
 
@@ -210,23 +248,35 @@ class DepositController extends Controller
     public function update(Request $request, $id, DepositUpdate $depositUpdate)
     {
         
-        $this->validate($request, [
-            'amount' => 'required',
-        ]);
+        $permissions = ['update-deposit'];
+        $team_ids = [];
+        //get the deposit/ team id
+        $deposit = Deposit::findOrFail($id);
+        $team_id = $deposit->team_id;
+        $team_ids[] = $team_id;
 
-        if (!$depositUpdate->checkData($request))
-        {
-            $errors[] = $depositUpdate->getErrors();
-            return redirect()->back()->withInput()->withErrors($errors);
-        }
+        //does user have edit permissions?
+        if (!isAdminGroupIdsError($team_ids, $permissions)){
+            
+            $this->validate($request, [
+                'amount' => 'required',
+            ]);
 
-        //if all is ok, update item
-        $deposit = $depositUpdate->updateItem($request, $id);
+            if (!$depositUpdate->checkData($request))
+            {
+                $errors[] = $depositUpdate->getErrors();
+                return redirect()->back()->withInput()->withErrors($errors);
+            }
 
-        $message = config('constants.success.update');
-        Session::flash('success', sprintf($message, "Deposit"));
+            //if all is ok, update item
+            $deposit = $depositUpdate->updateItem($request, $id);
 
-        return redirect()->route('deposits.show', $deposit->id);
+            $message = config('constants.success.update');
+            Session::flash('success', sprintf($message, "Deposit"));
+
+            return redirect()->route('deposits.show', $deposit->id);
+
+        } 
 
     }
 

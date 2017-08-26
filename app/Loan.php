@@ -1,10 +1,11 @@
 <?php
 
 namespace App;
+use App\Group;
 use App\LoanArchive;
 use App\LoanType;
-use App\Group;
 use App\Repayment;
+use App\RoleUser;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,8 @@ class Loan extends Model
     /*one to many relationship*/
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(RoleUser::class, 'user_id', 'id');
+        //class, foreign key, local key
     }
 
     /*one to many relationship*/

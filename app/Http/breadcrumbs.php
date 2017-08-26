@@ -1,12 +1,13 @@
 <?php
 
 use App\Deposit;
-use App\Group;
 use App\Loan;
 use App\Permission;
 use App\Repayment;
 use App\Role;
+use App\RoleUser;
 use App\SmsOutbox;
+use App\Team;
 use App\User;
 use App\Withdrawal;
 
@@ -63,17 +64,17 @@ Breadcrumbs::register('groups.create', function($breadcrumbs)
 // Home > Groups > Show Group
 Breadcrumbs::register('groups.show', function($breadcrumbs, $id)
 {
-    $group = Group::findOrFail($id);
+    $group = Team::findOrFail($id);
     $breadcrumbs->parent('groups');
-    $breadcrumbs->push('Showing Group - ' . $group->name, route('groups.show', $group->id));
+    $breadcrumbs->push('Showing Group - ' . $group->display_name, route('groups.show', $group->id));
 });
 
 // Home > Groups > Edit Group
 Breadcrumbs::register('groups.edit', function($breadcrumbs, $id)
 {
-    $group = Group::findOrFail($id);
+    $group = Team::findOrFail($id);
     $breadcrumbs->parent('groups');
-    $breadcrumbs->push('Edit Group - ' . $group->name, route('groups.edit', $group->id));
+    $breadcrumbs->push('Edit Group - ' . $group->display_name, route('groups.edit', $group->id));
 });
 
 /******** END GROUPS ROUTES ********/
@@ -308,14 +309,14 @@ Breadcrumbs::register('users', function($breadcrumbs)
 Breadcrumbs::register('users.create', function($breadcrumbs)
 {
     $breadcrumbs->parent('users');
-    $breadcrumbs->push('Create New User', route('users.create'));
+    $breadcrumbs->push('Create New Member', route('users.create'));
 });
 
 // Home > Users > Create Bulk User Accounts
 Breadcrumbs::register('bulk-users.create', function($breadcrumbs)
 {
     $breadcrumbs->parent('users');
-    $breadcrumbs->push('Create Bulk User Accounts', route('bulk-users.create'));
+    $breadcrumbs->push('Create Bulk Members', route('bulk-users.create'));
 });
 
 // Home > Users > Show User
@@ -324,7 +325,7 @@ Breadcrumbs::register('users.show', function($breadcrumbs, $id)
     $user = User::findOrFail($id);
     $full_names = $user->first_name . ' ' . $user->last_name;
     $breadcrumbs->parent('users');
-    $breadcrumbs->push("Displaying User - " . $full_names, route('users.show', $user->id));
+    $breadcrumbs->push("Displaying Member - " . $full_names, route('users.show', $user->id));
 });
 
 // Home > Users > Edit User
@@ -333,9 +334,55 @@ Breadcrumbs::register('users.edit', function($breadcrumbs, $id)
     $user = User::findOrFail($id);
     $full_names = $user->first_name . ' ' . $user->last_name;
     $breadcrumbs->parent('users');
-    $breadcrumbs->push("Edit User - " . $full_names, route('users.edit', $user->id));
+    $breadcrumbs->push("Edit Member - " . $full_names, route('users.edit', $user->id));
+});
+
+/******** END USERS ROUTES ********/
+
+
+
+/******** MEMBERS ROUTES ********/
+
+// Home > Members
+Breadcrumbs::register('member-accounts', function($breadcrumbs)
+{
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Member Accounts', route('member-accounts.index'));
+});
+
+//Home > Member Accounts > Create New Member
+
+Breadcrumbs::register('member-accounts.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('member-accounts');
+    $breadcrumbs->push('Create New Member Account', route('member-accounts.create'));
+});
+
+// Home > Member Accounts > Create Bulk Member Accounts
+Breadcrumbs::register('bulk-member-accounts.create', function($breadcrumbs)
+{
+    $breadcrumbs->parent('member-accounts');
+    $breadcrumbs->push('Create Bulk Member Accounts', route('bulk-member-accounts.create'));
+});
+
+// Home > Member Accounts > Show Member
+Breadcrumbs::register('member-accounts.show', function($breadcrumbs, $id)
+{
+    $member = RoleUser::findOrFail($id);
+    $full_names = $member->user->first_name . ' ' . $member->user->last_name;
+    $breadcrumbs->parent('member-accounts');
+    $breadcrumbs->push("Displaying Member Account - " . $full_names, route('member-accounts.show', $member->user->id));
+});
+
+// Home > Member Accounts > Edit Member
+Breadcrumbs::register('member-accounts.edit', function($breadcrumbs, $id)
+{
+    $member = RoleUser::findOrFail($id);
+    $full_names = $member->user->first_name . ' ' . $member->user->last_name;
+    $breadcrumbs->parent('member-accounts');
+    $breadcrumbs->push("Edit Member Account - " . $full_names, route('member-accounts.edit', $member->user->id));
 });
 
 
-/******** END USERS ROUTES ********/
+/******** END MEMBERS ROUTES ********/
 

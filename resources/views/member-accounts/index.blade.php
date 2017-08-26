@@ -16,15 +16,15 @@
           <div class="col-md-6 col-sm-6 col-xs-12">
             <h5 class="txt-dark">
                 Manage Members 
-                @if ((!Auth::user()->hasRole('superadministrator')) && $user->group)
-                  &nbsp; - &nbsp; ({{ $user->group->name }})</th>
+                @if ((!Auth::user()->hasRole('superadministrator')) && $user->team)
+                  &nbsp; - &nbsp; ({{ $user->team->name }})</th>
                 @endif
             </h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-md-6 col-xs-12">
 	            
-              {!! Breadcrumbs::render('users') !!}
+              {!! Breadcrumbs::render('member-accounts') !!}
 
           </div>
           <!-- /Breadcrumb -->
@@ -103,10 +103,16 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th width="20%">Full Names</th>
-                                      <th width="10%">Accounts</th>
-                                      <th width="25%">Groups</th>
-                                      <th width="15%">Phone</th>
+                                      <th width="15%">Full Names</th>
+                                      <th width="10%">Account No</th>
+                                      <th width="10%" class="text-right">Account Bal</th>
+                                      <th width="10%">Roles</th>
+                                      
+                                      @if (Auth::user()->hasRole('superadministrator'))
+                                      <th width="15%">Group</th>
+                                      @endif
+                                      
+                                      <th width="10%">Phone</th>
                                       <th width="15%">Created</th>
                                       <th width="15%">Actions</th>
                                    </tr>
@@ -117,34 +123,45 @@
 	                                   <tr>
 	                                      <td>
                                           <span class="txt-dark weight-500">
-                                            {{ $user->first_name }} &nbsp; {{ $user->last_name }}
+                                            {{ $user->user->first_name }} &nbsp; {{ $user->user->last_name }}
                                           </span>
                                         </td>
                                         <td>
                                           <span class="txt-dark weight-500">
-                                            {{ count($user->accounts) }}
+                                            {{ $user->account_number }}
                                           </span>
                                         </td>
-
+                                        <td class="text-right">
+                                          <span class="txt-dark weight-500">
+                                            {{ format_num($user->account_balance, 2) }}
+                                          </span>
+                                        </td>
+	                                      
                                         <td>
                                           <span class="txt-dark weight-500">
-                                            @if (count($user->accounts))
-                                              @foreach ($user->accounts as $user_account)
-
-                                                @if ($user_account->role->name == 'user')
-                                                  <a href="{{ route('groups.show', $user_account->team->id) }}">
-                                                      {{ $user_account->team->display_name }}
-                                                  </a>
-                                                @endif
-
+                                              @foreach ($user->user->roles as $role)
+                                                {{ $role->display_name }}
                                               @endforeach
-                                            @endif
                                           </span>
                                         </td>
+                                        
+                                        @if (Auth::user()->hasRole('superadministrator'))
+                                          
+                                          <td>
+                                            
+                                            <span class="txt-dark weight-500">
+                                                <a href="{{ route('groups.show', $user->team->id) }}">
+                                                  {{ $user->team->display_name }}
+                                                </a>
+                                            </span>
+
+                                          </td>
+                                        
+                                        @endif
 
 	                                      <td>
                                            <span class="txt-dark weight-500">
-                                            {{ $user->phone_number }}
+                                            {{ $user->user->phone_number }}
                                            </span>
                                         </td>
                                         
@@ -156,15 +173,15 @@
 	                                      <td>
 	                                       
 
-								             <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
+								             <a href="{{ route('member-accounts.show', $user->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
                               <i class="zmdi zmdi-eye"></i> 
                              </a>
 
-                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm btn-icon-anim btn-square">
+                             <a href="{{ route('member-accounts.edit', $user->id) }}" class="btn btn-primary btn-sm btn-icon-anim btn-square">
                               <i class="zmdi zmdi-edit"></i> 
                              </a>
 
-								             <a href="{{ route('users.destroy', $user->id) }}" class="btn btn-danger btn-sm btn-icon-anim btn-square">
+								             <a href="{{ route('member-accounts.destroy', $user->id) }}" class="btn btn-danger btn-sm btn-icon-anim btn-square">
 								             	<i class="zmdi zmdi-delete"></i> 
 								             </a>
 

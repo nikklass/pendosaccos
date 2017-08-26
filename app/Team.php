@@ -1,22 +1,34 @@
 <?php
 
 namespace App;
-use App\Deposit;
-use App\User;
-use App\Loan;
-use App\Withdrawal;
-use Illuminate\Database\Eloquent\Model;
 
-class Group extends Model
+use App\Deposit;
+use App\Loan;
+use App\Role;
+use App\User;
+use App\Withdrawal;
+use Laratrust\LaratrustTeam;
+
+class Team extends LaratrustTeam
 {
+    
     protected $fillable = [
         'name', 'description', 'physical_address', 'box', 'phone', 'email', 'latitude', 'longitude'
     ];
 
-    /*one to many relationship*/
-    public function users()
+    
+    /*team users*/
+    public function users() {
+        return $this->hasMany(RoleUser::class, 'team_id', 'id');
+        //class, foreign key, local key
+    }
+
+    /*many to many relationship*/
+    public function roles()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Role::class, 'role_user', 'team_id', 'role_id')
+            ->withPivot('account_balance', 'account_number', 'account_type_id', 'created_by', 'updated_by', 'created_at', 'updated_at')
+            ->withTimestamps();
     }
 
     /*withdrawals relationship*/
@@ -35,6 +47,6 @@ class Group extends Model
     public function loans()
     {
         return $this->hasMany(Loan::class);
-    }
+    } 
 
 }

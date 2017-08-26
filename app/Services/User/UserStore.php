@@ -95,9 +95,6 @@ class UserStore
 		            'first_name' => $data->first_name,
 		            'last_name' => $data->last_name,
 		            'email' => $data->email,
-		            'group_id' => $data->group_id,
-		            'account_number' => $data->account_number,
-		            'account_balance' => $account_balance,
 		            'gender' => $data->gender,
 		            'phone_number' => $phone_number,
 		            'password' => bcrypt($password),
@@ -107,6 +104,16 @@ class UserStore
 		        ];
 
 		        $user = User::create($userData);
+
+		        //attach user to group
+		        $user->groups()->attach($data->group_id, 
+		        				[
+		        				 'account_balance' => $account_balance, 
+		        				 'account_number' => $data->account_number, 
+		        				 'account_type_id' => "", 
+		        				 'created_by' => $user_id, 
+		        				 'updated_by' => $user_id
+		        				]);
 
             DB::commit();  
 

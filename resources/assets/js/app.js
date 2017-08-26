@@ -1,24 +1,24 @@
 
+import Vue from 'vue';
+//import VueRouter from 'vue-router';
+import axios from 'axios';
+
+
 import 'jquery';
 
 window.$ = window.jQuery = require('jquery');
-//window.swal = require('sweetalert');
 
 require('./bootstrap');
 
 //import App from './App.vue';
 
-import Vue from 'vue';
-//import VueRouter from 'vue-router';
-import axios from 'axios';
+
+
 //import VueAxios from 'vue-axios'; 
 //import { routes } from './routes/index.js';
 //import store from './store/store';
 import moment from 'moment';
-//import VeeValidate from 'vee-validate';
-//import VueTimeago from 'vue-timeago';
-//import { mixin as clickaway } from 'vue-clickaway';
-//import _ from 'lodash';
+
 import Form from './core/Form';
 import { HTTP } from './common/http-common';
 
@@ -42,46 +42,11 @@ window.Vue = Vue;
 //window.axios = axios; 
 window.Form = Form;
 window.HTTP = HTTP;
-//window._ = _;
-
-//Vue.use(VueRouter); 
-//Vue.use(VeeValidate); 
-
-//timeago
-/*Vue.use(VueTimeago, {
-    name: 'timeago', // component name, `timeago` by default
-    locale: 'en-US',
-    locales: {
-        'en-US': require('vue-timeago/locales/en-US.json')
-    }
-});
 
 
-Vue.component('app', App); */
+Vue.component('app', App); 
 
-//start create date filters
-/*Vue.filter('createdDate', (value) => {
-    return moment(value).format('h:mm a');
-});
-
-Vue.filter('createdDate2', (value) => {
-    return moment(value).format('MMM Do h:mm a');
-});
-
-Vue.filter('createdDateWeek', (value) => {
-    return moment(value).format('MMM Do');
-});
-
-Vue.filter('createdDateWeeks', (value) => {
-    return moment(value).format('MMM Do, YYYY');
-});
-//end create date filters
-
-//capitalize filter
-Vue.filter('capitalize', (value) => {
-    return value.toUpperCase();
-});*/
-//end capitalize filter
+Vue.component('searchListItems', require('./components/searchListItems.vue'));
 
 
 //init vue router
@@ -134,8 +99,6 @@ Vue.filter('capitalize', (value) => {
 
 /*new Vue ({
 
-    el: "#app",
-    router,
-    store
+    el: "#app"
 
 });*/

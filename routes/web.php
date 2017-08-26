@@ -10,13 +10,33 @@ View::share('send_message_url', config('constants.routes.send_message_url'));
 View::share('create_user_url', config('constants.routes.create_user_url'));
 View::share('create_message_url', config('constants.routes.create_message_url'));
 
-
-Route::group(['middleware' => 'role:superadministrator|administrator|companyadministrator'], function() {
-
+//all logged in users routes
+Route::group(['middleware' => 'auth'], function() {
+	
 	Route::get('/', 'HomeController@index')->name('home');
 
+	//member account routes...
+	Route::resource('/member-accounts', 'MemberAccountController');
+
+	//withdrawals routes...
+	Route::resource('/withdrawals', 'WithdrawalController');
+	
+	//deposits routes...
+	Route::resource('/deposits', 'DepositController');
+
+	//repayments routes...
+	Route::resource('/repayments', 'RepaymentController');
+
+	//loans routes...
+	Route::resource('/loans', 'LoanController');
+
+	//logout route...
 	Route::post('logout', 'Auth\LoginController@logout')->name('logout'); 
 
+});
+
+//admins only routes
+Route::group(['middleware' => 'role:superadministrator|administrator|groupadministrator|manager'], function() {
 	
 	//export to excel data...
 	Route::get('excel/export-smsoutbox/{type}', 'ExcelController@exportOutboxSmsToExcel')->name('excel.export-smsoutbox');
@@ -38,9 +58,6 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	Route::get('/profile/{id}', 'ProfileController@indexId')->name('user.profile.id');
 	Route::get('/profile', 'ProfileController@index')->name('user.profile'); 
 
-	//role routes...
-	Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
-
 	//group routes...
 	Route::resource('/groups', 'GroupController');
 
@@ -50,34 +67,26 @@ Route::group(['middleware' => 'role:superadministrator|administrator|companyadmi
 	//schedule smsoutbox routes...
 	Route::resource('/scheduled-smsoutbox', 'ScheduleSmsOutboxController');
 
-	//withdrawals routes...
-	//Route::get('/withdrawals/search', 'WithdrawalController@index')->name('withdrawals.search');
-	Route::resource('/withdrawals', 'WithdrawalController');
-	
-	//deposits routes...
-	Route::resource('/deposits', 'DepositController');
-
-	//repayments routes...
-	Route::resource('/repayments', 'RepaymentController');
-
 	//accounts routes...
 	Route::resource('/accounts', 'AccountController');
-
-	//loans routes...
-	Route::resource('/loans', 'LoanController');
 
 	//mpesac2b routes...
 	Route::resource('/mpesa/mpesac2b', 'Mpesac2bController');
 
 });
 
-//superadmin routes
+//superadmin only routes
 Route::group(['middleware' => 'role:superadministrator'], function() {
+
 	//permission routes...
 	Route::resource('/permissions', 'PermissionController', ['except' => 'destroy']);
+
+	//role routes...
+	Route::resource('/roles', 'RoleController', ['except' => 'destroy']);
+
 });
 
-//superadmin and admin routes
+//guest only routes
 Route::group(['middleware' => 'guest'], function() {
 
 	// Authentication Routes...

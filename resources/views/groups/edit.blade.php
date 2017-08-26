@@ -3,7 +3,7 @@
 
 @section('title')
 
-    Edit Group - {{ $group->name }}
+    Edit Group - {{ $group->display_name }}
 
 @endsection
 
@@ -22,7 +22,7 @@
       <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6 col-xs-12">
-            <h5 class="txt-dark">Edit Group - {{ $group->name }}</h5>
+            <h5 class="txt-dark">Edit Group - {{ $group->display_name }}</h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-xs-12">
@@ -50,7 +50,7 @@
 
                                  <div class="mb-30">
                                     <h3 class="text-center txt-dark mb-10">
-                                        Edit Group - {{ $group->name }}
+                                        Edit Group - {{ $group->display_name }}
                                     </h3>
                                  </div>   
 
@@ -73,7 +73,7 @@
                                               class="form-control" 
                                               id="group_name" 
                                               name="group_name"
-                                              value="{{ $group->name }}">
+                                              value="{{ $group->display_name }}">
 
                                               <input 
                                                   type="hidden" 

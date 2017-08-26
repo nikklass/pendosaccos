@@ -1,9 +1,10 @@
 <?php
 
+use App\Group;
+use App\GroupUser;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
-use Faker\Factory as Faker;
 
 class LaratrustSeeder extends Seeder
 {
@@ -62,17 +63,27 @@ class LaratrustSeeder extends Seeder
             // Create default user for each role
             $user = \App\User::create([
                 'first_name' => ucwords(str_replace("_", " ", $key)),
-                'last_name' => ucwords(str_replace("_", " ", $key)),
+                //'last_name' => ucwords(str_replace("_", " ", $key)),
                 'phone_number' => "2547" . $faker->numberBetween(11,99) . $faker->numberBetween(100000,999999),
-                'account_number' => $faker->numberBetween(1000,99999),
-                'group_id' => $faker->numberBetween(1,5),
                 'email' => $key.'@pendo.co.ke',
                 'gender' => $faker->randomElement($array = array ('m','f')),
                 'api_token' => str_random(60),
                 'password' => bcrypt('123')
             ]);
 
-            $user->attachRole($role);
+            //get team id
+            $team_id = '1'; //$faker->numberBetween(2, 6);
+
+            $user->attachRole($role, $team_id);
+
+            /*$user_pivot = $user->groups()->where("groups.id", "=",$group_id)->withPivot("id")->first();
+            //if pivot table record exists, increment user account balance, else proceed
+            if ($user_pivot) {
+                $current_account_balance = $user_pivot->account_balance;
+                $before_balance = (float)$current_account_balance;
+                $amount = $current_account_balance + $amount;
+            }*/
+
 
         }
 

@@ -2,7 +2,7 @@
 
 @section('title')
 
-    Displaying User - {{ $user->first_name }} {{ $user->last_name }}
+    Displaying User - {{ $user->user->first_name }} {{ $user->user->last_name }}
 
 @endsection
 
@@ -15,12 +15,14 @@
        <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6 col-xs-12">
-            <h5 class="txt-dark">Displaying User - {{ $user->first_name }} {{ $user->last_name }}</h5>
+            <h5 class="txt-dark">
+              Displaying User - {{ $user->user->first_name }} {{ $user->user->last_name }}
+            </h5>
           </div>
           <!-- Breadcrumb -->
           <div class="col-sm-6 col-xs-12">
               
-              {!! Breadcrumbs::render('users.show', $user->id) !!}
+              {!! Breadcrumbs::render('member-accounts.show', $user->user->id) !!}
 
           </div>
           <!-- /Breadcrumb -->
@@ -57,9 +59,9 @@
                         </div>
                       </div>  
                       <h5 class="block mt-10 mb-5 weight-500 capitalize-font txt-danger">
-                          {{ $user->first_name }}
+                          {{ $user->user->first_name }}
                           &nbsp;
-                          {{ $user->last_name }}
+                          {{ $user->user->last_name }}
                       </h5>
 
                     </div>  
@@ -76,7 +78,7 @@
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
                                             <strong>Name:</strong> 
-                                            {{ $user->first_name }}&nbsp;{{ $user->last_name }}
+                                            {{ $user->user->first_name }}&nbsp;{{ $user->user->last_name }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -86,7 +88,7 @@
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Email:</strong>  
-                                            {{ $user->email }}
+                                            {{ $user->user->email }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -96,7 +98,7 @@
                                       <div class="user-data">
                                         <span class="name block">
                                             <strong>Phone:</strong> 
-                                            {{ $user->phone_number }}
+                                            {{ $user->user->phone_number }}
                                         </span>
                                       </div>
                                       <div class="clearfix"></div>
@@ -106,7 +108,7 @@
                                       <div class="user-data">
                                         <span class="name block capitalize-font">
                                            <strong>Gender:</strong> 
-                                           @if ($user->gender == 'm')
+                                           @if ($user->user->gender == 'm')
                                               Male
                                            @else
                                               Female
@@ -152,13 +154,13 @@
             
             @if (Auth::user()->hasRole('superadministrator'))
             
-              @if ($user->group)
+              @if ($user->team)
               <div class="panel panel-default card-view pa-0">
                 <div class="panel-wrapper collapse in">
                   <div  class="panel-body pb-0 ml-20 mr-20">
                       
                       <p class="mb-20">
-                          <h5>group</h5>
+                          <h5>Group</h5>
                       </p>
 
                       <hr>
@@ -166,7 +168,7 @@
                       <div class="follo-data mb-20">
                         <div class="user-data">
                           <span class="name block capitalize-font">
-                             <strong>{{ $user->group->name }}</strong> 
+                             <strong>{{ $user->team->name }}</strong> 
                           </span>
                         </div>
                         <div class="clearfix"></div>
@@ -191,24 +193,14 @@
                       <div class="row">
                         <div class="col-sm-12">
                           
-                            @if ($user_roles)
+                            @if ($user->roles)
 
                               <ul class="list-icons mb-20">
-                                  @foreach ($user_roles as $role)
+                                  @foreach ($user->roles as $role)
                                     <li class="mt-10">
-                                        
                                         <i class="fa fa-genderless text-success mr-5"></i>
-                                        
-                                        {{ $role->role->display_name }} 
-
-                                        &nbsp;&nbsp;
-                                        - 
-                                        &nbsp;&nbsp;
-
-                                        <a href="{{ route('groups.show', $role->team->id) }}">
-                                          {{ $role->team->display_name }}
-                                        </a>
-
+                                        {{ $role->display_name }} 
+                                        <em class="ml-15"> ({{ $role->description }})</em>
                                     </li>
                                   @endforeach
                               </ul>
@@ -236,7 +228,7 @@
                   <div  class="panel-body pb-0 ml-20 mr-20">
                       
                       <p class="mb-20">
-                          <h5>Member Accounts ({{$user_accounts->total()}})</h5>
+                          <h5>Member Loans ({{$user->loans}})</h5>
                       </p>
 
                       <hr>
@@ -244,7 +236,7 @@
                       <div class="row">
                       <div class="col-sm-12">
                         
-                          @if (count($user_accounts))
+                          @if (count($user->loans))
 
                             <table class="table">
                                       
@@ -262,16 +254,14 @@
                             
                                 <tbody>
                                     
-                                    @foreach ($user_accounts as $user_account)
+                                    @foreach ($user->loans as $user_account)
 
                                       <tr>
                                         <td>
                                           {{ $user_account->id }}
                                         </td>
                                         <td>
-                                           <a href="{{ route('groups.show', $user_account->team->id) }}">
-                                            {{ $user_account->team->display_name }}
-                                           </a>
+                                          {{ $user_account->display_name }}
                                         </td>
                                         <td align="right" class="text-success">
                                           {{ format_num($user_account->account_balance) }}
@@ -280,7 +270,7 @@
                                           {{ formatFriendlyDate($user_account->created_at) }}
                                         </td>
                                         <td>
-                                          <a href="{{ route('member-accounts.show', $user_account->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
+                                          <a href="{{ route('loans.show', $user_account->id) }}" class="btn btn-info btn-sm btn-icon-anim btn-square">
                                                 <i class="zmdi zmdi-eye"></i> 
                                                </a>
                                         </td>
@@ -321,7 +311,7 @@
                 <div  class="panel-body pb-0 ml-20 mr-20">
                     
                     <p class="mb-20">
-                        <h5>Loans</h5>
+                        <h5>Member Loans</h5>
                     </p>
 
                     <hr>

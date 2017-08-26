@@ -22,7 +22,7 @@
                                 <div class="col-xs-8 text-center pl-0 pr-0 data-wrap-left">
                                    <span class="txt-light block counter">
                                       <span class="counter-anim">
-                                        Ksh {{ format_num($groups_balance->account_balance) }}
+                                         {{ formatCurrency($teams_balance->account_balance) }}
                                       </span>
                                    </span>
                                    <span class="weight-500 uppercase-font txt-light block font-13">
@@ -49,7 +49,7 @@
                                 <div class="col-xs-8 text-center pl-0 pr-0 data-wrap-left">
                                    <span class="txt-light block counter">
                                       <span class="counter-anim">
-                                        Ksh {{ format_num($groups_loans->loan_balance) }}
+                                         {{ formatCurrency($teams_loans->loan_balance) }}
                                       </span>
                                    </span>
                                    <span class="weight-500 uppercase-font txt-light block">
@@ -76,7 +76,7 @@
                                 <div class="col-xs-8 text-center pl-0 pr-0 data-wrap-left">
                                     <span class="txt-light block counter">
                                       <span class="counter-anim">
-                                        Ksh {{ format_num($month_deposits->amount) }}
+                                         {{ formatCurrency($month_deposits->amount) }}
                                       </span>
                                     </span>
                                     <span class="weight-500 uppercase-font txt-light block">
@@ -168,8 +168,14 @@
                        <hr class="light-grey-hr row mt-10 mb-15"/>
                        <div class="label-chatrs">
                           <div class="">
-                             <span class="clabels clabels-lg inline-block bg-blue mr-10 pull-left"></span>
-                             <span class="clabels-text font-12 inline-block txt-dark capitalize-font pull-left"><span class="block font-15 weight-500 mb-5">44.46% organic</span><span class="block txt-grey">356 visits</span></span>
+                               <span class="clabels clabels-lg inline-block bg-blue mr-10 pull-left"></span>
+                               <span class="clabels-text font-12 inline-block txt-dark capitalize-font pull-left">
+                                  <span class="block font-15 weight-500 mb-5">
+                                    44.46% 
+                                    Deposits
+                                  </span>
+                                  <span class="block txt-grey">356 Deposits</span>
+                               </span>
                              <div id="sparkline_1" class="pull-right" style="width: 100px; overflow: hidden; margin: 0px auto;"></div>
                              <div class="clearfix"></div>
                           </div>
@@ -177,9 +183,19 @@
                        <hr class="light-grey-hr row mt-10 mb-15"/>
                        <div class="label-chatrs">
                           <div class="">
-                             <span class="clabels clabels-lg inline-block bg-green mr-10 pull-left"></span>
-                             <span class="clabels-text font-12 inline-block txt-dark capitalize-font pull-left"><span class="block font-15 weight-500 mb-5">5.54% Refrral</span><span class="block txt-grey">36 visits</span></span>
-                             <div id="sparkline_2" class="pull-right" style="width: 100px; overflow: hidden; margin: 0px auto;"></div>
+                              <span class="clabels clabels-lg inline-block bg-green mr-10 pull-left"></span>
+                              <span class="clabels-text font-12 inline-block txt-dark capitalize-font pull-left">
+                                
+                                <span class="block font-15 weight-500 mb-5">
+                                  5.54% 
+                                  Withdrawals
+                                </span>
+                                <span class="block txt-grey">36 Withdrawals</span>
+
+                              </span>
+                              <div id="sparkline_2" class="pull-right" style="width: 100px; overflow: hidden; margin: 0px auto;">
+                                
+                              </div>
                              <div class="clearfix"></div>
                           </div>
                        </div>
@@ -187,7 +203,15 @@
                        <div class="label-chatrs">
                           <div class="">
                              <span class="clabels clabels-lg inline-block bg-yellow mr-10 pull-left"></span>
-                             <span class="clabels-text font-12 inline-block txt-dark capitalize-font pull-left"><span class="block font-15 weight-500 mb-5">50% Other</span><span class="block txt-grey">245 visits</span></span>
+                               <span class="clabels-text font-12 inline-block txt-dark capitalize-font pull-left">
+
+                                 <span class="block font-15 weight-500 mb-5">
+                                    50% 
+                                    Loans
+                                 </span>
+                                 <span class="block txt-grey">245 loans</span>
+
+                             </span>
                              <div id="sparkline_3" class="pull-right" style="width: 100px; overflow: hidden; margin: 0px auto;"></div>
                              <div class="clearfix"></div>
                           </div>
@@ -235,15 +259,15 @@
                              <table class="table table-hover mb-0">
                                 <thead>
                                    <tr>
-                                      <th width="35%">Name</th>
-                                      <th width="25%">Phone Number</th>
-                                      <th width="20%">Group</th>
+                                      <th width="30%">Name</th>
+                                      <th width="20%">Phone</th>
+                                      <th width="30%">Group</th>
                                       <th width="20%">Created</th>
                                    </tr>
                                 </thead>
                                 <tbody>
                                    
-                                   @foreach ($users as $user) 
+                                   @foreach ($new_users as $user) 
                                    <tr>
 
                                       <td>
@@ -259,16 +283,12 @@
                                       </td>
 
                                       <td>
-                                        @if ($user->group)
-                                        <span class="txt-dark weight-500">
-                                            {{ $user->group->name }}
-                                        </span>
-                                        @endif
+                                        {{ $user->display_name }}
                                       </td>
                                       
                                       <td>
                                          <span class="txt-dark weight-500">
-                                           {{ $user->created_at->toFormattedDateString() }}
+                                          {{ formatFriendlyDate($user->created_at) }}
                                          </span>
                                       </td>
                                       
@@ -329,33 +349,33 @@
                                 </thead>
                                 <tbody>
                                    
-                                   @foreach ($groups as $group) 
+                                   @foreach ($teams as $team) 
 
                                    <tr>
 
                                       <td>
                                         <span class="txt-dark weight-500">
-                                          {{ $group->name }}
+                                          {{ $team->name }}
                                         </span>
                                       </td>
 
                                       <td>
                                         <span class="txt-dark weight-500">
-                                          {{ $group->phone_number }}
+                                          {{ $team->phone_number }}
                                         </span>
                                       </td>
 
                                       @if (Auth::user()->hasRole('superadministrator'))
                                         <td>
-                                          @if ($group->name)
-                                            {{ $group->name }}
+                                          @if ($team->name)
+                                            {{ $team->name }}
                                           @endif
                                         </td>
                                       @endif
                                       
                                       <td>
                                          <span class="txt-dark weight-500">
-                                           {{ $group->created_at->toFormattedDateString() }}
+                                           {{ $team->created_at->toFormattedDateString() }}
                                          </span>
                                       </td>
                                       

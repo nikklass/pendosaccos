@@ -17,17 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Session;
 
-class UserController extends Controller
+class MemberAccountController extends Controller
 {
-    
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
 
     /**
      * Display a listing of the resource.
@@ -37,29 +28,29 @@ class UserController extends Controller
         
         $user = auth()->user();
 
-        //if user is superadmin, show all groups, else show a user's groups
-        $groups = [];
+        //if user is superadmin, show all groups, else show a user's teams
+        $teams = [];
         if ($user->hasRole('superadministrator')){
-            $groups = Team::all()->pluck('id');
+
+            $teams = Team::all()->pluck('id');
+
         } else if ($user->hasRole('administrator')) {
+
             if ($user->teams) {
                 foreach ($user->teams as $team) {
-                    $groups[] = $team->id;
+                    $teams[] = $team->id;
                 }
+                
             }
-        }
-
-        //get group users
-        $users = [];
-
-        if ($groups) { 
-
-            $users = User::orderBy('id', 'desc')
-                    ->paginate(10);
 
         }
 
-        return view('users.index', compact('user', 'users'));
+        //get users
+        $users = RoleUser::whereIn('team_id', $teams)
+                ->orderBy('team_id', 'asc')
+                ->paginate(10);
+
+        return view('member-accounts.index', compact('user', 'users'));
 
     }
 
@@ -79,7 +70,7 @@ class UserController extends Controller
             $groups = $user->group;
         }
 
-        return view('users.create')
+        return view('member-accounts.create')
             ->withgroups($groups)
             ->withUser($usergroup);
 
@@ -124,30 +115,12 @@ class UserController extends Controller
     public function show($id)
     {
 
-        //get user object
-        $user = User::where('id', $id)
-                ->with('roles')
-                ->first();
+        $user = RoleUser::where('id', $id)->first();
 
-        //get user accounts, with user roles only
-        $user_role_id = Role::where('name', 'user')->pluck('id');
-
-        $user_accounts = $user->accounts()
-                        ->where('role_id', $user_role_id)
-                        ->orderBy('id', 'desc')
-                        ->paginate(10);
-
-        $user_roles = $user->accounts()
-                        ->where('role_id', '!=', $user_role_id)
-                        ->get();
-
-        //dd($user_accounts);
-
-        //get user loans
         $loans = $user->loans()->orderBy('id', 'desc')
                         ->paginate(10);
         
-        return view('users.show', compact('user', 'loans', 'user_accounts', 'user_roles'));
+        return view('member-accounts.show', compact('user', 'loans'));
 
     }
 
@@ -159,30 +132,21 @@ class UserController extends Controller
 
         $user = User::where('id', $id)
             ->with('roles')
+            ->with('teams')
             ->first();
 
-        //get all user account team ids
-        $user_account_team_ids = $user->accounts()->pluck('team_id');
-
-        //check user permission on teams/ groups
-        $filtered_team_ids = getAdminGroupIds($user_account_team_ids, 'edit-user');
-
-        //get user accounts
-        $user_accounts = $user->accounts()
-                        ->whereIn('team_id', $filtered_team_ids)
-                        //->groupBy('team_id')
-                        ->paginate(10);
-        
-        $user_accounts_unique = $user_accounts->unique('team_id');
-
-        //$unique->values()->all();
-
-        //dd($user_accounts);
+        //if user is superadmin, show all groups, else show a user's groups
+        $groups = [];
+        if (auth()->user()->hasRole('superadministrator')){
+            $groups = Team::orderBy('name', 'asc')->get();
+        } else {
+            $groups[] = $user->group;
+        }
 
         //get all roles
         $roles = Role::all();
 
-        return view("users.edit", compact('user', 'roles', 'user_accounts', 'user_accounts_unique'));
+        return view("member-accounts.edit", compact('user', 'roles', 'groups'));
 
     }
 
@@ -196,6 +160,7 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'sometimes|email|unique:users,email,'.$id,
+            'account_number' => 'required',
             'phone_number' => 'required|max:13'
         ]);
 
@@ -212,7 +177,7 @@ class UserController extends Controller
         $message = config('constants.success.update');
         Session::flash('success', sprintf($message, "User"));
 
-        return redirect()->route('users.show', $user->id);
+        return redirect()->route('member-accounts.show', $user->id);
 
     }
 
@@ -224,7 +189,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
         
-        return redirect('users.index');
+        return redirect('member-accounts.index');
     }
 
 

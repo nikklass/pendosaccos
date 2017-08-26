@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Group;
+use App\Team;
 use App\Loan;
 use App\User;
+use App\Role;
 use Session;
 
 class GroupController extends Controller
@@ -31,25 +32,26 @@ class GroupController extends Controller
 
         $user = auth()->user();
 
-        //if user is superadmin, show all groups, else show a user's groups
-        $groups = [];
+        //if user is superadmin, show all teams, else show a user's teams
+        $team_ids = [];
         if ($user->hasRole('superadministrator')){
-            $groups = Group::all()->pluck('id');
+            $team_ids = Team::all()->pluck('id');
         } else {
-            if ($user->group) {
-                $groups[] = $user->group->id;
+            if ($user->teams) {
+                foreach ($user->teams as $team) {
+                    $team_ids[] = $team->id;
+                }
             }
         }
+        //dd($teams, $user);
 
-        $groups = Group::whereIn('id', $groups)
+        $groups = Team::whereIn('id', $team_ids)
                  ->orderBy('name', 'asc')
-                 //->with('group')
+                 //->with('team')
                  ->paginate(10);
-        //dd($groups, $user);
+        //dd($teams, $user);
 
-        return view('groups.index')
-            ->withUser($user)
-            ->withGroups($groups);
+        return view('groups.index', compact('groups', 'user'));
 
     }
 
@@ -91,19 +93,20 @@ class GroupController extends Controller
             $phone_number = formatPhoneNumber($request->phone_number);
         }
 
-        $group = new Group();
-        $group->name = $request->name;
-        $group->phone_number = $phone_number;
-        $group->description = trim($request->description);
-        $group->email = $request->email;
-        $group->physical_address = trim($request->physical_address);
-        $group->box = $request->box;
-        $group->created_by = $user_id;
-        $group->updated_by = $user_id;
-        $group->save();
+        $team = new Team();
+        $team->name = str_slug($request->name);
+        $team->display_name = $request->name;
+        $team->phone_number = $phone_number;
+        $team->description = trim($request->description);
+        $team->email = $request->email;
+        $team->physical_address = trim($request->physical_address);
+        $team->box = $request->box;
+        $team->created_by = $user_id;
+        $team->updated_by = $user_id;
+        $team->save();
 
-        Session::flash('success', 'Successfully created new group - ' . $group->name);
-        return redirect()->route('groups.show', $group->id);
+        Session::flash('success', 'Successfully created new group - ' . $team->name);
+        return redirect()->route('groups.show', $team->id);
 
     }
 
@@ -117,15 +120,19 @@ class GroupController extends Controller
     {
         
         //get admin user for this group
-        $group = Group::where('id', $id)
+        $group = Team::where('id', $id)
                  ->first();
 
         //get group members
-        $users = $group->users()->paginate(10);
+        $user_role_id = Role::where('name', 'user')->pluck('id');
+        $users = $group->users()
+            //->where('role_id', $user_role_id)
+            ->paginate(10);
+        //dd($users);
 
         //get groups loans
         $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
-            ->where('group_id', $id)
+            ->where('team_id', $id)
             ->first();
 
         return view('groups.show', compact('users', 'group', 'groups_loans'));
@@ -143,12 +150,10 @@ class GroupController extends Controller
         
         $user = auth()->user();
 
-        $group = Group::where('id', $id)
+        $group = Team::where('id', $id)
                  ->first();
         
-        return view('groups.edit')
-            ->withGroup($group)
-            ->withUser($user);
+        return view('groups.edit', compact('user', 'group'));
 
     }
 
@@ -181,9 +186,10 @@ class GroupController extends Controller
             }
             $phone_number = formatPhoneNumber($request->phone_number);
         }
+        //dd($request);
 
-        $group = Group::findOrFail($id);
-        $group->name = $request->group_name;
+        $group = Team::findOrFail($id);
+        $group->display_name = $request->group_name;
         $group->phone_number = $phone_number;
         $group->description = trim($request->description);
         $group->email = $request->email;

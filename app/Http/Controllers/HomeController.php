@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Carbon;
-
+use App\Deposit;
 use App\Group;
 use App\Http\Controllers\Controller;
 use App\Loan;
-use App\Deposit;
 use App\Role;
 use App\SmsOutbox;
+use App\Team;
 use App\User;
+use Carbon;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Session;
 
@@ -39,17 +40,28 @@ class HomeController extends Controller
         $groups_loans = "";
         $month_deposits = "";
 
+        /*************TEST**************/
+        //get user teams
+        $team_ids = [];
+        foreach ($user->teams as $team) {
+            $team_ids[] = $team->id;
+        }
+
+        //dd($user->teams, $team_ids);
+
+        /***********END TEST*************/
+
         if ($user->hasRole('superadministrator')){
             
-            $group_ids = Group::all()->pluck('id');
-            $groups = Group::all();
+            $team_ids = Team::all()->pluck('id');
+            $teams = Team::all();
 
-            //get groups balance
-            $groups_balance = Group::selectRaw('sum(account_balance) account_balance')
+            //get teams balance
+            $teams_balance = Team::selectRaw('sum(account_balance) account_balance')
                 ->first();
 
-            //get groups loans
-            $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
+            //get teams loans
+            $teams_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
                 ->first();
 
             //get month deposits
@@ -60,23 +72,28 @@ class HomeController extends Controller
 
         } else { 
 
-            if ($user->group) {
-                $group_ids[] = $user->group->id;
-                $groups[] = $user->group;
+            //get user teams
+            $team_ids = [];
+            foreach ($user->teams as $team) {
+                $team_ids[] = $team->id;
+            }
 
-                //get groups balance
-                $groups_balance = Group::select('account_balance')
-                    ->where('id', $user->group->id)
+            if (count($team_ids) > 0) {
+                $teams[] = Team::whereIn('id', $team_ids);
+
+                //get teams balance
+                $teams_balance = Team::select('account_balance')
+                    ->whereIn('id', $team_ids)
                     ->first();
 
-                //get groups loans
-                $groups_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
-                    ->where('group_id', $user->group->id)
+                //get teams loans
+                $teams_loans = Loan::selectRaw('sum(loan_balance) loan_balance')
+                    ->whereIn('team_id', $team_ids)
                     ->first();
 
                 //get month deposits
                 $month_deposits = Deposit::selectRaw('sum(amount) amount')
-                    ->where('group_id', $user->group->id)
+                    ->whereIn('team_id', $team_ids)
                     ->whereRaw('MONTH(created_at) = ?', [$month])
                     ->whereRaw('YEAR(created_at) = ?', [$year])
                     ->first();
@@ -85,22 +102,34 @@ class HomeController extends Controller
 
         }
 
-        //get users/ groups
+        //get users/ teams
         $users = [];
 
-        if ($groups) {
-        
-            $users = User::whereIn('group_id', $group_ids)
-                    ->orderBy('id', 'desc')
-                    ->with('group')
+        if ($team_ids) {
+
+            $users = DB::table('users')
+                    ->join('role_user', 'role_user.user_id', '=', 'users.id')
+                    ->whereIn('role_user.team_id', $team_ids)
+                    ->orderBy('users.id', 'desc')
                     ->paginate(10);
 
-            $smsoutboxes = SmsOutbox::whereIn('group_id', $group_ids)
+            
+            //get new users in user group
+            $new_users = DB::table('role_user')
+                    ->join('users', 'role_user.user_id', '=', 'users.id')
+                    ->join('teams', 'role_user.team_id', '=', 'teams.id')
+                    ->whereIn('role_user.team_id', $team_ids)
+                    ->orderBy('role_user.id', 'desc')
+                    ->paginate(10);
+
+            //dd($new_users);
+
+            $smsoutboxes = SmsOutbox::whereIn('team_id', $team_ids)
                     ->orderBy('id', 'desc')
                     ->get();
                     //->paginate(10);
 
-            $groups_all = Group::whereIn('id', $group_ids)
+            $teams_all = Team::whereIn('id', $team_ids)
                      ->orderBy('id', 'desc')
                      ->paginate(10);
 
@@ -108,13 +137,13 @@ class HomeController extends Controller
             $count_smsoutbox = count($smsoutboxes);
             $user->sms_outbox_count = $count_smsoutbox;
             
-            //groups count
-            $count_groups = count($groups);
-            $user->count_groups = $count_groups;
+            //teams count
+            $count_teams = count($teams);
+            $user->count_teams = $count_teams;
 
         }
 
-        //get summary of group balances
+        //get summary of team balances
         /*$loans_amount = Loan::selectRaw('year(created_at) year, month(created_at) month, sum(loan_amount) loan_amount')
                 ->groupBy('year', 'month')
                 ->get();*/
@@ -123,10 +152,11 @@ class HomeController extends Controller
                                     'smsoutboxes', 
                                     'user', 
                                     'users', 
-                                    'groups_balance',
-                                    'groups_loans',
+                                    'new_users',
+                                    'teams_balance',
+                                    'teams_loans',
                                     'month_deposits'
-                                    ))->withGroups($groups_all);
+                                    ))->withteams($teams_all);
         
 
     }

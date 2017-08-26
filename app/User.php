@@ -9,13 +9,16 @@ use App\Image;
 use App\Loan;
 use App\Repayment;
 use App\RepaymentArchive;
+use App\RoleUser;
 use App\Sacco;
 use App\SmsOutbox;
+use App\Team;
 use App\Withdrawal;
 use App\WithdrawalArchive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laratrust\Traits\LaratrustUserTrait;
 use Laravel\Passport\HasApiTokens;
 
@@ -24,26 +27,42 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
     use LaratrustUserTrait; 
 
+
     /**
      * The attributes that are mass assignable
      */
     protected $fillable = [
-        'first_name', 'last_name', 'account_number', 'account_balance', 'email', 'group_id', 'password', 'gender', 'phone_number', 'api_token', 'status_id','created_by', 'updated_by'
+        'first_name', 'last_name','email', 'password', 'gender', 'phone_number', 'api_token', 'status_id','created_by', 'updated_by'
     ];
-
-    /*object events*/
-    /*protected $events = [
-        'updated' => Events\AccountAdded::class,
-    ];*/
 
     /**
      * The attributes that should be hidden for arrays.
-     *
-     * @var array
      */
     protected $hidden = [
         'password', 'remember_token', 'api_token',
     ];
+
+    //override 'isInSameTeam' method in LaratrustUserTrait
+    public function isInSameTeam($rolePermission, $team)
+    {
+        if (config('laratrust.use_teams') || is_null($team)) {
+            return true;
+        }
+
+        $teamForeignKey = $this->teamForeignKey();
+        return $rolePermission->pivot->$teamForeignKey == $team;
+    }
+
+    /*user accounts*/
+    public function accounts() {
+
+        //get user accounts, with user roles only
+        $user_role_id = Role::where('name', 'user')->pluck('id');
+        return $this->hasMany(RoleUser::class, 'user_id', 'id')
+                    ->where('role_id', $user_role_id);
+        //class, foreign key, local key
+    }
+
 
     /*relation between token and user*/
     public function token() {
@@ -60,10 +79,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id')->withTimeStamps();
     }
 
-    /*one to many relationship*/
-    public function group()
+    /*many to many relationship*/
+    public function teams()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsToMany(Team::class, 'role_user', 'user_id', 'team_id')
+            ->withPivot('account_balance', 'account_number', 'account_type_id', 'created_by', 'updated_by', 'created_at', 'updated_at')
+            ->withTimestamps();
     }
 
     public function smsOutboxes()
@@ -134,7 +155,7 @@ class User extends Authenticatable
     public static function getUser()
     {
         $user_id = auth()->user();
-        $userGroup = User::where('id', auth()->user()->id)->with('group')->first();
+        $userGroup = User::where('id', auth()->user()->id)->with('roles')->first();
         return $userGroup;
     }
 

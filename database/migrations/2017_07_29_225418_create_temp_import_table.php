@@ -18,6 +18,11 @@ class CreateTempImportTable extends Migration
             $table->uuid('uuid');
             $table->integer('user_id')->unsigned();
             $table->text('data');
+            $table->string('src_ip')->nullable();
+            $table->string('src_host')->nullable();
+            $table->string('user_agent')->nullable();
+            $table->integer('created_by')->unsigned()->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
         });
     }

@@ -23,11 +23,8 @@
 		   <!-- Title -->
        <div class="row heading-bg">
           <div class="col-sm-6 col-xs-12">
-          <h5 class="txt-dark">
+            <h5 class="txt-dark">
                 Manage Deposits 
-                @if ((!Auth::user()->hasRole('superadministrator')) && $user->group)
-                  &nbsp; - &nbsp; ({{ $user->group->name }})</th>
-                @endif
             </h5>
           </div>
           <!-- Breadcrumb -->
@@ -41,8 +38,8 @@
        <!-- Row -->
         <div class="row mt-15">
 
+               
                @include('layouts.partials.error_text')
-
 
                
                <div class="col-sm-12 col-xs-12">
@@ -53,7 +50,7 @@
                      </div>
                      <div class="panel-heading panel-heading-dark">
                         
-                        <div class="pull-left col-sm-5">
+                        <div class="pull-left col-sm-4">
                                                        
                             @if (count($deposits)) 
 
@@ -85,102 +82,105 @@
                             @endif
 
                         </div>
-                        <div class="pull-right col-sm-7">
+                        <div class="pull-right col-sm-8">
                           
+
                           <form action="{{ route('deposits.index') }}">
-                           <table class="table table-search">
-                             <tr>
-                                
-                                <td>
-                                  <input type="hidden" value="1" name="search">
+                             <table class="table table-search">
+                               <tr>
                                   
-                                  <div class='input-group date' id='start_at_group'>
-                                      <input 
-                                          type='text' 
-                                          class="form-control" 
-                                          placeholder="Start Date" 
-                                          id='start_at'
-                                          name="start_at" 
-                                          
-                                          @if (app('request')->input('start_at'))
-                                              value="{{ app('request')->input('start_at') }}"
-                                          @endif
+                                  <td>
+                                    <input type="hidden" value="1" name="search">
+                                    
+                                    <div class='input-group date' id='start_at_group'>
+                                        <input 
+                                            type='text' 
+                                            class="form-control" 
+                                            placeholder="Start Date" 
+                                            id='start_at'
+                                            name="start_at" 
+                                            
+                                            @if (app('request')->input('start_at'))
+                                                value="{{ app('request')->input('start_at') }}"
+                                            @endif
 
-                                      />
-                                      <span class="input-group-addon">
-                                         <span class="fa fa-calendar"></span>
-                                      </span>
-                                   </div>
+                                        />
+                                        <span class="input-group-addon">
+                                           <span class="fa fa-calendar"></span>
+                                        </span>
+                                     </div>
 
-                                </td>
+                                  </td>
 
-                                <td>
+                                  <td>
+                                    
+                                    <div class='input-group date' id='end_at_group'>
+                                        <input 
+                                            type='text' 
+                                            class="form-control" 
+                                            placeholder="End Date" 
+                                            id='end_at'
+                                            name="end_at" 
+                                            
+                                            @if (app('request')->input('end_at'))
+                                                value="{{ app('request')->input('end_at') }}"
+                                            @endif
+
+                                        />
+                                        <span class="input-group-addon">
+                                           <span class="fa fa-calendar"></span>
+                                        </span>
+                                     </div>
+
+                                  </td>
+
+                                  <td>
+                                    
+                                      <a class="btn btn-default btn-icon-anim btn-circle" 
+                                      data-toggle="tooltip" data-placement="top"
+                                      title="Clear dates" id="clear_date">
+                                        <i class="zmdi zmdi-chart-donut"></i>
+                                      </a>
+
+                                  </td>
                                   
-                                  <div class='input-group date' id='end_at_group'>
-                                      <input 
-                                          type='text' 
-                                          class="form-control" 
-                                          placeholder="End Date" 
-                                          id='end_at'
-                                          name="end_at" 
-                                          
-                                          @if (app('request')->input('end_at'))
-                                              value="{{ app('request')->input('end_at') }}"
-                                          @endif
+                                  <td>
 
-                                      />
-                                      <span class="input-group-addon">
-                                         <span class="fa fa-calendar"></span>
-                                      </span>
-                                   </div>
+                                    <select class="selectpicker form-control" name="user_id" 
+                                      data-style="form-control btn-default btn-outline">
 
-                                </td>
+                                        <li class="mb-10"><option value="">Select User</option></li>
 
-                                <td>
-                                  
-                                    <a class="btn btn-default btn-icon-anim btn-circle" 
-                                    data-toggle="tooltip" data-placement="top"
-                                    title="Clear dates" id="clear_date">
-                                      <i class="zmdi zmdi-chart-donut"></i>
-                                    </a>
+                                        @foreach ($users as $user) 
+                                          <li class="mb-10">
+                                            
+                                            <option value="{{ $user->id }}"
 
-                                </td>
-                                
-                                <td>
+                                                @if ($user->id == app('request')->input('user_id'))
+                                                    selected="selected"
+                                                @endif
 
-                                  <select class="selectpicker form-control" name="user_id" 
-                                    data-style="form-control btn-default btn-outline">
+                                              >
 
-                                      <li class="mb-10"><option value="">Select User</option></li>
+                                              {{ $user->user->first_name }} 
+                                              {{ $user->user->last_name }} - 
+                                              ({{ $user->team->display_name }})
 
-                                      @foreach ($users as $user) 
-                                        <li class="mb-10">
-                                          
-                                          <option value="{{ $user->id }}"
+                                            </option>
 
-                                              @if ($user->id == app('request')->input('user_id'))
-                                                  selected="selected"
-                                              @endif
+                                          </li>
+                                        @endforeach
 
-                                            >
+                                     </select>
+                                    
+                                  </td>
+                                  <td>
+                                    <button class="btn btn-primary">Filter</button>
+                                  </td>
+                               </tr>
+                             </table>
+                            </form>
 
-                                            {{ $user->first_name }} 
-                                            {{ $user->last_name }}
-
-                                          </option>
-
-                                        </li>
-                                      @endforeach
-
-                                   </select>
-                                  
-                                </td>
-                                <td>
-                                  <button class="btn btn-primary">Filter</button>
-                                </td>
-                             </tr>
-                           </table>
-                          </form>
                            
                         </div>
                         <div class="clearfix"></div>
@@ -209,16 +209,21 @@
                                         <thead>
                                            <tr>
                                               <th width="5%">id</th>
-                                              <th width="10%" class="text-right">Amount (Ksh)</th>
-                                              <th width="10%" class="text-right">Before Bal (Ksh)</th>
-                                              <th width="10%" class="text-right">After Bal (Ksh)</th>
-                                              <th width="15%">Name</th>
-                                              
-                                              @if (Auth::user()->hasRole('superadministrator'))
-                                              <th width="10%">Group</th>
+                                              <th width="10%" class="text-right">Amount</th>
+                                              <th width="10%" class="text-right">Before Bal</th>
+                                              <th width="10%" class="text-right">After Bal</th>
+                                              <th width="17%">Name</th>
+
+                                              @if (
+                                                    (Auth::user()->hasRole('superadministrator')) || 
+                                                    (Auth::user()->hasRole('administrator')) ||
+                                                    (Auth::user()->hasRole('groupadministrator')) ||
+                                                    (Auth::user()->hasRole('manager')) ||
+                                                    (Auth::user()->hasRole('user')) 
+                                                  )
+                                                <th width="18%">Group</th>
                                               @endif
 
-                                              <th width="10%">Created By</th>
                                               <th width="15%">Created At</th>
                                               <th width="15%">Actions</th>
                                            </tr>
@@ -254,25 +259,38 @@
 
                                                 <td>
                                                   <span class="txt-dark weight-500">
-                                                    {{ $deposit->user->first_name }}
-                                                      &nbsp;
-                                                    {{ $deposit->user->last_name }}
+                                                    <a href="{{ route('member-accounts.show', $deposit->user->id) }}">
+                                                      {{ $deposit->user->user->first_name }}
+                                                        &nbsp;
+                                                      {{ $deposit->user->user->last_name }}
+                                                    </a>
                                                   </span>
                                                 </td>
 
-                                                @if (Auth::user()->hasRole('superadministrator'))
-                                                <td>
-                                                  <span class="txt-dark weight-500">
-                                                    {{ $deposit->user->group->name }}
-                                                  </span>
-                                                </td>
-                                                @endif
+                                                
+                                                  <td>
+                                                    <span class="txt-dark weight-500">
+                                                      
+                                                      @if (
+                                                        (Auth::user()->hasRole('superadministrator')) || 
+                                                        (Auth::user()->hasRole('administrator')) ||
+                                                        (Auth::user()->hasRole('groupadministrator')) ||
+                                                        (Auth::user()->hasRole('manager')) 
+                                                      )
 
-                                                <td>
-                                                  <span class="txt-dark weight-500">
-                                                    {{ $deposit->creator->first_name }}
-                                                  </span>
-                                                </td>
+                                                        <a href="{{ route('groups.show', $deposit->user->team->id) }}">
+                                                          {{ $deposit->user->team->display_name }}
+                                                        </a>
+
+                                                      @else
+
+                                                        {{ $deposit->user->team->display_name }}
+
+                                                      @endif
+
+                                                    </span>
+                                                  </td>
+                                                
 
         	                                      <td>
                                                    <span class="txt-dark weight-500">
@@ -286,13 +304,17 @@
                                                     <i class="zmdi zmdi-eye"></i> 
                                                    </a>
 
-                                                   <a href="{{ route('deposits.edit', $deposit->id) }}" class="btn btn-primary btn-sm btn-icon-anim btn-square">
-                                                    <i class="zmdi zmdi-edit"></i> 
-                                                   </a>
+                                                   @if (Auth::user()->can('update-deposit', $deposit->user->team->id))
+                                                     <a href="{{ route('deposits.edit', $deposit->id) }}" class="btn btn-primary btn-sm btn-icon-anim btn-square">
+                                                        <i class="zmdi zmdi-edit"></i> 
+                                                     </a>
+                                                   @endif
 
-                      								             <a href="{{ route('deposits.destroy', $deposit->id) }}" class="btn btn-danger btn-sm btn-icon-anim btn-square">
-                      								             	<i class="zmdi zmdi-delete"></i> 
-                      								             </a>
+                      								             @if (Auth::user()->can('delete-deposit', $deposit->user->team->id))
+                                                     <a href="{{ route('deposits.destroy', $deposit->id) }}" class="btn btn-danger btn-sm btn-icon-anim btn-square">
+                        								             	  <i class="zmdi zmdi-delete"></i> 
+                        								             </a>
+                                                   @endif
 
         	                                      </td>
         	                                   </tr>
@@ -370,6 +392,7 @@
           $('#end_at').val("");
       });
 
-  </script>
+
+</script>
 
 @endsection

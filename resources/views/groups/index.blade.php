@@ -132,7 +132,7 @@
 	                                      
 	                                      <td>
                                           <span class="txt-dark weight-500">
-                                            {{ $group->name }}
+                                            {{ $group->display_name }}
                                           </span>
                                         </td>
 
